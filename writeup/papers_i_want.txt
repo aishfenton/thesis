@@ -1,0 +1,40 @@
+Clarke and Wright Scheduling of Vehicles from a Central Depot to a Number of 
+Delivery Point. Operations Research 12 (1964) 568-581
+
+[27] R. Cordone and R. Wolfer Calvo. A heuristic for vehicle routing problem with time 
+windows. Internal report 97.012, Politechnico di Milano, Dipartimento di Electronica 
+e Informazione, Milan, Italy, 1997.
+
+[82] M.M. Solomon. On the worst-case performance of some heuristics for the vehicle 
+routing and scheduling problem with time window constraints. Networks, 16:161–174, 
+1986. 
+
+[83] M.M. Solomon. Algorithms for the vehicle routing and scheduling problem with time 
+window constraints. Operations Research, 35:254–265, 1987. 
+
+[84] M.M. Solomon, E. Baker, and J. Schaﬀer. Vehicle routing and scheduling problems 
+with time window constraints: Eﬃcient implementations of solution improvement 
+procedures. In B.L. Golden and A.A. Assad, editors, Vehicle routing: Methods and 
+studies, pages 85–106. North-Holland, Amsterdam, 1988.
+ 
+[85] M.M. Solomon and J. Desrosiers. Time window constrained routing and scheduling 
+problems. Transportation Science, 22:1–13, 1988.
+
+[16] F. Glover. Ejection chains, reference structures and alternating path methods 
+for traveling salesman problems. Discrete Applied Mathematics, 65:223–253, 
+1992. 
+
+Fast Ejection Chain Algorithms for Vehicle Routing with Time Windows. Herman Sontrop, Pieter van der Horn and Marc Uetz 
+0302-9743 (Print) 1611-3349 (Online)
+
+Cordeau, J.-F. and Laporte, G. (2007). The dial-a-ride problem: Models and algorithms. Annals of 
+Operations Research, forthcoming.
+
+Mitrovi´c-Mini´c, S., Krishnamurti, R., and Laporte, G. (2004). Double-horizon based heuristics for 
+the dynamic pickup and delivery problem with time windows. Transportation Research Part B, 
+38:669–685. 
+
+[1] DANTZIG, G. B.; RAMSER, R. H.; (1959). The Truck Dispatching Problem. Management Science. 6. 80.
+
+H. Xu, Z.-L. Chen, S. Ra jagopal, and S. Arunapuram. Solving a practical pickup and delivery 
+problem. Transportation Science, 37:347–364, 2003.

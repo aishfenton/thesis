@@ -1,0 +1,140 @@
+%!TEX root = main.tex
+
+% =====================
+% MACROS
+% ---------------------
+% =====================
+
+%
+% Required packages
+%
+
+\usepackage{color}
+
+%
+% Macros and theorems environments
+%
+
+% Environments
+%
+\newtheorem{lemma}{Lemma} 
+\newtheorem{theorem}[lemma]{Theorem}
+\newtheorem{conjecture}[lemma]{Conjecture}
+\newtheorem{corollary}[lemma]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{case}{Case}
+\newtheorem{definition}[lemma]{Definition}
+\newtheorem{example}[lemma]{Example}
+
+%\newtheorem{proof}{Proof}[lemma]
+
+% Misc
+%
+
+\newcommand{\todo}[1] {
+\fbox{#1}
+}
+
+\newcommand{\hquote}[1] {
+\textcolor {blue}{#1}
+}
+
+% \newcommand{\comment}[1]{\fbox{#1}}
+
+\newcommand{\mnote}[1]{\marginpar{%
+      \vskip-\baselineskip
+      \raggedright\footnotesize
+      \itshape\hrule\smallskip\scriptsize{#1}\par\smallskip\hrule}}  
+      
+ 
+% Number families
+%
+\newcommand{\naturaln}{\mathbb{N}}
+
+% Graph notation
+%
+\newcommand{\edge}[2]{#1#2}
+\newcommand{\isub}[2]{#1[#2]}
+
+% Tree notation
+%
+\newcommand{\branchno}[1]{\ensuremath{\mathcal{B}(#1)}}
+
+
+% Operator macros
+%
+
+% Family
+\newcommand{\family}{\ensuremath{\mathcal{F}}}
+
+% Running Time
+%
+\newcommand{\npcomplete}{$\cal NP$-complete}
+\newcommand{\nphard}{$\cal NP$-hard}
+\newcommand{\NP}{\mbox{$\cal{NP}$}}
+\newcommand{\poly}{\mbox{$\cal{P}$}}
+\newcommand{\BIGO}[1]{\mbox{$O(#1)$}}
+
+
+% Logic
+%
+\newcommand{\AND}{\wedge}
+\newcommand{\OR}{\vee}
+
+
+% Set functions
+%
+\newcommand{\UNION}{\cup}
+\newcommand{\INTERSECT}{\cap}
+\newcommand{\DEL}{\diagdown}
+\newcommand{\CONTRACT}[2]{#1/#2}
+\newcommand{\MIN}[1]{\mbox{$min(#1)$}}
+\newcommand{\MAX}[1]{\mbox{$max(#1)$}}
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\seq}[1]{[#1]}
+\newcommand{\tuple}[1]{(#1)}
+\newcommand{\PS}[1]{\ensuremath{\mathcal{P}(#1)}}
+\newcommand{\compl}[1]{\overline{#1}}
+
+
+% Image functions
+%
+\newcommand{\pic}[3]{\begin{figure}[htbp]\begin{center}\includegraphics[scale=1.0]%
+	{#1}\caption{#2}\label{#3}\end{center}\end{figure}}
+
+\newcommand{\picscl}[4]{\begin{figure}[htbp]\begin{center}\includegraphics[scale=#4]%
+	{#1}\caption{#2}\label{#3}\end{center}\end{figure}}
+
+%------------------------
+% Problems
+%------------------------
+
+\newcommand{\probdommin}{\mbox{DOMINATING SET}}
+\newcommand{\probvertcov}{\mbox{VERTEX COVER}}
+\newcommand{\probindset}{\mbox{INDEPENDENCE SET}}
+\newcommand{\probhamcir}{\mbox{HAMILTONIAN CIRCUIT}}
+
+%------------------------
+% Logic
+%------------------------
+\renewcommand{\implies}{\Rightarrow}
+% \newcommand{\equates}{\Leftrightarrow}
+
+
+
+%------------------------
+% Functions
+%------------------------
+
+
+
+%------------------------
+% Specific Macros
+%------------------------
+
+
+
+
+
+

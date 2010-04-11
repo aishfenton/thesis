@@ -1,0 +1,170 @@
+%!TEX root = main.tex
+
+% =====================
+% CHAPTER
+% ---------------------
+% =====================
+\chapter{Background}
+This section reviews the background of Vehicle Routing Problem (\VRP) and Pickup Delivery Problem (\PDP). Classic and more modern heuristics for solving the \VRP\ and related problems are reviewed as well providing a review of real-world implementations and results. 
+
+% =====================
+% SECTION
+% =====================
+\section{A short history of the Vehicle Routing Problem}
+
+% =====================
+% Sub Section
+\subsection{\TSP\ introduction and history}
+The traveling salesman problem can informally be defined as given $n$ points on a map provide a route through each of the $n$ points such that each point is only used once and total travel distance is minimized. The name -- traveling salesman -- comes from the classic real-world example of the problem: a salesman must visit each of $n$ cities, what is the shortest route that visits each city once. See figure \ref{fig:tsp_example}
+
+\picscl{images/background.pdf}{Traveling Salesman Problem}{fig:tsp_example}{0.75}
+
+
+\TSP\ is related to the classic graph theory problem of finding a Hamiltonian circuit through a graph. Hamiltonian circuits have been studied since 1856 by both Kirkman \cite{Kirkman:1856} and Hamilton \cite{Hamilton:1856}. The traveling salesman problem has been informally discussed probably for many years \cite{Schrijver} but didn't become actively studied until after 1928 where Menger, Whitney, Flood and Robinson produced much of the early results in the field. Robinson's RAND report \cite{Robinson:1949} might have been the first article to call the problem by the name it has since become known, the Traveling Salesman Problem.  
+
+\quote{
+The purpose of this note is to give a method for solving a problem related to the 
+traveling salesman problem. One formulation is to find the shortest route for a 
+salesman starting from Washington, visiting all the state capitals and then 
+returning to Washington. More generally, to find the shortest closed curve containing 
+n given points in the plane.
+}
+
+\hquote{SOMETHING ON EARLY RESULTS}
+
+\hquote{SOMETHING ON COMPLEXITY CLASS AND WHEN IT WAS PROVED}
+
+\hquote{Does TSP have a starting node? or is this a transport added thing}
+
+A more general problem was considered by ?? who studied the case where multiple routes can be constructed (i.e. multiple salesman can be used to visit the cities). This problem is known as the multiple traveling salesman problem \MTSP\. The pure \MTSP can trivially be turned into a \TSP by constructing a graph $G$ with $n - 1$ additional copies of the starting node to the graph and forbidding travel directly between each $n$ starting node. Note however that the pure formulation of \MTSP\ places no additional constraints on a route. In real life applications \MTSP\ is typically employed with additional constraints, such as each route should be of equal size (e.g. work should be balanced among the salesman), or no route should exceed a total distance or time (e.g. a anyone salesman shouldn't be asked to work more than 8 hours a day). The next problem considered can be understood as being the combination of \MTSP\ with other combinatorial optimization problems that represent these constraints. Unfortunately these additional constraints are often combinorally complex problems in themselves thus greatly adding to the complexity of the problem.    
+
+
+% =====================
+% Sub Section
+\subsection{\VRP\ introduction and history}
+The Vehicle Routing Problem is closely related to two problems, the Multple Traveling Salesman Problem \MTSP\ and the Bin Packing Problem \BPP. 
+
+The Vehicle Routing Problem was first formally defined by in \cite{Dantzig:1959}. The first efforts were concerned with exact solutions.
+
+% =====================
+% Sub Section
+\subsection{\VRPTW}
+
+% =====================
+% Sub Section
+\subsection{\PDPTW}
+
+
+% =====================
+% SECTION
+% =====================
+\section{An introduction to classic \VRP\ heuristics}
+
+This section reviews some of the more common heuristics algorithms. 
+
+\hquote{Classic \VRP heuristics can be broadly classified into three categories. Constructive heuristics gradually build a feasible solution while keeping an eye on teh solution cost, but do not contain an improvement phase per se. In two-phase heuristics, the problem is decomposed into its two natural components: clustering of vertices into feasible routes and actual route construction, with possible feedback loops between the two stages. Two-phase heuristics will be divided into two classes: cluster-first, route second, methods adn route-first, cluster-second methods. In the first case, vertices are first organized into feasible clusters and a vehicle route is constructed for each of them. In the second case, a tour is first built on all vertices and is then segmented into feasible vehicle routes. Finally, improvement methods attempt to upgrade any feasible solution by performing a sequence of edge or vertex exchanges within or between routes.}
+
+
+% =====================
+% Sub Section
+\subsection{Construction algorithms}
+These following algorithms are heuristics for constructing an initial solution
+
+% ---------------------
+\subsubsection{Nearest neighbour}
+The most simple algorithm, this codifies the intuitive principle of constructing a solution by picking the job to the depot, then the closest job to this, and so on until a route is filled.
+
+Formally the algorithm creates the sequence $R = \seq{v_0}$ and picks $v \in V$ such that $d_{0,i}$ is minimized. It repeat this until the route represented by $R$ is exceeds it capacity. Then a new route $R$ is constructed and the process is repeated with the remaining jobs. This continues until all jobs are allocated.
+
+Although the Nearest Neighbour algorithm is simple to understand and implement it situations can occur where the performance is bad
+
+% ---------------------
+\subsubsection{Nearest insertion}
+
+The algorithm was first proposed by ?
+
+This algorithm slightly improves upon the previous algorithm. The algorithm proceeds much the same as the Nearest Neighbour algorithm but instead of considering only the previous node it considers the entire sequence of jobs route so far in $R$. It finds an insertion point along $R$ such that for job $v_k$ insertion between vertices $v_i, v_j$ the function $c_{ik} + c_{kj} - c_{ij}$ is minimized.
+
+% ---------------------
+\subsubsection{Clark and Wright algorithm}
+
+Clark-Wright's widely known construction algorithm first appeared in \cite{clark:1964}. The algorithm uses a concept of \emph{savings}. The algorithm starts with a separate route for each customer: from depot, to customer, and back to the depot. A saving value is calculated for every pair of customers. The saving value is the distance saved by one customer being serviced directly after the other without returning to the depot in between -- in other words the savings gained by combining two partial routes. Routes are then merged based on the largest savings.
+
+The algorithm comes in two flavours: sequential and parallel. The sequential version sequentially adds customers to a route until a route has reached capacity (or based on some other constraint such as maximum route length) and then produces the next. The parallel version builds each route in parallel. The parallel version out performs the sequential version in most cases\cite{Laporte:1999} and is the version considered in our approach.
+
+The algorithm is surprising adaptable and has been extended to deal with more specialized vehicle routing problems were additional objectives and constraints must be considered. The algorithm's flexibility derives from its algebraic treatment of the problem rather than exploiting the problem's underlying spatial properties, as many of the two-phase algorithms do \ref{2phasealgorithms}. The algorithms savings formula can be adjusted to accommodate other objectives. An example of this is Solomon's equally ubiquitous algorithm \cite{Solomon:1987} which extends the Clark and Wright algorithm to cater for time constraints. 
+
+The algorithm works as follows:
+
+\begin{itemize}
+	\item Prime the solution with routes $R = \set{x_0, x_i, x_0}$ for all jobs $x_i \in X$.
+	\item For all $i,j$ calculate $s_{ij} = c_{i0} + c_{j0} - c_{ij}$.
+	\item Process each $S_{ij}$ in descending order, find routes $r_1 \in R : r_1 = \set{0,...,x_i,x_0}$ and $r_2 \in R: r_2 = \set{0,x_j,...,0}$. Merge these together such that $R' = \set{0,...,x_i, x+j,...,0}$. Stop once capacity constraints or route length constraint is exceeded.
+\end{itemize}
+
+\picscl{images/background-cw.pdf}{Clark Wright Savings Algorithm}{fig:cw_savings}{0.75}
+
+
+% =====================
+% Sub Section
+\subsection{2-phase construction algorithms}
+\label{2phasealgorithms}
+
+% ---------------------
+\subsubsection{Cluster first}
+
+We use kmeans clustering. The kmeans algorithm isn't guaranteed to produce same result each run. This is conventionally viewed as limitation of the algorithm. However for our purpose this is an advantage as we can use the randomness to better seed the population with different solutions.  
+
+% ---------------------
+\subsubsection{Sweep}
+
+
+% =====================
+% Sub Section
+\subsection{Improvement heuristics}
+
+% ---------------------
+\subsubsection{2-opt}
+
+% ---------------------
+\subsubsection{Or-opt}
+
+% ---------------------
+\subsubsection{Or-opt improvements}
+
+% ---------------------
+\subsubsection{GENI}
+
+% ---------------------
+\subsubsection{$\lambda$-interchanges}
+
+% ---------------------
+\subsubsection{Ejection chains}
+\hquote{I want to know more about ejection chains}
+
+
+% =====================
+% Sub Section
+\subsection{Meta-heuristics}
+
+% ---------------------
+\subsubsection{Tabu search}
+
+% ---------------------
+\subsubsection{Genetic algorithms}
+
+% ---------------------
+\subsubsection{Memetic algorithms}
+
+% ---------------------
+\subsubsection{Large neighbourhood search}
+
+
+% =====================
+% SECTION
+% =====================
+\section{Real-world implementations}
+
+
+
+

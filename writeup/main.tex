@@ -1,0 +1,97 @@
+% =====================
+% Main document
+% ---------------------
+% =====================
+
+%!TEX TS-program = xelatex 
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[11pt, a4paper]{memoir}
+
+\usepackage[pdftitle={Meta-heuristics for VRP},
+pdfauthor={M.Dinneen, A.J.L.Fenton},
+]{hyperref}
+
+% \usepackage{multirow}
+% \usepackage{algorithm}
+% \usepackage{algorithmic}
+% \usepackage{concrete}
+% \usepackage{mathpazo}
+% \usepackage{epstopdf}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage[cm-default]{fontspec}
+
+% \chapterstyle{veelo}
+
+% \setromanfont{GalliardStd-Roman}
+% \setsansfont{Avenir LT Std}
+% \setmonofont{Lucida Sans Typewriter}
+
+% \textwidth      = 6.0 in
+% \textheight     = 9 in
+% \oddsidemargin  = 0.0 in
+% \evensidemargin = 0.0 in
+% \topmargin      = 0.0 in
+% \headheight     = 0.0 in
+% \parskip        = 0.2in
+% \parindent      = 0.0in
+
+% \renewcommand{\multirowsetup}{\centering}
+
+% =====================
+% ---------------------
+% MACROS
+% ---------------------
+
+\newcommand{\FTL}{\mbox{FTL}}
+\newcommand{\LTL}{\mbox{LTL}}
+\newcommand{\PDPFTL}{\mbox{PDP-FTL}}
+\newcommand{\VRP}{\mbox{VRP}}
+\newcommand{\VRPTW}{\mbox{VRPTW}}
+\newcommand{\PDP}{\mbox{PDP}}
+\newcommand{\PDPTW}{\mbox{PDPTW}}
+\newcommand{\TSP}{\mbox{TSP}}
+\newcommand{\MTSP}{\mbox{MTSP}}
+\newcommand{\BPP}{\mbox{BPP}}
+
+
+\input{macros.tex}
+
+% =====================
+% ---------------------
+% CONTENT
+% ---------------------
+
+\begin{document}
+
+\input{title_page.tex}
+
+\frontmatter
+\input{front_matter.tex}
+
+\mainmatter
+% \pagestyle{plain}
+\input{introduction.tex}
+
+\input{background.tex}
+
+\input{problem_definition.tex}
+\input{algorithm.tex}
+\input{problem_dataset.tex}
+
+\input{results.tex}
+
+\input{conclusion.tex}
+
+\input{implementation.tex}
+
+% =====================
+% SECTION
+% =====================
+\bibliography{bibliography.bib}
+\bibliographystyle{plain}
+
+\end{document}
