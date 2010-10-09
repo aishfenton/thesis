@@ -15,36 +15,40 @@ This section reviews the background of Vehicle Routing Problem (\VRP) and Pickup
 % =====================
 % Sub Section
 \subsection{\TSP\ introduction and history}
-The traveling salesman problem can informally be defined as given $n$ points on a map provide a route through each of the $n$ points such that each point is only used once and total travel distance is minimized. The name -- traveling salesman -- comes from the classic real-world example of the problem: a salesman must visit each of $n$ cities, what is the shortest route that visits each city once. See figure \ref{fig:tsp_example}
+The traveling salesman problem can informally be defined as given $n$ points on a map provide a route through each of the $n$ points such that each point is only used once and the total distance travelled is minimized. The problem's name, traveling salesman, comes from the classic real-world example of the problem: a salesman is sent on a trip to visit $n$ cities. What is order should she visit the cities in, such that she covers the least distance? See figure \ref{fig:tsp_example}
 
 \picscl{images/background.pdf}{Traveling Salesman Problem}{fig:tsp_example}{0.75}
 
-
-\TSP\ is related to the classic graph theory problem of finding a Hamiltonian circuit through a graph. Hamiltonian circuits have been studied since 1856 by both Kirkman \cite{Kirkman:1856} and Hamilton \cite{Hamilton:1856}. The traveling salesman problem has been informally discussed probably for many years \cite{Schrijver} but didn't become actively studied until after 1928 where Menger, Whitney, Flood and Robinson produced much of the early results in the field. Robinson's RAND report \cite{Robinson:1949} might have been the first article to call the problem by the name it has since become known, the Traveling Salesman Problem.  
+\TSP\ is related to a classic graph theory problem, the Hamiltonian path. Hamiltonian circuits have been studied since 1856 by both Hamilton \cite{Hamilton:1856} and Kirkman \cite{Kirkman:1856}. The traveling salesman problem has been informally discussed probably for many years \cite{Schrijver} but didn't become actively studied until after 1928 where Menger, Whitney, Flood and Robinson produced much of the early results in the field. Robinson's RAND report \cite{Robinson:1949} might have been the first article to call the problem by the name it has since become known, the Traveling Salesman Problem.  
 
 \quote{
-The purpose of this note is to give a method for solving a problem related to the 
-traveling salesman problem. One formulation is to find the shortest route for a 
-salesman starting from Washington, visiting all the state capitals and then 
-returning to Washington. More generally, to find the shortest closed curve containing 
-n given points in the plane.
+  The purpose of this note is to give a method for solving a problem related to the traveling salesman problem. One formulation is to find the shortest route for a salesman starting from Washington, visiting all the state capitals and then returning to Washington. More generally, to find the shortest closed curve containing $n$ given points in the plane.
 }
 
-\hquote{SOMETHING ON EARLY RESULTS}
+An early result was provided by Dantzig, Fulkerson, and  Johnson \cite{Dantzig:1954}. Their paper gave an exact method for solving a 49 city problem, a large number of cities for the time. Their algorithm used the cutting plane method to provide an exact solution. This approach has been the inspiration for many subsequent approaches, and is still the bedrock of algorithms that attempt to provide an exact solution.  
 
-\hquote{SOMETHING ON COMPLEXITY CLASS AND WHEN IT WAS PROVED}
+Karp's famous paper, Reducibility Among Combinatorial Problems, in 1972 showed that the Hamiltonian Circuit problem is NP-complete. This implied the NP-hardness of \TSP, and thus supplied the mathematical explanation for the apparent difficulty of finding optimal tours.
 
-\hquote{Does TSP have a starting node? or is this a transport added thing}
+A generalization of \TSP is \MTSP, where multiple routes are allowed to be constructed (i.e. multiple salesman can be used to visit the cities). The pure \MTSP\ can trivially be turned into a \TSP by constructing a graph $G$ with $n - 1$ additional copies of the starting node to the graph and forbidding travel directly between each $n$ starting nodes. Note however that the pure formulation of \MTSP\ places no additional constraints on a route. In real life applications \MTSP\ is typically employed with additional constraints, such as each route should be of equal size (e.g. work should be balanced among the salesman), or no route should exceed a total distance or time (e.g. a anyone salesman shouldn't be asked to work more than 8 hours a day). 
 
-A more general problem was considered by ?? who studied the case where multiple routes can be constructed (i.e. multiple salesman can be used to visit the cities). This problem is known as the multiple traveling salesman problem \MTSP\. The pure \MTSP can trivially be turned into a \TSP by constructing a graph $G$ with $n - 1$ additional copies of the starting node to the graph and forbidding travel directly between each $n$ starting node. Note however that the pure formulation of \MTSP\ places no additional constraints on a route. In real life applications \MTSP\ is typically employed with additional constraints, such as each route should be of equal size (e.g. work should be balanced among the salesman), or no route should exceed a total distance or time (e.g. a anyone salesman shouldn't be asked to work more than 8 hours a day). The next problem considered can be understood as being the combination of \MTSP\ with other combinatorial optimization problems that represent these constraints. Unfortunately these additional constraints are often combinorally complex problems in themselves thus greatly adding to the complexity of the problem.    
-
+\MTSP leads us naturally into the a class of problems derived from the Vehicle Routing Problem (\VRP). \VRP -- and it's family of related problems -- can be understood as being a combination of \MTSP\ along with  other constraints, which are in themselves often combinatorially hard problems.    
 
 % =====================
 % Sub Section
 \subsection{\VRP\ introduction and history}
-The Vehicle Routing Problem is closely related to two problems, the Multple Traveling Salesman Problem \MTSP\ and the Bin Packing Problem \BPP. 
+The Vehicle Routing Problem (\VRP) seeks to solve the problem of constructing routes for a fleet of vehicles. Each route takes the vehicle through a set of customers to deliver a good (or service) at different locations. The routes must be constructed such that all constraints are meet, classically, the vehicle's capacity isn't exceeded by the number of customers being serviced. The goal is to minimize the cost of distributing the goods, which typically has meant minimizing the distance travelled across all routes.
 
-The Vehicle Routing Problem was first formally defined by in \cite{Dantzig:1959}. The first efforts were concerned with exact solutions.
+\VRP was first formally defined by Dantzig and Ramser, in \cite{Dantzig:1959} and has remained an important problem in logistics and transport. The first efforts were concerned with exact solutions, and proceeded using many of the same techniques employed for solve the \TSP. The Vehicle Routing Problem is closely related to two problems, the Multiple Traveling Salesman Problem \MTSP\ and the Bin Packing Problem \BPP. 
+
+The first 
+In 1964, Clarke and Wright introduced a heuristic which improved on the work of Dantzig and Ramser. This heuristic is now referred to as the Clarke-Wright heuristic.
+
+
+% The large number of real-world applications, both in North America and Europe, have widely shown that the use of computerized procedures for the distribution process planning produces substantial savings (generally 5\% to 20\%) in globabl transportation costs. http://books.google.co.nz/books?hl=en&lr=&id=TeMgA5S74skC&oi=fnd&pg=PR5&dq=vehicle+routing+problem+history&ots=AhY2KbKu40&sig=F-oubQFGcQzDw-RODKMXg2C-jX8#v=onepage&q=vehicle%20routing%20problem%20history&f=false
+
+\VRP\ is one of the most the studied combinator optimization problems. Hundreds of papers been written on it  
+
+Out of \VRP\ comes a family of related problems. These attempt to model other constraints that are encountered in real-world applications of the \VRP. Classic problems have included: \VRP\ with Time Windows that introduces a time window constraints  against each customer, that the vehicle must arrive within. \VRP\ multiple depot, where the vehicles are displayed from multiple start points. \VRP\ with Pick   
 
 % =====================
 % Sub Section
