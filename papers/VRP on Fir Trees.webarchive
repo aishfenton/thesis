@@ -1,0 +1,946 @@
+bplist00Ò_WebMainResource_WebSubresourcesÕ	
+^WebResourceURL_WebResourceTextEncodingName_WebResourceMIMEType_WebResourceData_WebResourceFrameName_Khttp://www.mngt.waikato.ac.nz/departments/staff/chuda/firtreepaper/tree.htmUUTF-8Ytext/htmlO’ø<html><head>
+<meta name="Generator" content="Corel WordPerfect 8">
+<title> VRP on Fir Trees</title>
+</head><body bgcolor="#FFFFFF" alink="#3939FF" link="#3939FF" vlink="#990033">
+
+
+
+<p align="CENTER"><font size="+1"><strong><font size="+1">Heuristics for
+Vehicle Routing On Fir Trees</font></strong></font></p><font size="+1">
+
+
+<p align="CENTER">by</p>
+
+
+<p align="CENTER">C. Basnet</p>
+
+<p align="CENTER">L.R. Foulds</p>
+
+<p align="CENTER">Department of Management Systems, University of Waikato </p>
+
+<p align="CENTER">Private Bag 3105, Hamilton 2020</p>
+
+<p align="CENTER">New Zealand</p>
+
+
+<p align="CENTER">J.M. Wilson </p>
+
+<p align="CENTER">School of Business, Loughborough University of Technology</p>
+
+<p align="CENTER">Loughborough, Leicestershire LE11 3TU</p>
+
+<p align="CENTER">United Kingdom</p>
+
+
+
+
+
+
+
+
+
+<p align="CENTER"><strong>November 1997</strong></p>
+
+
+
+
+
+
+<p align="CENTER"><strong></strong>Telephone: +64 7 838 4562</p>
+
+<p align="CENTER">Fax:  +64 7 838 4270</p>
+
+<p align="CENTER">E-mail: Chuda@waikato.ac.nz</p>
+
+
+
+
+
+
+
+
+<p align="CENTER"><strong><font size="+1">Heuristics for Vehicle Routing on Fir
+Trees</font></strong></p>
+
+
+
+<p><strong></strong>     We describe two new heuristics for the collection of milk
+by road tankers in rural New
+Zealand.  Typically the road system encountered in this environment comprises a network of
+farm roads, leading off a major highway which forms the spine of a tree-like network.  Farms
+must be allocated to tanker collection routes, with tanker capacity being the major limitation. 
+The heuristics developed attempt to minimize the total collection costs incurred by the fleet in
+transporting the milk to a central processing facility.  Their development  approach takes
+advantage of the tree-like structure of the network.  These two new heuristics and two previous
+heuristics are applied to some test problems and the computational results are presented. </p>
+
+
+<p><em>Keywords</em>: milk collection, vehicle routing, tree network, heuristics, savings
+approach</p>
+
+
+
+
+<p align="CENTER"><strong>INTRODUCTION</strong></p>
+
+<p>  The New Zealand dairy industry is organised on the basis of regional cooperative dairy
+companies.  Milk collected from the client farmers (<em>suppliers</em>) is delivered by
+special road
+tankers (which are much like gasoline tankers) for processing at one or more factories operated
+by the company.  A common objective of these companies for this operation is the minimization
+of the collection cost per kilogram of milk.  In order to achieve this objective, planners group the
+suppliers together into a <em>run </em> - a list of suppliers serviced in sequence by one tanker
+in a specific
+order.  Each run begins at a factory, collects the milk from the suppliers in turn (this is termed
+<em>servicing </em>the supplier), and finally delivers the milk to the factory.  The total milk
+collected in
+a run cannot exceed the known, upper limit (<em>capacity</em>) of the tanker assigned to that
+run.  A
+<em>schedule </em>is a collection of runs that covers all the suppliers to be serviced in a shift. 
+</p>
+
+<p>  These issues are addressed by the  <em>Vehicle Routing Problem</em>
+(VRP)<strong>, </strong>which <strong> </strong>is one of the
+classical areas of study in operations research. VRP and its related problems have been studied
+extensively (see, for example: Turner <em>et al</em>. (1974), Watson-Gandy and Foulds
+(1981), Basnet
+<em>et al</em>. (1993), Laporte and Nobert (1987), and Golden and Assad (1988)).  The
+standard vehicle
+routing problem assumes that each node in the underlying transportation network is directly
+connected to many other nodes.  In practice, in attempting to apply VRP algorithms to rural dairy
+farming areas in New Zealand, we found that this assumption is not valid.  The road networks
+commonly encountered by New Zealand dairy company logistics managers often comprise a
+network of farm roads, leading off a major highway, which forms the spine of a tree-like
+network.  The network is not quite a tree in the sense that, while nearly all pairs of locations are
+connected by unique paths, a relatively small number of pairs of nodes have multiple paths
+between them.  This comes about due to:</p>
+
+
+<p>  The mountainous terrain of rural New Zealand in which road building is extremely costly,
+and </p>
+
+<p>  The existence of some small districts (hamlets) of a few farms, each connected by a 
+     network of a few roads, in remote areas at the end of a single public access road.</p>
+
+<p>Figure 1 depicts a typical network for this scenario.  The pendant cyclic  structures
+(<em>cones</em>) are
+occasionally present (these are the hamlets, as described above).  Networks of the type just
+described we term <em>fir trees</em>.  We define fir trees formally in the next section.</p>
+
+
+<p></p><center><img src="Figure1.gif"></center><p></p>
+
+<p>We have found that the following assumptions are often appropriate for the New Zealand
+dairy
+farm milk tanker routing scenario.</p>
+
+<p>1.     Only a single uniform commodity (milk) is to be collected.</p>
+
+<p>2.     The time horizon of interest is a shift (usually of not more than 12 hours) in which an 
+identified set of suppliers has to be serviced.</p>
+
+<p>3.     There is usually a single factory to which all the milk must be delivered.</p>
+
+<p>4.     The best route (according to the previously defined objective) between each pair of 
+suppliers and between each supplier and the factory is known.</p>
+
+<p>5.     The company has at its disposal a fleet of a known number of tankers, whose capacity to
+carry milk may vary between tankers.</p>
+
+<p>6.     The underlying road network is acyclic  (once all roads and bridges that are infeasible for
+tanker travel and all cones are removed), and may be represented as a fir tree as described
+above.</p>
+
+<p>7.     The driving time between each pair of locations, the time for servicing each supplier, and
+the total combined driving and service time available to each tanker (which may vary 
+between tankers) are all known.</p>
+
+<p>  In this paper, we confine our attention to the variation of the VRP with the above
+assumptions, which we denote by<strong> VRPFT</strong> (<em>Vehicle Routing
+Problem  on Fir Trees</em>).  An
+acceptable surrogate for minimum cost/kg collection is the total distance travelled by all tankers
+in collecting and delivering all the milk to the factory.  Thus the objective is one of minimising
+this total distance travelled and the best routes are defined in terms of the shortest distance over
+routes which are feasible for tanker travel.  The currently available heuristics for VRP could be
+used for VRPFT. However, the reason for developing new heuristics is to be able to exploit the
+particular tree-like structure.  By exploiting this structure, we aim to find heuristics that  are able
+to solve the particular  problems  having this structure faster than the currently available
+heuristics, which are for the more general VRP.</p>
+
+<p>  The problem of capacitated vehicle routing on trees (TCVRP) has been studied by
+LabbÃ©
+<em>et al.</em> (1991).  Assuming uniform capacities  and a tree network,  they present a
+branch and bound
+algorithm which solves problems of up to 140 suppliers in reasonable computational time. 
+Rennie (1995) relaxed this formulation to allow for the splitting of the suppliers to different runs
+and presented a single-pass construction heuristic. Her heuristic was devised for the milk tanker
+routing operations of an actual New Zealand dairy company, but has not been implemented.  She
+suggested that successful implementation depends upon extending her heuristic to account for
+the disparity in the capacities of the tankers, and for trees that have few additional links that
+cause the trees to become networks.</p>
+
+<p>  The rest of the paper is laid out as follows:  In Section 2, we develop a formal statement
+of the VRPFT and  describe a procedure to convert the VRPFT to a TCVRP.  Section 3 describes
+two new heuristics for the TCVRP, and Section 4 presents some computational results.  The
+paper ends with some overall conclusions.</p>
+
+
+<p align="CENTER"><strong>PROBLEM STATEMENT</strong></p>
+
+<p><strong>    </strong>A statement of the vehicle routing problem on a fir tree
+(VRPFT) is now developed
+following the notation of LabbÃ© <em>et al</em>. (1991) and standard graph theoretic
+terminology (see, for
+instance, Foulds (1994)).   Let T= (V<sub>T</sub>, E<sub>T</sub>) be a tree where
+V<sub>T</sub> = {v<sub>1</sub>, v<sub>2</sub> ...., v<sub>n</sub>} is the
+vertex set,
+with v<sub>1</sub> denoting the factory and v<sub>2</sub>, v<sub>3</sub>...,
+v<sub>n</sub> denoting the suppliers.  E<sub>T</sub> =  {( v<sub>i</sub>,
+v<sub>j</sub>); 1 &lt;= i &lt; j &lt;= n} is
+the arc set representing the main roads connecting the factory and the suppliers.  Let
+d<sub>ij</sub> be the
+length of arc (v<sub>i</sub>, v<sub>j</sub>) representing the distance between suppliers
+v<sub>i</sub> and v<sub>j</sub>.  Let q<sub>i</sub> (&gt;0) be the
+output of the supplier represented by node v<sub>i</sub>, with q<sub>1</sub> = 0.  There
+is a fleet of m tankers, each with
+capacity Q, based at the factory.  </p>
+
+<p>  Consider now adding to the tree T a finite number p of subgraphs of the form
+C<sup>i</sup>  = (V<sub>C</sub><sup>i</sup>,
+E<sub>C</sub><sup>i</sup>), for i = 1,2, ..., p, where each
+V<sub>C</sub><sup>i</sup>  represents  a vertex set of additional suppliers,  and each
+E<sub>C</sub><sup>i</sup>  is the arcset representing the roads between these suppliers,
+and, </p>
+
+<p align="CENTER">| V<sub>C</sub><sup>i</sup>     V<sub>T</sub> | = 1, i =
+1,2, .., p.</p>
+
+<p>Each of the subgraphs C<sup>i</sup> is termed a<em> cone</em>.   The resulting graph
+G =  (V, E) where</p>
+
+<p align="CENTER">V  = V<sub>T</sub>  V<sub>C</sub><sup>1</sup> 
+V<sub>C</sub><sup>2</sup>   ...  V<sub>C</sub><sup>p</sup> ,  and</p>
+
+<p align="CENTER">E  = E<sub>T</sub>  E<sub>C</sub><sup>1</sup> 
+E<sub>C</sub><sup>2</sup>   ...  E<sub>C</sub><sup>p</sup> </p>
+
+<p>is termed a <strong>fir tree</strong> iff </p>
+
+<p align="CENTER">| V<sub>T</sub> | Â» | V<sub>C</sub><sup>i</sup> |, i = 1, 2,
+..., p</p>
+
+<p>To give an idea of magnitudes, | V<sub>C</sub><sup>i</sup> | may usually be less
+than 10, while | V<sub>T</sub> | may be about  300.
+A particular instance of G is shown in Figure 1.</p>
+
+<p>  The VRPFT consists of determining a set of runs (tanker collection routes on G) such that
+the  assumptions in Section 1 are observed.  LabbÃ© <em>et al</em>. (1991) show that
+the TCVRP is NP -
+hard.  It is straightforward to extend their result, by applying the same polynomial transformation
+of a particular bin packing problem, to show that VRPFT is also NP - hard.  This reinforces the
+need to identify efficient heuristics to solve large scale problems which occur in New Zealand
+dairy industry.  </p>
+
+
+<p><strong>Transformation of VRPFT into TCVRP</strong></p>
+
+<p>  One possible start to the identification of such a heuristic is to convert G, the underlying
+graph, into a tree and apply the TCVRP heuristics to the problem. This conversion can be
+accomplished as follows.  The suppliers of each hamlet can be notionally merged with the
+supplier in the hamlet closest to the factory.  The output and service time of this supplier can be
+set equal to the total output and total service time for the hamlet.  This corresponds to merging
+all the nodes of each cone with the node closest to v<sub>1</sub>, (say v<sub>k</sub>)
+and setting q<sub>k</sub> as the sum of the q<sub>i</sub>'s
+of all nodes in the cone.  A travelling salesperson  solution procedure can be used to determine
+the least-distance collection route for a single tanker to service the entire hamlet.  Fortunately this
+is feasible as, for the scenario in question, total hamlet output is invariably significantly less than
+the capacity of the smallest tanker.  Finally the distance d<sub>k1</sub> is increased to allow
+for the distance
+travelled in traversing the optimal travelling salesperson tour around the hamlet. This procedure 
+is described by the following pseudocode:</p>
+
+
+<p><strong>Transforming VRPFT into TCVRP</strong></p>
+
+<p>Repeat for each cone</p>
+
+<p>  Construct a travelling salesperson optimal tour</p>
+
+<p>  Increase the length of the arc connecting the cone to the rest of the fir tree by the length
+of the tour</p>
+
+<p>  Increase the service time of the suppliers in the cone closest to the factory by the total
+time to service the cone</p>
+
+<p>  Remove the cone from the tree, leaving the node where service time has just been
+increased <strong></strong></p>
+
+<p>until no cones are found</p>
+
+<p>  The above procedures transform G into a tree T, and now we have a TCVRP to solve. 
+We now go on to discuss the heuristics designed to solve TCVRP.  </p>
+
+
+<p><strong>Heuristics for TCVRP</strong></p>
+
+<p>  To our knowledge there are only two papers in the open literature, by LabbÃ©
+<em>et al</em>. (1991)
+and Rennie (1995),  that present heuristics for the problem of vehicle routing on trees.  The first
+paper develops upper bounds and lower bounds for the problem, which are then included in a
+branch and bound search for the exact solution.  The second paper uses the upper bound of the
+first paper to construct a heuristic for the TCVRP.  We shall now discuss these approaches
+briefly
+before presenting two new heuristics for the TCVRP.  It may be noted that while our heuristics
+can be easily adapted to the case of unequal tanker capacities and time window constraints, we
+ignore time windows and assume homogeneous tankers in what follows.</p>
+
+
+<p><strong>Branch and bound solution</strong></p>
+
+<p>  LabbÃ© <em>et al</em>. (1991) proposed a linear time heuristic to obtain an
+upper bound for the
+TCVRP.  It consists of successive construction of vehicle routes, where any pendant vertex is
+successively merged with the adjacent vertex until the combined load exceeds the capacity of the
+trucks (in a tree, a pendant vertex is a node that is connected to only one other node in the tree,
+and consequently this other node is the first node on the path to the root).  Then, if the pendant
+vertex load is higher than the adjacent vertex load, a vehicle route is allocated to the pendant
+vertex and its associated merged nodes (see LabbÃ© <em>et al</em>., 1991, for further
+details) .  Otherwise,
+a vehicle is allotted to the adjacent vertex and its associated merged nodes, replacing the adjacent
+vertex by the pendant node.  This allocation of vehicles continues until all the loads are picked
+up.  Using this upper bound, and a lower bound constructed from the solution of an associated
+bin packing problem, LabbÃ© <em>et al.</em> created a branch and bound search for the
+exact solution of the
+TCVRP.  They showed that the upper bound (UP BND) is quite close to the exact solution (OPT)
+for the problems solved by them.</p>
+
+
+<p><strong>Sequential greedy algorithm (RH)</strong></p>
+
+<p>  Rennie relaxed the TCVRP to allow the possibility of splitting the loads at the nodes. 
+The UP BND stops merging pendant nodes and adjacent nodes when the load exceeds the
+capacity.  Rennie (1995) points out that when this limit is reached the UP BND can possibly be
+improved by trying to merge with the pendant nodes those nodes which are closer toward the root
+of the tree (not necessarily the adjacent one).  In this case, Rennie uses a savings approach to
+select new nodes to merge with the pendant node under consideration.  The node that provides
+the maximum savings in collection distance without violating the capacity constraint is selected. 
+We now go on to discuss two new heuristics for the TCVRP.</p>
+
+
+<p><strong>The Heuristic H1</strong></p>
+
+<p><strong>    </strong> We have already shown how to pre-process the underlying
+network so that it is
+transformed into a tree.  We propose a remarkably simple modification of the VRP heuristic first
+introduced by Clarke and Wright (1964).  As is well known, these authors begin by first
+constructing as many runs as there are suppliers - each supplier is alone on a unique run. They
+then progressively combine runs, subject to tanker capacity, in a myopic, greedy fashion, based
+on the maximum savings (in total distance travelled) by run combination.  We propose this
+general approach for the TCVRP.</p>
+
+<p>  The approach is illustrated in Figure 2, which shows two nodes v<sub>i</sub>  and
+v<sub>j</sub> , while v<sub>1</sub>
+represents the rest of the path up to the root. Consider the possible combination of  two runs, one
+including the supplier at v<sub>i</sub> and the other including the supplier at
+v<sub>j</sub> .   </p>
+
+<p></p><center><img src="Figure2.gif"></center><p></p>
+
+<p>  With reference to Figure 2, these runs are &lt;v<sub>1</sub>, v<sub>i</sub>,
+v<sub>1</sub> &gt; and &lt; v<sub>1</sub>, v<sub>j</sub>, v<sub>1</sub>&gt;
+respectively.  (In
+later stages of the process, there may be other suppliers on the runs, but the logic is analogous.) 
+Let  v<sub>k</sub> be the farthest node present in both paths from v<sub>1</sub> to
+v<sub>i</sub>, and from v<sub>1</sub> to v<sub>j</sub>, as shown.  Then,
+whether v<sub>i</sub> and v<sub>k</sub> are identical or not, the saving in total distance
+travelled by the combination
+of the two runs, s<sub>ij</sub> say, is 2d<sub>1k</sub>.  Initially, for each subtree, a
+unique run is constructed for each
+supplier, as described.  The largest saving will occur when 2d<sub>1k</sub> is largest, i.e.
+when two runs
+passing through one farthest node are  merged. A test is made to establish whether or not the
+combined run, R say, is feasible in the sense that the tanker has sufficient capacity.  This
+combination process is continued until there are no more feasible run combinations to be found. 
+</p>
+
+<p>  In this way the special tree structure permits simplified identification of the maximum
+potential savings, which consists of attempting to merge two runs both passing through the
+farthest pendant vertex.  This lends higher efficiency to this heuristic.</p>
+
+<p>  It is assumed that the total supplier output for the whole network will be significantly
+larger than the total tanker capacity.  This necessitates multiple runs being assigned to most, if
+not all, tankers.  In the present dairy company scenario, it is usual for every tanker to make three
+to five runs per shift.  To summarize, the heuristic proceeds as follows:</p>
+
+
+<p><strong>Heuristic H1</strong></p>
+
+<p>Construct initial runs for all the suppliers, with a single supplier on each run.</p>
+
+<p>Associate each run with its single supplier node.</p>
+
+<p>Construct a list of runs sorted in non-decreasing distance of their associated node from the
+factory (root).</p>
+
+<p>While there are runs not associated with the root do</p>
+
+<p>  For the run i with its associated node v at the greatest distance from the root, </p>
+
+<p>       Call Combine (i, v)</p>
+
+<p>       Resort the list of runs</p>
+
+<p>  end For</p>
+
+<p>end While</p>
+
+<p>end H1</p>
+
+
+<p>Procedure Combine (i, v)</p>
+
+<p>For the candidate run i,</p>
+
+<p>Find another run, which is associated with the same node v, that can be combined with run i. 
+(Runs can combine if the combined load is less than vehicle capacity).  If more than one
+combination found, choose the combination that will create a run closest to vehicle capacity.</p>
+
+<p>If another run found (combination is successful),   </p>
+
+<p>  Create a combined run with associated node v.</p>
+
+<p>  Remove original runs</p>
+
+<p>Else (combination unsuccessful)</p>
+
+<p>  Associate run i with parent of the currently associated node v</p>
+
+<p>End if</p>
+
+<p>End Combine</p>
+
+
+<p><strong>The Heuristic H2</strong></p>
+
+<p>In contrast to the above, the second heuristic we have developed starts from an infeasible
+solution, and moves to make the solution feasible. We start by trying to fit the whole tree into
+one
+run.  The tree is subdivided if it is not possible.  This continues until the tree is divided into
+feasible runs.  This heuristic proceeds as given below.</p>
+
+
+<p><strong>Heuristic H2</strong></p>
+
+<p>Create a single run that collects all suppliers</p>
+
+<p>While there are  runs that can not be assigned to the tankers</p>
+
+<p>  Choose the largest, unassigned run</p>
+
+<p>  Split the run into two runs at the node which is closest to the root, ignoring the supplier
+at the branching node</p>
+
+<p>end While</p>
+
+<p>{Assign the suppliers at the branching nodes}</p>
+
+<p>Order the branching nodes in the order of non-decreasing distance from the root.</p>
+
+<p>For each branching node</p>
+
+<p>  If possible, assign the node to a run passing through the node</p>
+
+<p>  Otherwise,</p>
+
+<p>       Create a new run to collect this branching node.</p>
+
+<p>End For</p>
+
+<p>End H2</p>
+
+
+<p align="CENTER"><strong>COMPUTATIONAL RESULTS</strong></p>
+
+<p>  To test the computational performance of the heuristics, we generated randomly a number
+of numerical instances of the problem, and applied the heuristics to them. In generating the
+problems, any node had a 0.24 probability of having a supplier associated with it.  A node had
+a 0.033 probability  of not having branches. Each edge has a distance anywhere between the
+integral values from 1 to 100. The sprouting of branches from a node with a supplier associated
+with it depended on the following probabilities.  The probability of no branches stemming from
+it is equal to (the number of suppliers assigned to nodes) /(the number of total suppliers to assign
+to nodes); the probability of 1 branch  is equal to Â¼ Ã— (the number of suppliers yet to be assigned
+to nodes) / (the number of total suppliers to assign to nodes); and the probability of 2 branches 
+is equal to Â¾Ã— (the number of suppliers yet to be assigned to nodes) / (the number of total
+suppliers to assign to nodes).  A node with no assigned supplier would always sprout two
+branches unless all the suppliers had been assigned.  For each tree, the supplier demands were
+uniformly distributed within a range, e.g. [10, 90].  The tanker capacity was defined as 100.  Ten
+problems were generated for each setting of the number of suppliers and evaluated on a
+PC-compatible 486 DX2-66.  The heuristics H1 and H2 were applied, and the solutions obtained. 
+The same problems were also solved using the upper bound (UP BND) and the exact algorithm
+(OPT) of LabbÃ© <em>et al.</em> (1991)  and Rennie's (1995) sequential greedy
+heuristic (RH).  We
+programmed these on the basis of the algorithms given in their articles.<em>  It may be noted
+that
+Rennie allows splitting of suppliers, but Rennie's heuristic as implemented here does not allow
+this splitting.</em> The number of suppliers (n), total distance (scaled by dividing the distance
+achieved by a heuristic by the smallest distance obtained for that problem by all the heuristics),
+and the time taken by the algorithms in seconds are shown in Table 1. These results are the
+average of 10 replications.  </p>
+
+
+<p align="CENTER"><strong>Table 1.  Computational Results</strong></p>
+
+<center>
+<table align="CENTER" border="0" width="100%">
+<tbody><tr valign="TOP"><td rowspan="2" align="CENTER">
+n</td>
+<td rowspan="2" align="CENTER">Range of
+supplier
+demands</td>
+<td colspan="5" align="CENTER">Distance</td>
+<td colspan="5" align="CENTER">Time</td></tr>
+<tr valign="TOP">
+
+<td align="CENTER">OPT </td>
+<td align="CENTER">UP
+BND</td>
+<td align="CENTER">RH</td>
+<td align="CENTER">H1</td>
+<td align="CENTER">H2</td>
+<td align="CENTER">OPT </td>
+<td align="CENTER">UP
+BND</td>
+<td align="CENTER">RH</td>
+<td align="CENTER">H1</td>
+<td align="CENTER">H2</td></tr>
+<tr valign="TOP"><td align="CENTER">20</td>
+<td align="CENTER">[10,90]</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">1.05</td>
+<td align="CENTER">6.46</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.00</td>
+<td align="CENTER">0.02</td>
+<td align="CENTER">0.00</td></tr>
+<tr valign="TOP"><td align="CENTER">20</td>
+<td align="CENTER">[20,80]</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.05</td>
+<td align="CENTER">1.54</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.02</td>
+<td align="CENTER">0.02</td>
+<td align="CENTER">0.00</td></tr>
+<tr valign="TOP"><td align="CENTER">20</td>
+<td align="CENTER">[30,70]</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.03</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">1.08</td>
+<td align="CENTER">11.0</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.02</td>
+<td align="CENTER">0.01</td></tr>
+<tr valign="TOP"><td align="CENTER">20</td>
+<td align="CENTER">[1,100]</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">1.08</td>
+<td align="CENTER">0.78</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.00</td>
+<td align="CENTER">0.02</td>
+<td align="CENTER">0.00</td></tr>
+<tr valign="TOP"><td align="CENTER">20</td>
+<td align="CENTER">[10,10]</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.10</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.14</td>
+<td align="CENTER">0.00</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.00</td></tr>
+<tr valign="TOP"><td align="CENTER">20</td>
+<td align="CENTER">[1,50]</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.03</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.03</td>
+<td align="CENTER">6.6</td>
+<td align="CENTER">0.00</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.00</td>
+<td align="CENTER">0.00</td></tr>
+<tr valign="TOP"><td align="CENTER">20</td>
+<td align="CENTER">[20,20]</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.05</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">2.52</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.00</td></tr>
+<tr valign="TOP"><td align="CENTER">20</td>
+<td align="CENTER">[30,30]</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.04</td>
+<td align="CENTER">35.6</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.00</td>
+<td align="CENTER">0.00</td>
+<td align="CENTER">0.00</td></tr>
+<tr valign="TOP"><td align="CENTER">40</td>
+<td align="CENTER">[10,90]</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.03</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">1.07</td>
+<td align="CENTER">146.6</td>
+<td align="CENTER">0.03</td>
+<td align="CENTER">0.02</td>
+<td align="CENTER">0.06</td>
+<td align="CENTER">0.00</td></tr>
+<tr valign="TOP"><td align="CENTER">40</td>
+<td align="CENTER">[20,80]</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.03</td>
+<td align="CENTER">1.04</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.11</td>
+<td align="CENTER">284.4</td>
+<td align="CENTER">0.02</td>
+<td align="CENTER">0.03</td>
+<td align="CENTER">0.05</td>
+<td align="CENTER">0.00</td></tr>
+<tr valign="TOP"><td align="CENTER">40</td>
+<td align="CENTER">[30,70]</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.03</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">1.07</td>
+<td align="CENTER">375.1</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.00</td>
+<td align="CENTER">0.04</td>
+<td align="CENTER">0.00</td></tr>
+<tr valign="TOP"><td align="CENTER">40</td>
+<td align="CENTER">[1,100]</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">1.07</td>
+<td align="CENTER">902.7</td>
+<td align="CENTER">0.02</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.05</td>
+<td align="CENTER">0.01</td></tr>
+<tr valign="TOP"><td align="CENTER">40</td>
+<td align="CENTER">[1,30]</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.11</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">129.0</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.00</td>
+<td align="CENTER">0.00</td>
+<td align="CENTER">0.00</td></tr>
+<tr valign="TOP"><td align="CENTER">40</td>
+<td align="CENTER">[10,10]</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.11</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">172.2</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.00</td></tr>
+<tr valign="TOP"><td align="CENTER">40</td>
+<td align="CENTER">[20,20]</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.04</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">710.0</td>
+<td align="CENTER">0.00</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.01</td></tr>
+<tr valign="TOP"><td align="CENTER">60</td>
+<td align="CENTER">[1,10]</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.10</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1212</td>
+<td align="CENTER">0.01</td>
+<td align="CENTER">0.03</td>
+<td align="CENTER">0.02</td>
+<td align="CENTER">0.00</td></tr>
+<tr valign="TOP"><td align="CENTER">90</td>
+<td align="CENTER">[1,10]</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.12</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">18537</td>
+<td align="CENTER">0.03</td>
+<td align="CENTER">0.03</td>
+<td align="CENTER">0.03</td>
+<td align="CENTER">0.01</td></tr>
+<tr valign="TOP"><td align="CENTER">200</td>
+<td align="CENTER">[10,90]</td>
+<td align="CENTER">*</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.11</td>
+<td align="CENTER">*</td>
+<td align="CENTER">0.14</td>
+<td align="CENTER">0.28</td>
+<td align="CENTER">1.07</td>
+<td align="CENTER">0.05</td></tr>
+<tr valign="TOP"><td align="CENTER">250</td>
+<td align="CENTER">[10,90]</td>
+<td align="CENTER">*</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.12</td>
+<td align="CENTER">*</td>
+<td align="CENTER">0.22</td>
+<td align="CENTER">0.42</td>
+<td align="CENTER">1.68</td>
+<td align="CENTER">0.05</td></tr>
+<tr valign="TOP"><td align="CENTER">300</td>
+<td align="CENTER">[20,80]</td>
+<td align="CENTER">*</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.12</td>
+<td align="CENTER">*</td>
+<td align="CENTER">0.29</td>
+<td align="CENTER">0.65</td>
+<td align="CENTER">2.63</td>
+<td align="CENTER">0.08</td></tr>
+<tr valign="TOP"><td align="CENTER">300</td>
+<td align="CENTER">[30,70]</td>
+<td align="CENTER">*</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.07</td>
+<td align="CENTER">*</td>
+<td align="CENTER">0.30</td>
+<td align="CENTER">0.60</td>
+<td align="CENTER">2.57</td>
+<td align="CENTER">0.08</td></tr>
+<tr valign="TOP"><td align="CENTER">300</td>
+<td align="CENTER">[1,10]</td>
+<td align="CENTER">*</td>
+<td align="CENTER">1.12</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.01</td>
+<td align="CENTER">*</td>
+<td align="CENTER">0.32</td>
+<td align="CENTER">0.12</td>
+<td align="CENTER">0.35</td>
+<td align="CENTER">0.01</td></tr>
+<tr valign="TOP"><td align="CENTER">300</td>
+<td align="CENTER">[1,100]</td>
+<td align="CENTER">*</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.12</td>
+<td align="CENTER">*</td>
+<td align="CENTER">0.29</td>
+<td align="CENTER">0.57</td>
+<td align="CENTER">2.32</td>
+<td align="CENTER">0.07</td></tr>
+<tr valign="TOP"><td align="CENTER">300</td>
+<td align="CENTER">[20,20]</td>
+<td align="CENTER">*</td>
+<td align="CENTER">1.04</td>
+<td align="CENTER">1.03</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.06</td>
+<td align="CENTER">*</td>
+<td align="CENTER">0.32</td>
+<td align="CENTER">0.27</td>
+<td align="CENTER">0.61</td>
+<td align="CENTER">0.04</td></tr>
+<tr valign="TOP"><td align="CENTER">300</td>
+<td align="CENTER">[10,90]</td>
+<td align="CENTER">*</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.02</td>
+<td align="CENTER">1.00</td>
+<td align="CENTER">1.12</td>
+<td align="CENTER">*</td>
+<td align="CENTER">0.30</td>
+<td align="CENTER">0.62</td>
+<td align="CENTER">2.42</td>
+<td align="CENTER">0.05</td></tr></tbody></table>
+</center>
+
+<p align="CENTER">*  <font size="-1">The optimal solution was not found because the
+search tree exceeded computer memory</font></p>
+
+<p>It can be seen from Table 1 that all the heuristics come relatively close to the exact solution. 
+In
+general the algorithms, in order of the least total distance, are H1, RH, UP BND, and H2.  
+Although H2 starts with the least total distance, it needs to <strong>split runs</strong> to
+achieve feasibility. 
+Essentially, it simply splits runs until feasibility is attained.  In splitting these runs, it creates
+many runs that may have significant unused capacity.   Hence its performance is the poorest.  The
+UP BND tries to build runs <strong>one at a time</strong> and stops adding suppliers to
+a run as soon as a
+supplier that would exceed the tanker capacity is found.  RH improves on the UP BND by  trying
+to add more suppliers to a run by using a saving metric, and accomplishes further reduction in
+total distance.  H1 considers <strong>all the runs together</strong>, trying to find a
+combination that would
+reduce the total distance the most.  The better results achieved by H1 may be attributed to this
+global approach.  But as can be expected, their computational time is in the reverse of this order. 
+However, although H1 is slowest, its timing is still sufficiently fast to make repeated use of it (for
+'what-if' analyses) viable in an on-line environment.  </p>
+
+<p>A realistic problem may have the number of suppliers (n) from 200 upwards.   These
+problems
+would be solved two times a day (for two shifts of tanker drivers), and the OPT approach would
+be too slow, particularly for the 'what-if' analyses.  However, this is manageable in rapid times
+with the heuristics.  </p>
+
+<p align="CENTER"><strong><font size="+1">CONCLUSIONS</font></strong></p>
+
+<p>In this paper we have introduced a special type of  vehicle routing -  on fir tree-like networks
+(VRPFT).  We have proposed a procedure to convert the VRPFT into the problem of capacitated
+vehicle routing on trees (TCVRP).  We presented two new algorithms for this problem, which
+were then compared with previously available algorithms.  The heuristic H1 appears to give
+better solutions than others in reasonable computational time, whereas the heuristic H2 is much
+faster than other algorithms but the solution provided by it is inferior.  Thus  H1 appears suitable
+for large-scale practical problems arising in the New Zealand dairy industry.  These heuristics
+can be easily modified to account for heterogenous vehicle capacities and time window
+constraints. </p>
+
+<p>  The runs constructed by the algorithms can be subjected to the r-optimal arc swapping
+improvement procedures of Lin and Kernighan (1973).  We have tried the 2-optimal procedure
+on the solutions provided by these algorithms but it does not appear to yield any significant
+improvement, especially considering the additional time needed.</p>
+
+
+<p><strong>References</strong></p>
+
+<p>       Basnet, C., Clark, D.N., and Foulds, L.R.  (1993). A Decision Support System
+Approach to
+Vehicle Routing. <em>Control and Cybernetics</em> 22 pp. 131-144.</p>
+
+<p>       Clarke, G., and Wright, J.W.  (1964). Scheduling of Vehicles from a Central
+Depot to a Number 
+of Delivery Points. <em>Operations Research</em> 12 pp. 568-581.</p>
+
+<p>Foulds, L.R. (1994). <em>Graph Theory Applications</em>. Springer-Verlag, NY.</p>
+
+<p>       Golden, B.L., and Assad, A.A. (1988). <em>Vehicle Routing:  Methods and
+Studies</em>. North-Holland,
+Amsterdam.</p>
+
+<p>       LabbÃ©, M., Laporte, G., and Mercure, H. (1991). Capacitated Vehicle
+Routing on Trees.
+<em>Operations Research</em> 39 pp. 616-622.</p>
+
+<p>       Laporte, G., and Norbert, Y. (1987). Exact Algorithms for the Vehicle Routing
+Problem.  <em>In
+Surveys in Combinatorial Optimization</em>, S. Martello, G. Laporte, M. Minoux, and C.
+Ribeiro (eds), North-Holland, Amsterdam, pp. 147-184.</p>
+
+<p>       Lin, S., and Kernighan, B.W. (1973). An Effective Heuristic Algorithm
+Travelling-Salesman
+Problem. <em>Operations Research, </em>21, pp. 498-516.</p>
+
+<p>       Rennie S. (1995) . Optimal Dispatching and Routing of Milk Tankers for
+Northland Dairy Board. 
+In <em>Proceedings of the 30th Annual Conference of the Operational Research Society of
+New Zealand</em>, Wellington, New Zealand, pp. 95-102.</p>
+
+<p>       Turner, W.G., Ghare, P.M., and Foulds, L.R. (1974). Transportation Routing
+Problem:  A
+Survey, <em>AIIE Transactions<strong></strong></em><strong> </strong>6 pp. 288-301.</p>
+
+<p>       Watson - Gandy, C.D.C., and Foulds, L.R. (1981). Vehicle Scheduling:  A
+Survey, <em>New Zealand
+Operational Research</em> 9 pp. 73-92.</p>
+
+
+
+
+<p>                                     </p>
+
+
+
+</font></body></html>P¢Ô_WebResourceResponse_Nhttp://www.mngt.waikato.ac.nz/departments/staff/chuda/firtreepaper/Figure1.gifOÿbplist00Ô	
+X$versionT$topY$archiverX$objects † Ñ_WebResourceResponse€_NSKeyedArchiver¯&,-345KLMNOPQRSTUVWXYZ[_`U$nullİ !"#$%V$classR$3R$8S$10S$11R$5R$6R$4R$7R$2R$9R$0R$1€€€ €€€€€ Ó'()$+WNS.base[NS.relative€€ €_Nhttp://www.mngt.waikato.ac.nz/departments/staff/chuda/firtreepaper/Figure1.gifÒ./01X$classesZ$classname¢12UNSURLXNSObject#AªèU.»uêÈÓ6789BWNS.keysZNS.objects€¨:;<=>?@A€	€
+€€€€€€¨CDEFGHIJ€€€€€€€€\X-Powered-By]Accept-Ranges\Content-TypeVServer^Content-LengthTDateTEtag]Last-ModifiedWASP.NETUbytesYimage/gif_Microsoft-IIS/6.0T7606_Tue, 26 Feb 2008 11:08:08 GMT_"0dbd3499ccfbc1:3b5"_Fri, 03 Oct 1997 01:33:02 GMTÒ./\]£]^2_NSMutableDictionary\NSDictionary¶Ò./ab£bc2_NSHTTPURLResponse]NSURLResponse     ) 2 7 : P R d ƒ ‰ ¤ « ® ± µ ¹ ¼ ¿ Â Å È Ë Î Ñ Ó Õ × Ù Û İ ß á ã å ç é ğ ø
+[`itw}†‘˜ «­¶¸º¼¾ÀÂÄÆÏÑÓÕ×ÙÛİßìú"'5=CMaf†½ÂÆÜéìñõ	             d              Yimage/gifO¶GIF89a„©÷     €   € €€   €€ € €€ÀÀÀÀÜÀ¦Êğ     3  f  ™  Ì  ÿ 3  33 3f 3™ 3Ì 3ÿ f  f3 ff f™ fÌ fÿ ™  ™3 ™f ™™ ™Ì ™ÿ Ì  Ì3 Ìf Ì™ ÌÌ Ìÿ ÿ  ÿ3 ÿf ÿ™ ÿÌ ÿÿ3  3 33 f3 ™3 Ì3 ÿ33 33333f33™33Ì33ÿ3f 3f33ff3f™3fÌ3fÿ3™ 3™33™f3™™3™Ì3™ÿ3Ì 3Ì33Ìf3Ì™3ÌÌ3Ìÿ3ÿ 3ÿ33ÿf3ÿ™3ÿÌ3ÿÿf  f 3f ff ™f Ìf ÿf3 f33f3ff3™f3Ìf3ÿff ff3fffff™ffÌffÿf™ f™3f™ff™™f™Ìf™ÿfÌ fÌ3fÌffÌ™fÌÌfÌÿfÿ fÿ3fÿffÿ™fÿÌfÿÿ™  ™ 3™ f™ ™™ Ì™ ÿ™3 ™33™3f™3™™3Ì™3ÿ™f ™f3™ff™f™™fÌ™fÿ™™ ™™3™™f™™™™™Ì™™ÿ™Ì ™Ì3™Ìf™Ì™™ÌÌ™Ìÿ™ÿ ™ÿ3™ÿf™ÿ™™ÿÌ™ÿÿÌ  Ì 3Ì fÌ ™Ì ÌÌ ÿÌ3 Ì33Ì3fÌ3™Ì3ÌÌ3ÿÌf Ìf3ÌffÌf™ÌfÌÌfÿÌ™ Ì™3Ì™fÌ™™Ì™ÌÌ™ÿÌÌ ÌÌ3ÌÌfÌÌ™ÌÌÌÌÌÿÌÿ Ìÿ3ÌÿfÌÿ™ÌÿÌÌÿÿÿ  ÿ 3ÿ fÿ ™ÿ Ìÿ ÿÿ3 ÿ33ÿ3fÿ3™ÿ3Ìÿ3ÿÿf ÿf3ÿffÿf™ÿfÌÿfÿÿ™ ÿ™3ÿ™fÿ™™ÿ™Ìÿ™ÿÿÌ ÿÌ3ÿÌfÿÌ™ÿÌÌÿÌÿÿÿ ÿÿ3ÿÿfÿÿ™ÿÿÌÿÿÿ"""DDDUUUwwwˆˆˆªªª»»»İİİîîî                                                            ,    „© ş Ã	H° Áƒ*\È°¡Ã‡#JœH±¢Å‹3jÜÈ±£Ç CŠI²¤É“(Sª\É²¥Ë—0cÊœI³¦Í›8sêÜÉ³§ÏŸ@ƒ
+J´¨Ñ£H“*]Ê´©Ó§P£JJµªÕ«X³jİÊµ«×¯`ÃŠK¶¬Ù³hÓª]Ë¶­Û·pãÊK·®İ»xóêİË·¯ß¿€L¸°áÃˆ+^Ì¸±ãÇ#KL¹²åË˜3kŞÌ¹³çÏ C‹Mº´éÓ¨S«^Íºµë×°cËM»¶íÛ¸sëŞÍ»·ïßÀƒN¼xV È_Î¼¹×äĞ“;Ÿ^<ºuèÔƒ^ß.=»÷ÜÜ·şç>üøó²Ë‹GSızöğU»¿æü÷õó‡¾o]?Lşıù'`g b7`K"wà‚š%¨ƒ*9á„”%H!J^¨!dümø‘¹çáˆİG¢Fİ1Äİ‰,2f^‹¥ãŒ¤=HãC Ş¨ã~;.$c@zfcáäHä‘›©£‘H6ÙàŒ?:)¥29å• )9 •Xvù™–ùEéå˜YúÇ%™hxŞ™i¶Y&ulº)ç—Î‰9çMÙ©˜5â§Pœxj”‰Kñ™å|é)è¢Lu¸çi2*iT>ZZ¥“fJ)¦GJ §š†º'¨EyÊ™…¢¦Ú)ª^©ªş°õj©‡*è ©±æZ«ƒfv&¯º›S¥¸’g™¢‘*ì²6*‚´>`Œˆ2k­N/"Tl³‰Q¶×†kFĞş´-^ÈŠ«n[å˜·ëÆëÔ¹µ;¬_ğÊ«o£ ÑË’¿iå»ïÀI\‘½1Ì•À7<o„»®Å°Ãó»’Âı5qÅç•nI?õqÇ$‹œğ`m\òÊ8>û ÂugoÈ"ˆ•Ê,çÜ´4{dkÏ1-‘Ğ;¬óÑõÂÜ^AJGHt½›6ôÔ>J]êÓYbÁFSí5ÓX_ŒcØC“DöI]MõÙ.­µÏl³ôÛj×¨É¥}‘şŞ*bË·İkÓ-TÜ)a-÷Á‚^wâCÎøŞNíãŠW~åaâš[³äÜŠrÈ 'Ûù„àz¾êV¥Ëä¯zı=¢³ª‹ÖúÎ§W+ícË>»²µ}{è¬{ê(îÃ×wkğTŞk¶¶ÇCŸ{‹Ë3mÊd•+!ÎGŞš¼õ}‡õıÁ&)çı¤çƒïúøöù>•÷ìSX½ú¥>Öü‚ÂO¿‹ j7Rÿmïö±…ï+Ä’ŞÊCÀ—Äs œHªu¥è‹{ôØ¬Ìõ¿UpzÜÕ¶Áì¹ÏCa’JÈÁ	*„*\Úıx?"0†2Ñ¶ò&…ş8lœZ(è2³øğ6@"QˆóÙÏtÙ«Ò•>½‰6;P©h)´Ê`0¢~¶ÈEÛq$W|ÈXÆáĞ,Œ>Áâ§àØFğø(vrü_vØXGİ‹lyÜùZÃ@é²©ÙÖÙ¦±Õ8‹ˆ<^wÈ¬ÉX‘ÜèèØ¶Db2“:Wë8iÉÌy’† 4Ó·.FJ2‚©œK%O£NŠÑ4ø‹å–ÊÖ¶l–C”u	…a±•‘›ãŸPILá‹xÎ»¼`ÙL(™wk‡0(¢jj’<›Ô&ÿçAoªrîrb iÎ½ 3‹è§ß9*l¶s’Îş„œÿGz^Í÷ÔÛz•¨nêSƒ (`ü‰¡­q-z¦”eBj†–/o¥æ³ æRTTO³hBJ¨H¶0ò£S2RÒ—Íğñ¤(=–`Dz–òò9ìŒ©¯j³Usg]©Né$¾š-ñeŸ,Po&Ô¡Ğ¨²š™F“µTª4Õ©¶C ¯yE?i«ªƒº*VYCSYµ§sÓréŸÂZÖ±Zs«íK§¹ÄêVô=„şÌ+]ëª)Éùr¢mâ^ùZ›¶®Nk¤ZÛgXÂ©t£ìMïÈÃÆ:I£Å
+—ÓËÇ²µDÛ‡@[ÓB¢h°]iÁêÊ¼I¶|D¤şjS®ä½qµËL ôh»¿ïóµ¬œªé€Ë[u¯«3$D;[Ü]öE”¸eÚH·7Ûæ:Œ}»#.“jİ.EW©œ5­UUÄÌîVp³°5èxÉ«[óÒoxåeªzİÛ@ÛÆ÷*±¥/š¾‹¶ûFkrôÑoíËİç˜Š·ƒcw`»Şr‚2*°>Øe-_şİg))\»ö–g-Ë‚9Ü= ¦nÆÛaI¸\®œÉU#‹+÷SÌŒxÆ¾¡‹O…c#¨ÆÒìq‹%d!g
+»ÂM’‘‡<ß7-Ùn)ş‹ã|äÊx¡w¥ò‘oÅÖj¹¯Îı²˜×;æ*“Õ¶eVş—³æ4»±Í…¢¥›_yâÁyÎVï„mL“;ã9jQªŸí2è?ç)ÄA•Ì!mèz"FÀdt£Wša«HÚrô©ˆ¼g)3ôÒšn§±çÎ‡z…Iö"¨ÑHĞSoúÑ5éjWíjí ŠÖq]ë¹‚K»y*jŒ{ıê+ÔcE|ßËŞGìÙğº_ÀF¨Ÿİl2W4Ú^¬¶±­aú,Ù&Õ6n¨-º"!5ÙÚsâ²åBnqçÙZív·¥…oyW¥ºK²woêı~ë¿şNä¿…ğKœàÜóÁƒSp'/œá	WŞÃÓp%O¼:çóÅ™qïd|ã‚şxış@¾G’|¯ÎÉÇ“r†¯|M"'LÌ_.¾™c™æèi¹q^Ì|ó|Œ,²ùÏ_J"¡èU:ú–Œk¥/]~NgÎ!õP2İˆUGİÕyšu­‡©ëİz¢Á>»5‘½èbŸ÷ÙÑ^òµŸhê“I»ÛáwÍJróİ}œ¼ï.u¯èß{$µ'Æïƒ¯ÌôlğÄÛĞÜV“ãmXéÊ ~ò„®|…0¤Qkœóšô¼LAúTó˜ôKÒ|ÜQŸzÓ[œõ7rı“`O#¤f+ğ£ıS®ûıâÔÁ‚ñ¤U:û\5yÎ€¼|®Õù'oRùß:şœTOáCŸŸŒŸ¾è/ş~}İI?€@>ùïk2ÙôËñÃwÈeÿÁWıúîO©Ì¶àEßÖôÇûâÙÏáwŞ?ù÷vS~k—wáió}{÷ÂC€Ôã>Â§e†Å€‚hHÍZØ,ˆvh]¸•vİ×Q8x%ˆix‚¶f*XnÂ\½§Yo1‚İ¦~îVh-èeabƒövi<ØBÅôƒúFƒ­Ær9è|BÈXÙæqI¨mÍwoäF„ø'…}D}‡–[,èH	Ø„Ü€"£$ØE®†.C…Ít€ W†dX„¶CAƒXh…Pñ„Ö†ü‡ç…_x‡™ö%r{ç‡S|X4}2ˆp˜!şG(m8.vhˆ+TD\È(¤’ˆCƒ†}Xl8ræFUIƒnfˆC²†‚p™(C¢(–¸PŸf#Ÿ˜ƒ¦‡ŠµMŠdbRxn+µ‰Æ”è}·GZ­8\”Ã;‘x…à¥l e6w['ØŠ'”_ïr>ÖAPH†Ã¸J…ñ†§µ†ÕxT3¤3»¨\Ì6S Å06÷Ë·{ğ„t=a€Øpå¸_qµ„×#Qß¸.ˆPç%BõVw"ƒê4v7‡Yó¨±0æX5ÇAƒY# ÈoÇ$böÈ9”¢‰|„ù‘"uo58)gÅ3s-¸„¥‘½”~5H’Y†‡‰uÿBŠ|aş’#uz(4‡*Y‰¢åhÉ+øn¹’Gõ‹¥JR—†?©‹¢&“‚’ºw“Ö˜1¾Æ{T“4JyAPé7N9/¾•Q\·Fº†Ù'1}v•€WqcÉ:`Ùy˜–õtN³•‰X©€7£6‹x‰“^?4Zÿä€=–Š©`øaªÅk‚©bmgB‰Y—„Y˜m	'«’'ªÖ˜Sø˜Ô%—’˜9l*gy)OšI™ìA7³†ˆBÙ<—YŠQUšŸY'…Ç5mI;şãš¯	›£Éq›Œíe–5É.tèh¼	˜;Ø(ûg—ÃÕmn˜gÇ©›F˜”³èUÑ·šˆş¡5Î8œ~Ã`ĞÆ8·yšfâÈ) ¡¨s0ô|¦â–/¹oç‰ß)€ëC|é6õtêIŸûùv'™•"LéÉ‘óéŸğ©p”…Œõ/°ømH¤EE99ãÙPÚ›f'¡jxbLZ8ª¡ßÁ\Ù¡¢zxt\#J¢â†¢ª=¥†	ªƒáE`g¢ëô +v£ÿ‰:N¢£;ê¢âÔ¢5šd%%BÚ-<ºabC¡}Öo)µ,Ù VVge7¥ôfšzŸÅ™–grTÚ¤ñ„¡zWkKê’£E¤Eš“èÕxbÚ$~Uœt	”ç%iÊ¤Ìi¥è‚Kæ/Ø¥|
+šşR™rÚ¥fe£w:&yú•Pe‘HÉ’=+eåW%¶nJoK„¨ú·§¥¤(ö_!Z{8štAšØ93ÚzZ{ E§¶ÔWlªE¡2«5ªjwŠ¶*£[Vªœ*¥ç«*²E¦¿:©¤*¬@zªÅj¬‘
+¬Îy,»zN’Â¥LY¦wic?º¨ÌšÊ* ØÚyú©Zê­­Š¤å]Â©Z¯z®÷¸—ÑÚk“Q¶®’ÚDÌ—ª¸l÷z¬€]ó:V«h¾|Ä6°ÒŠ°§°Â¶‘„Ø¯nêSGmkfkM«¨ ª•[•ŠóƒÏV±µª:¯E±=<¨%²u¥²ºvş5şÚ±ºx¤c5Æ²N«ö¦À)³0»¢ãú5æ®s(oßÊ1<S´uXmÎº¬ä7­k­µ„ª´R[‘”›=‡B;³K›µ;û³L†´^[›<Û=Æ	¶­Â}dklr’š1:¶xô¥l‹Co;µÿfE<g³”:“©¦pû²ÑØ†j» ”Z±~›Jo;%~up‡K¢$.û·Õ¦7¨·Á¯Í†¹Tš®úC¢×E¹Šù”c¯Œxt§Ã¹;)M‰4“;Š]7P^3ms'4¬«­÷¶€·Jc6É»½ë9#™»ƒŸ½…©œE¨ÇIÄ»màÆ3Ê«=K8¤ûQrşÓ¼ÕKp€›½k§Ü«Káô½ÕYâKbØ[¾…5•è[…ïº¾æ¥îK_ç¿„„®ô;`(x¿1¤cú»¿×Ú¿–º \\ó;À¬‰‘Œ²›À–HÌÀE¶ÀŒ—•ôÀ‘vÁ‹ã´qÔÁeÁ ¼:Âv&R"lÂÏ˜F*ŒU)ÜÂÚÃcY/,Ã„v‹6<¦úš´9+Pš¨=ìÃ8[A,«[û¿E,‰X¿I\­U+¨MŒ>O,ÀQ¼(Uú°UìÄ]«±YŒ'[ÌÅ]|'GŒÄa,Æ?\Âe¬}4¨¢šÆm[™nüÆpÇi"i5LÇõ‹Ç¸¯züAÖÇşİ
+€|¨;ÈÜúÇfì‰Ñ½±;f&‹Be{YÛnwŒÃ¦hÈàúXØÈ´ÅÉÒ%®Cz™zCëxşVÉÛ„Éš+?ŒÊÇH–*äÉİn^Gw8—q®|À ÷q¹ÆĞ¹q1×ËÏúL'’_§ÊR¶FT(Ì”'KËÌVûË˜U@j²,[%ŠŒsËÀWW·ZçÍÈìSe;FÛ:ÇÈ§xåœ¾6Æá|Vì,™NUiÆtK|x/öÅ¯›yøüW¬UT¶uSì§éUÏxxÍŠøÎg{ıcĞ2Ï|¡ZÛ¨ÛÎr{ÆyìZ¨i—Ğ»ˆ7Ä÷[;|l]F•ªhÑ	ª¿ş…$-!ıfWÒ÷j†İ;]¹¢‚<ÁıÑFN€¸N	}DÉ'Ê‹1Ó_*Áp©õ‹3MÍ¦ª·š®ÌÆÑä½Y§•Ü.Ÿ6 D-‰vWEİR:‘Œ½q‚Âùûs:š»FcÖ•Es«sägyT°1•§ûÕ2æ°mÜ¿;E4UÁ[}ÈŠ–°=ÄÂ8„Ÿ'‹ÃŒÆ—üÁÕ×ãDËQùaÛLÕñK„;mjş#¶:¥°ğÇ…•*ÎíYomÔ—“r¡ÍVœÖ³,y“TÚØ¬ÚÍZ÷ktëšÚA¹ÏœØÚº,kˆÛÖéĞ¼İÛÉ†=˜£-°ö,š°½½ë¨Ûà+Ğ‚ş˜…†-O”¢¸ÚFjøUİ×Ä^•‚ ˜’Ä­×Ø×giÍİØæ]Í Ì‚x]Èñ¸©ì›Ş'ª¦Ç=ß†6¿ÈÔ×ˆW®VÀµŞ–ì üÊÍ“}9Œ-[Eèwy•¼ÇßÄÌàJël NqëÜİœ~Éì}ZòŠİTw£Ò²ps°ãÌ#ıµ¡$®–&Ü×hâ†Ä«Åú¢4ÎÒekáÚš8>~Ôİ5î©ANØX*Ò-{¼;îiõéß+|ŸOâÌCĞõbGOW*^Tn=DÎfV.›MccîNaN“q¹Úb6ÛW~æçæó¼ÆRK_¦>Êæ¿!Òåş™Üã­Õj¾d¯CHDÄçÊÙ_xnÜõµÊtn†Nh[ÊtûYÚØÔâ§†1)FÂl}-ı¢Èúç™cé—Nr´{Ñ6n¤~-aôÀätÕË¼²¨L=Ò«jß+nFQD–ŠëuêàÈ¦İ,÷â§Îğ…Ê†¾ê‰½˜a¨ ”`¾®Õ´ñèJäKÒİ’[ë|«„HDİgxÌ¦íŠ…¢ìYEÆhŞŞİ^©ÔN¬\¨e¹ÔSàåşÜÏ	n3šåÅKîáo®ÈèÆÈú®ëªêÚò¬íLŒã{mğ‹=ğ¯V
+ïÜ#ÁoùğÁëŞË~¦ï¤Ş=z_˜ñû¾à«'øî¾şë"ïñ´­è!o”(ÿÉ:»ò5ØòÅxàv.hcóŠ˜%OQŞ¾yaIÑNi×³ó¦^ó‰ÇŒ¶¤7ò˜w¸BÊËD¿pà\jÕÄÓ–Î}ªxE|õ~>ƒ§mÃ“[æ~ÚQO²)ö»kæ2ÏXÈYÓ´ÖÏoŸÌL±u’á}Ãô…wOŠ˜LkèXOwƒ?ƒëî^é$ˆö'øÚœ÷èÒ÷	ù·eo¤]ïÛ“,’o@[ù?¶ù7ƒ¿]…/‡ÿØ¾Wú»Îy£/åÿ.­?Âª/s§?Ü©ù»€±¯tîø?†Jg »ï9äÖ¯o¶®Áô<ùßDáşúOáÃÿ¡ĞO­Ó>ıÚöL»mØ¯ÌÕt»Ñı§	çE·oâsŒ/q}Wû'œèÔƒqÖÌüÑüÑ4˜Sï]uÑì¿¥ûÏñıáÀàA„ .dØĞáCˆ%N¤XÑâEŒ5näØÑãG!E$YÒäI”)UVT¸ÒåK˜1%&¤YÓ Lœ9uîäÙÓçO A…åÙ’èQ¤.m.=˜ÔéS¨Q¥N¥ZÕêN£Wµ^eÊtëW°aÅ%[ÖìÂ¬gÕêìºtí[¸qåÎ¥7m]¼ ÛÚÌÛ×ï_Àk¼;ØpÃ½5/fÜØñã¨…!NœpòeÌ™5o&ÌÙpå›şE&]Z°dÓr+§fİÚõk®°ñv•]ÛömÜ0QçæİÛ÷oàw'^ÜøqäI‡'gŞÜùsè—G§^İúuâÓ±oçŞİûfíßÅ'_^µyôéÕ¯ı{øñå£t?ßş}üùÖ×ßßÿôøp@„N@TpÁÜdğA#ôÌA	+´ğÂÓ0Ôğ:Ğ:\mCÆ(qDØ<4‘6?k*Eƒ;ñEÅZì+1k”FW´q®wô±´s4)F™B«ñÄ“ä,H‡Q¯'DRI*/cF'}2RÆ«ôÒ±+»,iKŠtœi83Bh¦‚î2’Ì §ürNÊÂş41K‹,;N‚ÒHÏ‡‚óÍ(›“NDÿ²óÎ1iÊÓ=ÔøÌŠO5!
+­PCMtÓ¼õO– İ¯ÌÂ&İÍ6åë‘SVëò´CPIÕ‰$íóÔˆµÆV{åñÕUE¢t?£†ı³Ï@K½ÕÒZñóÊWhã6ØŒeèRkßL±e=³??£÷¬iy%ÉÚko
+÷ÖlK]Ù\1w^zÿ,·-×Ğ­w_~‰½÷YÖôíwà~ÿEÈw	Vxa†vøaˆ#–xbŠ+¶øbŒ3Öxc;öøcCyd’K6ùd”éLx%G¥"Sà”c>`İŠ•7%˜eÖyæ½jÆˆĞ\şS÷Ø¡»EkåYoŞyiî`U*g¡£ö·İ6ÑLkĞ–¹]™i®ÙÓT¥5IUÓj{-mÊØ—İlé]¨»v›¼¯Á»h©¹­tÛ±ñÎ-¾G}ûïùõ™îlá%ÖètNWÔ¾µlÇü”åÄÍŞÛÛ»¿¼òÍ‰n6òÄÆôââ>)í¢‘îüèµO½ÚÍÆ¯%İóÚ}4§Y&2YÆ=kÄ^÷íÙ•VúöÍ}©wë~h¤…ó¿mùÛz6+<ë±¿èxï}åüği_^Ø­Ë‡o|õ!c¾}ø¿$?OPÿ~äí¯]àyÇÿÿzuhş+H¼Ö@vg~ş?#Œƒ¤<±­.tÎ¿×@é(Ns{z=˜$j‚ûëßMø£4éëœ£Û	]h(°lI`„Š”vtÔ½æ0@PJßØ¢÷(êPˆ¸bEfAÙQ‰Kdb·£«s9QŠs
+¢§xEª«pÎÃb75ºzQŒc„ÊîFh—*ñ#fdaíØHF/¾qFi”Uåè¤Â±‹t$ËÜäÖCË…zü`Î(u6«ÙUh£PÏåG^]aü^»f55Y²xR"èÃ Ò‘f¤G.eJN.’j$%óÈ.HjÒm¯Dœ½Z—HPRsÖKÚòèÆQb—–µ¬!äüWJYšŒ–«“!.m4Ş²•ºC_0;)K’2–>”f2SfHµÕR•ÏdV4·™É?vS—ûgF¢çºòÅ›o'³INêï–ØD¢<±ù¨vşì~3f;9Ï‹Õ“uøl^Õh…7dNrîÔEºĞ:sƒŒlBg™Jßq‘u½,§6ÙB‹b4¥”(E5:µå¨Ó£ñ;èLmº+SİT§òçN}
+¡;şT¨C%êc ;Ô_Nhttp://www.mngt.waikato.ac.nz/departments/staff/chuda/firtreepaper/Figure2.gifOÿbplist00Ô	
+X$versionT$topY$archiverX$objects † Ñ_WebResourceResponse€_NSKeyedArchiver¯&,-345KLMNOPQRSTUVWXYZ[_`U$nullİ !"#$%V$classR$3R$8S$10S$11R$5R$6R$4R$7R$2R$9R$0R$1€€€ €€€€€ Ó'()$+WNS.base[NS.relative€€ €_Nhttp://www.mngt.waikato.ac.nz/departments/staff/chuda/firtreepaper/Figure2.gifÒ./01X$classesZ$classname¢12UNSURLXNSObject#AªèU,ùhÈÓ6789BWNS.keysZNS.objects€¨:;<=>?@A€	€
+€€€€€€¨CDEFGHIJ€€€€€€€€\X-Powered-By]Accept-Ranges\Content-TypeVServer^Content-LengthTDateTEtag]Last-ModifiedWASP.NETUbytesYimage/gif_Microsoft-IIS/6.0T4805_Tue, 26 Feb 2008 11:08:07 GMT_"0e0c68d9ccfbc1:3b5"_Fri, 03 Oct 1997 01:34:56 GMTÒ./\]£]^2_NSMutableDictionary\NSDictionaryÅÒ./ab£bc2_NSHTTPURLResponse]NSURLResponse     ) 2 7 : P R d ƒ ‰ ¤ « ® ± µ ¹ ¼ ¿ Â Å È Ë Î Ñ Ó Õ × Ù Û İ ß á ã å ç é ğ ø
+[`itw}†‘˜ «­¶¸º¼¾ÀÂÄÆÏÑÓÕ×ÙÛİßìú"'5=CMaf†½ÂÆÜéìñõ	             d              OÅGIF89a÷ ÷     €   € €€   €€ € €€ÀÀÀÀÜÀ¦Êğ     3  f  ™  Ì  ÿ 3  33 3f 3™ 3Ì 3ÿ f  f3 ff f™ fÌ fÿ ™  ™3 ™f ™™ ™Ì ™ÿ Ì  Ì3 Ìf Ì™ ÌÌ Ìÿ ÿ  ÿ3 ÿf ÿ™ ÿÌ ÿÿ3  3 33 f3 ™3 Ì3 ÿ33 33333f33™33Ì33ÿ3f 3f33ff3f™3fÌ3fÿ3™ 3™33™f3™™3™Ì3™ÿ3Ì 3Ì33Ìf3Ì™3ÌÌ3Ìÿ3ÿ 3ÿ33ÿf3ÿ™3ÿÌ3ÿÿf  f 3f ff ™f Ìf ÿf3 f33f3ff3™f3Ìf3ÿff ff3fffff™ffÌffÿf™ f™3f™ff™™f™Ìf™ÿfÌ fÌ3fÌffÌ™fÌÌfÌÿfÿ fÿ3fÿffÿ™fÿÌfÿÿ™  ™ 3™ f™ ™™ Ì™ ÿ™3 ™33™3f™3™™3Ì™3ÿ™f ™f3™ff™f™™fÌ™fÿ™™ ™™3™™f™™™™™Ì™™ÿ™Ì ™Ì3™Ìf™Ì™™ÌÌ™Ìÿ™ÿ ™ÿ3™ÿf™ÿ™™ÿÌ™ÿÿÌ  Ì 3Ì fÌ ™Ì ÌÌ ÿÌ3 Ì33Ì3fÌ3™Ì3ÌÌ3ÿÌf Ìf3ÌffÌf™ÌfÌÌfÿÌ™ Ì™3Ì™fÌ™™Ì™ÌÌ™ÿÌÌ ÌÌ3ÌÌfÌÌ™ÌÌÌÌÌÿÌÿ Ìÿ3ÌÿfÌÿ™ÌÿÌÌÿÿÿ  ÿ 3ÿ fÿ ™ÿ Ìÿ ÿÿ3 ÿ33ÿ3fÿ3™ÿ3Ìÿ3ÿÿf ÿf3ÿffÿf™ÿfÌÿfÿÿ™ ÿ™3ÿ™fÿ™™ÿ™Ìÿ™ÿÿÌ ÿÌ3ÿÌfÿÌ™ÿÌÌÿÌÿÿÿ ÿÿ3ÿÿfÿÿ™ÿÿÌÿÿÿ"""DDDUUUwwwˆˆˆªªª»»»İİİîîî                                                            ,    ÷  ş Ã	H° Áƒ*\È°¡Ã‡#JœH±¢Å‹3jÜÈ±£Ç CŠI²¤É“(Sª\É²¥Ë—0cÊœI³¦Í›8sêÜÉ³§ÏŸ@ƒ
+J´¨Ñ£H“*]Ê´©Ó§P£JJµªÕ«X³jİÊµ«×¯`ÃŠK¶¬Ù³hÓª]Ë¶­Û·pãÊK·®İ»xóêİË·¯ß¿€L¸°áÃˆ+^Ì¸±ãÇ#KL¹²åË˜3kŞÌ¹³çÏ C‹Mº´éÓ¨S«^Íºµë×°cËM»¶íÛ¸sëŞÍ»·ïßÀƒN¼¸ñãÈ“+_Î¼¹óçĞ£KŸN½ºõëØ³kßÎ½»÷ïàÃş‹O¾¼ùóèÓ«_Ï¾½û÷ğãËŸO¿¾ıûøóëßÏ¿¿ÿÿ (à€hà&¨à‚6èàƒF(á„Vhá…f¨á†vèá‡ †(âˆ$–hâ‰(¦¨âŠ,¶èâ‹0Æ(ãŒ4Öhã8æ¨ã<öèã@)äDiä‘H&©ä’L6éä“PF)å”TViå•Xf©å–\véå—`†)æ˜d–iæ™h¦©æšl¶éæ›pÆ)çœtÖiçxæ©ç|öéçŸ€*è „jè¡ˆ&ªè¢Œ6êè£F*é¤”Vjé¥˜fªé¦œvêé§ †*ê¨¤–jê©¨¦ªêª¬¶êê«ş°Æ*ë¬´Öjë­¸æªë®¼öêë¯À+ì°Äkì±È&«ì²Ì6ëì³ĞF+í´ÔVkíµØf«í¶Üvëí·à†+î¸ä–kî¹è¦«îºì¶ëî»ğÆ+¯ @½óæk¯½øêë¯@ıüïÀá\0ÁÿŞ;ÁÏ«°Âûû0ÃÇ{/Åa\ñ¸oìqAÜnÈ"¯KrÉéŒò¹*¯\nË.só³×Ü±E0ÏÜ«Í<ß<QÎ:çÚóĞ­-ÑHmô±I'½tµM7ıô´Q;=u´U#}µ´Y÷¼5×]Ûü5³5¶ÒcÛ*6¿Y§MlÙµíö¯pG$õÔ­¶şÏsod0Ú®İ÷H·Z÷à&¸¥‡#’â¦6îøJ‡*øä0UÎ©ä˜ËÄ·¤œwÓÉ‹Ãy¹èL•¾fè¨§Ş'ë­;¥º˜°ÇÕìXn;W¸OYûîZõîäïÀ¦5ŒÄo|Ô*ê®üca“˜üóˆ=ı‚×Sß˜õŸCè¼ö˜qŸıãƒ™øİX¾ù“¡¯7ë³oú ~/¿jÜ,üwñß/ÚÙ;Êûô7ûùO6ÑËØ }2À†/}ÌóâÀè­‚íƒ`“½ı%.`Ü^ÿ6èœÎb&$ÌIx†äa"L!Ë#C—Àğ0œa{4“Úe…ş:4ıF²!ZˆA\=×$&q>K|I¿ŒH”>ñ@Qd	¾¨'^±?\ôÛÁºâÅ/Ö/Œ)#OÔhÆñĞ†W±b9”E‘ ‘roœã‰ò(6ê1CwœŠÿø¢:zÅ„‘!ãÈÇDòh‘JA¤#cI¡r’I
+¤‰ÉáU²&’ì$>¹IRŠÒ“?;MyÊ+ùp‚8ãd+ÑdÂB$”³Ì’Å·KæRNï£Û4ùK0)—fce1é¾eRª™Î2£)aR³šù»æ¤l©ÍgŞ­›šò%8EÌqê©œæÄ:ÓI/v~jîœ<ã§yÒóMöş¼g›ò©ÏÕõ3Süü'-z©€´L=è˜ªĞ01´¡_z(D»$Ñ‰n©¢ÕeFÉ¹QGa´£Uú(H}7ÒE‰´¤P:)J‡·RD©´¥Kz)L39ÓBÉ´¦Fº)N‰¤Ó
+©§>ePÔ¡ö¨¨FİR“š£¥2õFN}j¢*ÕQµª”Äª:µz§«rµE^ıêƒÜGVUŠµ©eMë%xÖ©õ­¯Y[İ
+WµŞR®sQ]ízW³åU¯{-«İÖ¿V'°‚½e½”iX7"šŠ-lc©óXÈ>„’,q*kÍ¾ÆM³Şãl6A’YĞG´£ıHiMûÔZÏ¬mşkøÂØ2h¶ÜôÈjm»Üv¶¼MoåFÚà
+w¸°4.Š›\åšˆ¹ßt®t§KİêZ÷ºØÍîÓ(;íî#’İ­w5ÃJÆÂq¼é	ÙZí–7Mm»i/z7KAD6Ğ½^ó |ç{ÚúĞ!@»`@õBñò.9ƒY€ÜÃøÀı'•†Â«v‹†°[Š¸^öúõqïÕ-†5ÌA
+âµ!hû©xC„d˜ÄaQ¯/KóşÌE„qkyF’®Ç½ü¯[£Şù¸ÇHnB¦8ä×¸ğÇJnÉ›ìäıÙXÈÅ•¢,©ü+—$Œü|1—»L&Ù=óş™×Ìæ6»ùÍp³œçLç:ÛùÎxÎ³÷Ìç>ûùÏ€´ MèBúĞˆN´¢ÍèF;úÑ´¤'MéJ[úÒ˜Î´¦7ÍéN{úÓ µ¨GMêR›úÔ¨NµªWÍêV»úÕ°µ¬gMëZÛúÖ¸Îµ®wÍë^ûú×À¶°‡MìbûØÈN¶²—Íìf;ûjû}6v,íìP»ÚÓ1¶­­ímg¾Şn¡šÃ­Â“»„çbº­½î*[-¾í^m¹ïÔ¼–Şõ6Mj+2î|Ënšüö7iÈz‘~<’øÁC“ğ…ãÆ²¯Mg#n›}SüáU»8ÍªñÖv\9ÿø[şB.ò&–ü8$?¹ZR®r´°¼åfy9ÌÉ"ó™‹¥æ6Îs~H{Üç½Ù9Ğƒ7tŞ½èqDºn®ô27ıáO¿Ó£~;ªKÜê´™:Ö]·õØh½ëIù:Ø8v'—İ5b?ûPÒ®ö °½í?y;Ü{"÷¹[Ğî¨©;Şq¢÷½Û¤ï~§	àÏDÂÿÏğ‡G<h¯x)7Ìïã#Ÿ’ÉSş$–¿ü—5O^Îg&ó¯mèç7zÒ—2 ?=xUß>ÖK&õ®Çwì·7{èÕŞ1°¿ıu¿˜ÜóŞ³¿ÇağãûáÖøÆC~ò•¯Bæ7ßù‚)>ôO<}¿H¿úÃ¾õµş¿}îóåúØõÅ?}òCßüÎG?óÕ¯|ö#ßıÆ‡ÿğå|úÿŞş¼Ç¿îõ{ş×Şÿ³€±'€®G€¬g€ª‡€§§€¥Ç€£ç€¡š÷nŞ×Dw,'p6o'¤sppü²/YÖsjq Ã`ª•J<–‚'¨[%h‚„5c,È^+è‚-è`/8q'fcW&FXFDg×p1EFÔƒğöƒñ¥gƒrueF˜sa9ÈKB¥“E!FZ‹U„J¸f÷&a\ô„P¸…ZØvTdhXc2µeŠ5wÄåƒ
+·FN¸w¸z8wQfwÄ¤:»•`·‡²Iƒõ‡ˆHAaş„ˆ4'†Q×…”'€(h‘øx“Øx•¨x—ˆx™hx›˜ˆ¸HˆŸ˜¡èw¥H‡£HŠ©ˆ§ˆw­¨‡«x¯è†±øCµX³ø·H¹h†»8½X‚¿ØGÃÁ„Åˆ`É8rË¸aÍhrÏ¸ÇXvÓ8vÕv×ØuÙ¸uÛˆuİxpĞÅqÑ¨eáè5vƒãÈoåhmˆé¨‚ëX>×öğXˆ‚ôXö¨†–úÇˆ±hâ@¹ŠÙ?‰	¹H2ôÖ	`ÙiHÉi™8ş8„É‘y‚	’!IX#¹y%i’	I’)¹‘)Yyùş’ v’2Y“6y“8™“:¹“<Ù“>ù“@”À‚ƒ(”H”FYEƒ…IÙ`™JM¹I.¶…
+¶`"øeY„Ô×€315d•[‰cì¨•Hèy4şÕÙ÷o2¸€ƒ–U(DV€o‰½„ˆıˆ•c	^İæ–qƒ(–b4“5è‚©tg‰—i9X‰Yy…ébX…&—©V¸0”Ø•TyY‹#f¤³–˜H`ª8^¦ŠÉ_å¥l(Œ¦•K‘š°9›´Y›¶y›¸™›º¹›¼Ù›¾ù›ÀœÂ9œÄYœÆyœÈ™œÊ¹œÌÙœÎùœĞÒ9ÔYÖyØ™Úş¹ÜéŠ}é‘ˆKõ%Q—É—åId)vƒINßÉ6dt˜˜ŸZF—â)qéyRêiL€—„sLì—Ÿèi š&QÄCFf…Æad8"“
+T•yô9‹9•É”`š3˜©;^™—-s3şé—¡“ ë©?½³eÖm­Yaº@ú•*Æ9ú^i¡*=¶KeóF|££:L­˜ñ©9$¡wI¡ƒ$6>VÚ=:•Äó^Jê¤$¢F¢$ŸR*£H:>3ª2éÓ¢I:¤0ZdOÚ¥ú£?…¥î	Ê¡Ê¡–L«“D„
+*˜Ê¦rZ¥{Ê VKN
+§/ª¢şTY¢ú¦`h’€J¢`Ø™‰ú§ŒYxê§"‰a1ª¨‰”î‰YZK„J%í¹¦"‰¨”IªRJ©¦ô˜jŠ¡nº—šjªÊ˜zš„š©<j§˜šF‡š«¨jH>ã©¦š§ıh¢ü9ªÃÄ«š—@ª©±:—­š;7º”TZªÈ*ªYŠ¦*ÙCjE*š©méª³™ã‰­àZ®°z©}J®Õêœ¬’ê™F:øH¬îX«ÆÚ§”)¦Ëz®j®•Z£te™Ò¯Ï©Ôz°c¨ª£¥øj¤»úª±ú­‚ZpœY°·š«êÚ°Ìš¤î
+¯ïª±»®Ş±Öz«–ª¬Âz¯âj¯+;ş®²¹Ê¢ÓÊ²Û«OÁ$£"û¯(±ò*«ı
+•OI©k¯¿JJ<Ú±û™Çd±ÀŠ§ô*±áÊ«5[´C{µ*K²şŠ°)­µZ;G‹®™¡ºJ¡Š”œú´>;¢V;«ØŠ£pÚ¦½Š«	Û³m‹µhz´q©¶J·²*Kµè
+¶Eê¶ZÛ²¢š±Jåµà¹ªê¸wû¯dk@Šû¸'
+¹rë­“Š¸>š¶Qj®Í:¨‹´1Š¹âú¶˜›•Ëú¡‘%G_:³×ZºX+¹^Z¬´û²ŸÇ¸¹Kê¨\›¥7K¹ÊT9Ê±|º¶gÊ¹>ª«)ë²¬š®¤« ¦»ë¢¹tmôêº2K°ÉZµRË³A«¥ ;JÔ+;Š»×D4Üfº¼v¶æË¾İ¿ò;¿ô[¿ö{¿ø›¿ú»¿üÛ¿şû¿ À<À\À|ÀœÀ
+¼ÀÜÀüÀÁ<Á\Á|ÁœÁ¼ÁÜÁüÁ Â"<Â$\Â&|Â(œÂ*¼Â,ÜÂ.üÂ0Ã2<Ã4\Ã6|Ã8œÃ:¼Ã<ÜÃ>üÃ@ÄB<ÄD\ÄF|ÄHœÄJ¼ÄLÜÄNÌ&  ;    1 < K i  ‘ ¨ ö ü”””””%”v˜y˜ƒ¶=¶F¶—ºš                           Íc

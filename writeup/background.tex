@@ -38,8 +38,22 @@ A generalization of \TSP is \MTSP, where multiple routes are allowed to be const
 \subsection{\VRP\ introduction and history}
 The Vehicle Routing Problem (\VRP) seeks to solve the problem of constructing routes for a fleet of vehicles. Each route takes the vehicle through a set of customers to deliver a good (or service) at different locations. The routes must be constructed such that all constraints are meet, classically, the vehicle's capacity isn't exceeded by the number of customers being serviced. The goal is to minimize the cost of distributing the goods, which typically has meant minimizing the distance travelled across all routes.
 
-\VRP was first formally defined by Dantzig and Ramser, in \cite{Dantzig:1959} and has remained an important problem in logistics and transport. The first efforts were concerned with exact solutions, and proceeded using many of the same techniques employed for solve the \TSP. The Vehicle Routing Problem is closely related to two problems, the Multiple Traveling Salesman Problem \MTSP\ and the Bin Packing Problem \BPP. 
+\VRP\ was first formally defined by Dantzig and Ramser, in \cite{Dantzig:1959} and has remained an important problem in logistics and transport (the original name given to the problem presented by Dantzig and Ramser was The Truck Scheduling Problem). The Vehicle Routing Problem is closely related to two problems, the Multiple Traveling Salesman Problem \MTSP\ and the Bin Packing Problem \BPP.
 
+The first efforts were concerned with exact solutions, and proceeded using many of the same techniques brought to bear on \TSP. 
+Following the Laporte and Nobert's survey \cite{LANO:87}, exact algorithms for the VRP can be classified into three categories: Direct tree search methods, Dynamic programming, and Integer linear programming.
+
+Balinski, and Quandt used a set partitioning algorithm to produce exact solutions \cite{balinski:64}. The problem sets they used where very small however, having only between 5 to 15 customers. And even despite this they weren't able to produce an solution for some of the problems. Taking their approach as a starting point many authors have been able to produce more powerful methods. Rao and Zionts (1968), Foster and Ryan (1976), Orloff (1976), Desrosiers, Soumis and Desrochers (1984), Agarwal, Mathur and Salkin (1989), and Desrochers, Desrosiers and Solomon (1990), have all extended the basic set partitioning algorithm, using the Column Generation method, to produce more practically useful results. 
+
+A Dynamic Programming approach was first proposed for \VRP\ by Eilon, Watson-Gandy and Christofides (1971). Their approach allowed them to solve exactly for problems of 10 to 25 vehicles. Since then, Christofides has made improvements to this algorithm to solve exactly for problems up to 50 vertices large.
+
+Christolds and Ellison presented a branch and bound algorithm for solving the \VRP \cite{}. 
+
+Exact methods are more academemic and haven't produced results for problems larger than 100
+\VRP\ is \nphard, therefore most results have focused on approximate algorithms, rather than exact ones.  
+
+
+An early and influential result was given by Clarke and Wright in their 1964 paper, Scheduling of vehicles from a central depot to a number of delivery points \cite{clark:1964}. In this paper they present an appromiate approach to solving 
 % The first 
 % In 1964, Clarke and Wright introduced a heuristic which improved on the work of Dantzig and Ramser. This heuristic is now referred to as the Clarke-Wright heuristic.
 
