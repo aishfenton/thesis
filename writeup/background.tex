@@ -45,9 +45,13 @@ Following the Laporte and Nobert's survey \cite{LANO:87}, exact algorithms for t
 
 Balinski, and Quandt used a set partitioning algorithm to produce exact solutions \cite{balinski:64}. The problem sets they used where very small however, having only between 5 to 15 customers. And even despite this they weren't able to produce an solution for some of the problems. Taking their approach as a starting point many authors have been able to produce more powerful methods. Rao and Zionts (1968), Foster and Ryan (1976), Orloff (1976), Desrosiers, Soumis and Desrochers (1984), Agarwal, Mathur and Salkin (1989), and Desrochers, Desrosiers and Solomon (1990), have all extended the basic set partitioning algorithm, using the Column Generation method, to produce more practically useful results. 
 
-A Dynamic Programming approach was first proposed for \VRP\ by Eilon, Watson-Gandy and Christofides (1971). Their approach allowed them to solve exactly for problems of 10 to 25 vehicles. Since then, Christofides has made improvements to this algorithm to solve exactly for problems up to 50 vertices large.
+A Dynamic Programming approach was first proposed for \VRP\ by Eilon, Watson-Gandy and Christofides (1971). Their approach allowed them to solve exactly for problems of 10 to 25 customers. Since then, Christofides has made improvements to this algorithm to solve exactly for problems up to 50 vertices large.
 
-Christolds and Ellison presented a branch and bound algorithm for solving the \VRP \cite{}. 
+Christolds and Ellison gave the original branch and bound algorithm for exactly solving the \VRP \cite{CE:1969}. Unfortunately it's time and memory requirements where such that it was only able to solve problems of up to 13 customers. This was later improved upon again by Christolds in 1976 by using a different branch model. This improvement allowed him to solve for up to 31 customers. 
+
+Christofides, Mingozzi, and Toth, \cite{CMT:1981} provide a lower bound method that is sufficiently quick (in terms of runtime performance) to be used to as a lower bound for excluding nodes from the search tree. They used this method to provide solutions as for a number of problems containing between 15 to 25 customers.    
+  
+Laporte, Mercure and Nobert \cite{LMN:1986} provide an
 
 Exact methods are more academemic and haven't produced results for problems larger than 100
 \VRP\ is \nphard, therefore most results have focused on approximate algorithms, rather than exact ones.  
