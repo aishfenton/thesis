@@ -10,11 +10,7 @@ This section reviews the background of Vehicle Routing Problem (\VRP) and Pickup
 % =====================
 % SECTION
 % =====================
-\section{A short history of the Vehicle Routing Problem}
-
-% =====================
-% Sub Section
-\subsection{\TSP\ introduction and history}
+\section{\TSP\ introduction and history}
 The traveling salesman problem can informally be defined as given $n$ points on a map provide a route through each of the $n$ points such that each point is only used once and the total distance travelled is minimized. The problem's name, traveling salesman, comes from the classic real-world example of the problem: a salesman is sent on a trip to visit $n$ cities. What is order should she visit the cities in, such that she covers the least distance? See figure \ref{fig:tsp_example}
 
 \picscl{images/background.pdf}{Traveling Salesman Problem}{fig:tsp_example}{0.75}
@@ -34,11 +30,18 @@ A generalization of \TSP is \MTSP, where multiple routes are allowed to be const
 \MTSP leads us naturally into the a class of problems derived from the Vehicle Routing Problem (\VRP). \VRP -- and it's family of related problems -- can be understood as being a combination of \MTSP\ along with  other constraints, which are in themselves often combinatorially hard problems.    
 
 % =====================
-% Sub Section
-\subsection{\VRP\ introduction and history}
+% SECTION
+% =====================
+\section{\VRP\ introduction and history}
 The Vehicle Routing Problem (\VRP) seeks to solve the problem of constructing routes for a fleet of vehicles. Each route takes the vehicle through a set of customers to deliver a good (or service) at different locations. The routes must be constructed such that all constraints are meet, classically, the vehicle's capacity isn't exceeded by the number of customers being serviced. The goal is to minimize the cost of distributing the goods, which typically has meant minimizing the distance travelled across all routes.
 
+% The large number of real-world applications, both in North America and Europe, have widely shown that the use of computerized procedures for the distribution process planning produces substantial savings (generally 5\% to 20\%) in globabl transportation costs. http://books.google.co.nz/books?hl=en&lr=&id=TeMgA5S74skC&oi=fnd&pg=PR5&dq=vehicle+routing+problem+history&ots=AhY2KbKu40&sig=F-oubQFGcQzDw-RODKMXg2C-jX8#v=onepage&q=vehicle%20routing%20problem%20history&f=false
+
 \VRP\ was first formally defined by Dantzig and Ramser, in \cite{Dantzig:1959} and has remained an important problem in logistics and transport (the original name given to the problem presented by Dantzig and Ramser was The Truck Scheduling Problem). The Vehicle Routing Problem is closely related to two problems, the Multiple Traveling Salesman Problem \MTSP\ and the Bin Packing Problem \BPP.
+
+% =====================
+% Sub Section
+\subsection{Exact Methods}
 
 The first efforts were concerned with exact solutions, and proceeded using many of the same techniques brought to bear on \TSP. 
 Following the Laporte and Nobert's survey \cite{LANO:87}, exact algorithms for the VRP can be classified into three categories: Direct tree search methods, Dynamic programming, and Integer linear programming.
@@ -51,18 +54,44 @@ Christolds and Ellison gave the original branch and bound algorithm for exactly 
 
 Christofides, Mingozzi, and Toth, \cite{CMT:1981} provide a lower bound method that is sufficiently quick (in terms of runtime performance) to be used to as a lower bound for excluding nodes from the search tree. They used this method to provide solutions as for a number of problems containing between 15 to 25 customers.    
   
-Laporte, Mercure and Nobert \cite{LMN:1986} provide an
+Laporte, Mercure and Nobert \cite{LMN:1986} used \MTSP\ as a relaxation of \VRP\ within a branch and bound framework to provide solutions for 'realisticly' sized problems containing up to 250 customers.  
 
-Exact methods are more academemic and haven't produced results for problems larger than 100
-\VRP\ is \nphard, therefore most results have focused on approximate algorithms, rather than exact ones.  
+Notwithstanding the above results, exact methods have been of more use in advancing theoretical understanding of \VRP\ than to providing solutions to real life problems. This can mostly be attributed to the fact that real-life \VRP\ instances often involve hundreds of customers, and involve richer constraints than are modeled in a simple \VRP.
+
+% =====================
+% Sub Section
+\subsection{Heuristic Methods}
+An early and influential result was given by Clarke and Wright in their 1964 paper, Scheduling of vehicles from a central depot to a number of delivery points \cite{clark:1964}. In this paper they present a heuristic method for solving \VRP\ problems that improved upon Dantzig and Ramser's work -- it is commonly known as the Clarke-Wright heuristic. The heuristic has been used to solve problems of up to 1000 customers with results often within 10\% of optimal using only a 180 seconds of runtime \cite{TV2001}.
+
+Multi route / sequential.
+
+This classic algorithm has been extended by Gaskell (1967), Yellow (1970) and Paessens (1988), who suggest additional savings heuristics
 
 
-An early and influential result was given by Clarke and Wright in their 1964 paper, Scheduling of vehicles from a central depot to a number of delivery points \cite{clark:1964}. In this paper they present an appromiate approach to solving 
-% The first 
-% In 1964, Clarke and Wright introduced a heuristic which improved on the work of Dantzig and Ramser. This heuristic is now referred to as the Clarke-Wright heuristic.
+% – savings (Clarke, Wright, Operations Research, 1965)
 
-
-% The large number of real-world applications, both in North America and Europe, have widely shown that the use of computerized procedures for the distribution process planning produces substantial savings (generally 5\% to 20\%) in globabl transportation costs. http://books.google.co.nz/books?hl=en&lr=&id=TeMgA5S74skC&oi=fnd&pg=PR5&dq=vehicle+routing+problem+history&ots=AhY2KbKu40&sig=F-oubQFGcQzDw-RODKMXg2C-jX8#v=onepage&q=vehicle%20routing%20problem%20history&f=false
+% – sweep (Gillett, Miller, Operations Research, 1974)
+% – cluster first, route second (Fisher, Jaikumas, Net- works, 1981)
+% – intra-route improvement methods (TSP heuristics)
+% – inter-route improvement methods (λ-interchanges, Osman, 1993; cyclic exchanges, Thompson and Psaraf- fis, 1993; edge exchange schemes, Kindervater and Savelsbergh, 1997; ejection chains (Xu and Kelly, 1996; Rego and Roucairol, 1996; Rego, 1998); very large neighbourhood search (Ergun et al., 2003)
+% – SERR (De Franceschi, Fischetti, Toth, working pa- per, 2004)
+% --
+% 1989 First tabu search implementation (Willard, M.Sc. thesis, Imperial College)
+% 1991  First version of Taburoute (Gendreau, Hertz, Laporte, Tristan I Conference)
+% 1993  Tabu search (Taillard, Networks)
+% 1993 Simulated Annealing and tabu search (Osman, Annals of Operations Research)
+% 1994  Taburoute (Gendreau, Hertz, Laporte, Management Science)
+% 1995 Adaptive memory (Rochat, Taillard, Journal of Heuristics)
+% 1996  Ejection chains (Rego, Roucairol, Meta-Heuristics: Theory and Applications)
+% 9
+% 2001 Unified tabu search algorithm (Cordeau, Laporte, Mercier, Journal of the Operational Research Society)
+% 2002  Adaptive memory (Tarantilis, Kiranoudis, Annals of Operations Research)
+% 2003  Granular tabu search (Toth, Vigo, INFORMS Journal on Computing)
+% 2003 Very large neighbourhood search (Ergun, Orlin, Steele-Feldman, working paper, MIT)
+% 2004 Deterministic annealing (Li, Golden, Wasil, Computers & Operations Research)
+% 2004  Population search (Prins, Computers & Operations Research; Mester and Br ̈aysy, Computers & Opera- tions Research)
+% 2004 Ant systems optimization (Reinmann, Doerner, Hartl, Computers & Operations Research)
+% 2005  Attribute based hill climber heuristic (Derigs, Kaiser)
 
 \VRP\ is one of the most the studied combinator optimization problems. Hundreds of papers been written on it  
 
