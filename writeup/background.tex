@@ -61,9 +61,11 @@ Notwithstanding the above results, exact methods have been of more use in advanc
 \subsection{Classic Heuristics}
 Classic \VRP\ heuristics can be classified into three families. Constructive heuristics; Two-phase heuristics, which again can be classified into two sub-families: cluster first and then route, and route first and then cluster; and Improvement methods.
 
-We start by looking at Constructive heuristics. Constructive heuristics build a solutions from the ground up. They typically provide a recipe for building each route, such that the total cost of all routes is minimized. An early and influential result was given by Clarke and Wright in their 1964 paper, Scheduling of vehicles from a central depot to a number of delivery points \cite{clark:1964}. In this paper they present a heuristic method for solving \VRP\ problems that improved upon Dantzig and Ramser's work -- it is commonly known as the Clarke-Wright heuristic. The heuristic has been used to solve problems of up to 1000 customers with results often within 10\% of optimal using only a 180 seconds of runtime \cite{TV2001}. This classic algorithm has been extended by Gaskell (1967), Yellow (1970) and Paessens (1988), who have suggested alternatives to the savings formulas used by Clarke and Wright. These approaches typically introduce additional parameters to guide the algorithm towards selecting routes with geometric properties that are likely to produce better results.  
+We start by looking at Constructive heuristics. Constructive heuristics build a solutions from the ground up. They typically provide a recipe for building each route, such that the total cost of all routes is minimized. An early and influential result was given by Clarke and Wright in their 1964 paper, Scheduling of vehicles from a central depot to a number of delivery points \cite{clark:1964}. In this paper they present a heuristic method for solving \VRP\ problems that improved upon Dantzig and Ramser's work -- it is commonly known as the Clarke-Wright heuristic. The heuristic is based on the simple process of combining routes (starting with each route containing a single customer) such that 
 
-De
+The heuristic has been used to solve problems of up to 1000 customers with results often within 10\% of optimal using only a 180 seconds of runtime \cite{TV2001}. This classic algorithm has been extended by Gaskell (1967), Yellow (1970) and Paessens (1988), who have suggested alternatives to the savings formulas used by Clarke and Wright. These approaches typically introduce additional parameters to guide the algorithm towards selecting routes with geometric properties that are likely to produce better results.  
+
+Alk
 
 ---
 
