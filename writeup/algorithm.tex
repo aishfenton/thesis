@@ -10,115 +10,70 @@
 % =====================
 % SECTION
 % =====================
-\section{Objective}
+\section{Goals}
 
 Design goals:
 \begin{itemize}
-   \item Make things fast
-	\item Interactive with user
-	\item Soft variables
-	\item Take advantage of modern parallel hardware
-\end{itemize}
-
-
-\begin{itemize}
-	\item Full-truck-load pickup and deliveries
-	\item Multiple trucks
-	\item Start at depot. Return to depot
-	\item Time window constraints
-	\item Number of vehicles set already.
-	\item If jobs are charged on travel time then we'd want to minimize the amount of distance travelled between jobs. In which case travel distance (between jobs) would be the thing to optimize.
-	\item Note: We don't care about AVG number of jobs completed, because each job is charged for time taken. 
+   \item Fast
+   \item Minimal
+   \item Take advantage of modern parallel hardware
 \end{itemize}
 
 
 % =====================
 % SECTION
 % =====================
-\subsection{Algorithm}
+\section{Algorithm}
 
 % =====================
 % Sub Section
-\subsection{Sketch}
-
-
-% =====================
-% Sub Section
-\subsection{Memetic representation}
-
-Direct representation. Using 2-dim array of routes vs. job assignments.
+\subsection{Classic Bees algorithm}
 
 % =====================
 % Sub Section
-\subsection{Search neighbourhood}
-Tabu list. Probability plan.
-
+\subsection{Representation}
 
 % =====================
 % Sub Section
-\subsection{Construction phase}
-\todo{Something on modifications to classic methods to add in random element}
+\subsection{Changes from classic Bees Algorithm}
 
 % ---------------------
-\subsubsection{Nearest Insertion Heuristic for PDP-FTL}
-\todo{Convex whole improvement doesn't work}
-
-\begin{lemma}
-Moreover we can also show that for there doesn't exist an algorithm $A \in P$ that produces a subset $S \subset V$ such that $S$ is part of an optimal tour.
-\end{lemma}
-
-PROOF REQUIRED
-
-
-
+\subsubsection{Deeper driller}
 
 % ---------------------
-\subsubsection{Clark-Wright Savings Heuristic for PDP-FTL}
+\subsubsection{Tabu List}
 
+% ---------------------
+\subsubsection{Aged Sites}
+
+% ---------------------
+\subsubsection{Different Operations}
 
 % =====================
 % Sub Section
-\subsection{Selection}
-
-% =====================
-% Sub Section
-\subsection{Local improvement}
+\subsection{Operations}
 
 % ---------------------
-\subsubsection{Two-opt}
+\subsubsection{2-Opt}
 
 % ---------------------
-\subsubsection{Or-opt}
-
-
-% =====================
-% Sub Section
-\subsection{Re-combination}
+\subsubsection{3-Opt}
 
 % ---------------------
-\subsubsection{Permutation cross}
+\subsubsection{Vertex-Swap}
 
 % ---------------------
-\subsubsection{Successful move}
+\subsubsection{Inverse}
 
+% ---------------------
+\subsubsection{Large Neighbourhood Search}
 
-% =====================
-% SECTION
-% =====================
-\subsection{Optimizations}
+    % Insertion
+    % Optimisation is to search local area only
+    
+% ---------------------
+% \subsubsection{Starting points}
 
-CHEAP SPATIAL INDEXING USING GEOHASHES
-
-\hquote {
-	In addition to these basic implementation alternatives, Johnson and McGeoch (2002) 
-	describe four speed up rules: 1) avoiding search space redundancies: when implementing 
-	r-opt, time can be saved by avoiding some exchanges that cannot improve the solution; 
-	2) bounded neighbour lists: only consider the p closest neighbours of a vertex when per- 
-	forming reconnections (this rule was implemented by Zweig, 1995); 3) “don’t look” bits: 
-	avoid considering certain moves if such moves have proved fruitless in the past; 4) tree-based 
-	tour representation: use a tree-based representation of the tour to accelerate computations.
-	\cite{Babin:2005}
-}
-
-
+%   * Intial starting thingie ? k-means
+% We use kmeans clustering. The kmeans algorithm isn't guaranteed to produce the same result each run. This is conventionally viewed as limitation of the algorithm. However for our purpose this is an advantage as we can use the randomness to better seed the population with different solutions.  
 

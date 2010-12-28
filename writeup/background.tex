@@ -17,9 +17,9 @@ The traveling salesman problem can informally be defined as given $n$ points on 
 
 \TSP\ is related to a classic graph theory problem, the Hamiltonian path. Hamiltonian circuits have been studied since 1856 by both Hamilton \cite{Hamilton:1856} and Kirkman \cite{Kirkman:1856}. The traveling salesman problem has been informally discussed probably for many years \cite{Schrijver} but didn't become actively studied until after 1928 where Menger, Whitney, Flood and Robinson produced much of the early results in the field. Robinson's RAND report \cite{Robinson:1949} might have been the first article to call the problem by the name it has since become known, the Traveling Salesman Problem.  
 
-\quote{
+\begin{quote}
   The purpose of this note is to give a method for solving a problem related to the traveling salesman problem. One formulation is to find the shortest route for a salesman starting from Washington, visiting all the state capitals and then returning to Washington. More generally, to find the shortest closed curve containing $n$ given points in the plane.
-}
+\end{quote}
 
 An early result was provided by Dantzig, Fulkerson, and  Johnson \cite{Dantzig:1954}. Their paper gave an exact method for solving a 49 city problem, a large number of cities for the time. Their algorithm used the cutting plane method to provide an exact solution. This approach has been the inspiration for many subsequent approaches, and is still the bedrock of algorithms that attempt to provide an exact solution.  
 
@@ -36,6 +36,12 @@ A generalization of \TSP is \MTSP, where multiple routes are allowed to be const
 The Vehicle Routing Problem (\VRP) seeks to solve the problem of constructing routes for a fleet of vehicles. Each route takes the vehicle through a set of customers to deliver a good (or service) at different locations. The routes must be constructed such that all constraints are meet, classically, the vehicle's capacity isn't exceeded by the number of customers being serviced. The goal is to minimize the cost of distributing the goods, which typically has meant minimizing the distance travelled across all routes.
 
 % The large number of real-world applications, both in North America and Europe, have widely shown that the use of computerized procedures for the distribution process planning produces substantial savings (generally 5\% to 20\%) in globabl transportation costs. http://books.google.co.nz/books?hl=en&lr=&id=TeMgA5S74skC&oi=fnd&pg=PR5&dq=vehicle+routing+problem+history&ots=AhY2KbKu40&sig=F-oubQFGcQzDw-RODKMXg2C-jX8#v=onepage&q=vehicle%20routing%20problem%20history&f=false
+
+% ---
+
+% \VRP\ is one of the most the studied combinator optimization problems. Hundreds of papers been written on it  
+% 
+% Out of \VRP\ comes a family of related problems. These attempt to model other constraints that are encountered in real-world applications of the \VRP. Classic problems have included: \VRP\ with Time Windows that introduces a time window constraints  against each customer, that the vehicle must arrive within. \VRP\ multiple depot, where the vehicles are displayed from multiple start points. \VRP\ with Pick   
 
 \VRP\ was first formally defined by Dantzig and Ramser, in \cite{Dantzig:1959} and has remained an important problem in logistics and transport (the original name given to the problem presented by Dantzig and Ramser was The Truck Scheduling Problem). The Vehicle Routing Problem is closely related to two problems, the Multiple Traveling Salesman Problem \MTSP\ and the Bin Packing Problem \BPP.
 
@@ -59,20 +65,40 @@ Notwithstanding the above results, exact methods have been of more use in advanc
 % =====================
 % Sub Section
 \subsection{Classic Heuristics}
+
 Classic \VRP\ heuristics can be classified into three families. Constructive heuristics; Two-phase heuristics, which again can be classified into two sub-families: cluster first and then route, and route first and then cluster; and Improvement methods.
 
-We start by looking at Constructive heuristics. Constructive heuristics build a solutions from the ground up. They typically provide a recipe for building each route, such that the total cost of all routes is minimized. An early and influential result was given by Clarke and Wright in their 1964 paper, Scheduling of vehicles from a central depot to a number of delivery points \cite{clark:1964}. In this paper they present a heuristic method for solving \VRP\ problems that improved upon Dantzig and Ramser's work -- it is commonly known as the Clarke-Wright heuristic. The heuristic is based on the simple process of combining routes (starting with each route containing a single customer) such that 
+\subsubsection{Constructive heuristics}
 
-The heuristic has been used to solve problems of up to 1000 customers with results often within 10\% of optimal using only a 180 seconds of runtime \cite{TV2001}. This classic algorithm has been extended by Gaskell (1967), Yellow (1970) and Paessens (1988), who have suggested alternatives to the savings formulas used by Clarke and Wright. These approaches typically introduce additional parameters to guide the algorithm towards selecting routes with geometric properties that are likely to produce better results.  
+We start by looking at Constructive heuristics. Constructive heuristics build a solutions from the ground up. They typically provide a recipe for building each route, such that the total cost of all routes is minimized. An early and influential result was given by Clarke and Wright in their 1964 paper, Scheduling of vehicles from a central depot to a number of delivery points \cite{clark:1964}. In this paper they present a heuristic method for solving \VRP\ problems that improved upon Dantzig and Ramser's work -- it is commonly known as the Clarke-Wright heuristic. The heuristic is based on the simple process of combining routes (starting with each route containing a single customer) such that the combination reduces the overall cost (typically distance) while still producing feasible solutions.
 
-Alk
+The heuristic has been used to solve problems of up to 1000 customers with results often within 10\% of optimal using only a 180 seconds of runtime \cite{TV2001}. This classic algorithm has been extended by Gaskell (1967), Yellow (1970) and Paessens (1988), who have suggested alternatives to the savings formulas used by Clarke and Wright. These approaches typically introduce additional parameters to guide the algorithm towards selecting routes with geometric properties that are likely to produce better combinations.
 
----
+Alkinkemer and Gavish provide an interesting variation on the basic savings heuristic \cite{AG:1991}. They use a matching algorithm to combine multiple routes in a step. To do this they construct a graph where each vertex represents a route, each edge represents a feasible saving, and the edge's weight represents the saving that can be realized by the merge of the two routes. The algorithm proceed by solving a maximum cost weighted matching of the graph.
 
+A group of construction heuristics, know as Sequential Insertion Heuristics, had their first results due to Mole and Jameson \cite{MJ:1976}.  
 
-Gillett and Miller provided a new method called the sweep algorithm in their 1974 paper. This popularized the two-phase approach, although this method was suggested earlier by Wren in his 1971 book, and subsequently in Wren and Holliday's 1972 paper for Operations Research Quarterly. In this approach, a initial clustering phase is used to cluster the customers into a  base set of routes. From here the routes are treated a separate \TSP\ and optimized accordingly. The two-phase approache typically doesn't prescribe a method for how the \TSP\ is solved and assumes that already developed \TSP\ methods will be used. The classic sweep algorithm uses a simple geometric method to cluster the customers, and has been shown to solve several benchmark \VRP\ problems to within 2\% to 9\% of the best known solutions \cite{TV2001}.
+\subsubsection{Two-phase heuristics}
+
+We next look at two-phase heuristics. We start by looking at the cluster-first, route second sub-family. One of the foundational algorithms for this method is due to Gillett and Miller who provided a new approach called the sweep algorithm in their 1974 paper\cite{GM:1974}. This popularized the two-phase approach, although this method was suggested earlier by Wren in his 1971 book, and subsequently in Wren and Holliday's 1972 paper for Operations Research Quarterly. In this approach, a initial clustering phase is used to cluster the customers into a base set of routes. From here the routes are treated as separate \TSP\ and optimized accordingly. The two-phase approach typically doesn't prescribe a method for how the \TSP\ is solved and assumes that already developed \TSP\ methods can be used. The classic sweep algorithm uses a simple geometric method to cluster the customers, and has been shown to solve several benchmark \VRP\ problems to within 2\% to 9\% of the best known solutions \cite{TV2001}.
 
 Fisher and Jaikumas's 1981 paper builds upon the two-phase approach by providing a more sophisticated clustering method. They solve a General Assignment Problem to form the clusters instead. A limitation of their method is that the amount of vehicle routes must be fixed up front. Their method often produces results that are 1\% to 2\% better than similar results produced by the classic sweep algorithm \cite{TV2001}.
+
+-- TRUNCATED BRANCH AND BOUND
+
+-- PETAL
+
+-- ROUTE FIRST, CLUSTER SECOND
+
+It is generally accepted that route first, cluster second methods aren't competitive with other approaches \cite{Laporte:1999}. 
+
+\subsubsection{Improvement Heuristics}
+
+\subsubsection{Meta-Heuristics}
+
+% - Tabu
+% - GA
+% - SA
 
 % RESULTS TABLE FROM VRP BOOK / PAPER
 
@@ -98,33 +124,22 @@ Fisher and Jaikumas's 1981 paper builds upon the two-phase approach by providing
 % 2004 Ant systems optimization (Reinmann, Doerner, Hartl, Computers & Operations Research)
 % 2005  Attribute based hill climber heuristic (Derigs, Kaiser)
 
-\VRP\ is one of the most the studied combinator optimization problems. Hundreds of papers been written on it  
+\subsubsection{Biology inspired methods}
 
-Out of \VRP\ comes a family of related problems. These attempt to model other constraints that are encountered in real-world applications of the \VRP. Classic problems have included: \VRP\ with Time Windows that introduces a time window constraints  against each customer, that the vehicle must arrive within. \VRP\ multiple depot, where the vehicles are displayed from multiple start points. \VRP\ with Pick   
-
-% =====================
-% Sub Section
-\subsection{\VRPTW}
-
-% =====================
-% Sub Section
-\subsection{\PDPTW}
+% - PSO
+% - Ant Colony
+% - Bees Algorithm
 
 
 % =====================
 % SECTION
 % =====================
-\section{An introduction to classic \VRP\ heuristics}
+\section{Classic \VRP\ heuristics in depth}
 
-This section reviews some of the more common heuristics algorithms. 
-
-% =====================
-% Sub Section
-\subsection{Construction algorithms}
-These following algorithms are heuristics for constructing an initial solution
+This section reviews some of the more common heuristics algorithms. BECAUSE THEY CAN BE USED AS IMPROVEMENT TECHNIQUES WHEN DESIGNING META-HEURISTICS
 
 % ---------------------
-\subsubsection{Nearest neighbour}
+\subsection{Nearest neighbour}
 The most simple algorithm, this codifies the intuitive principle of constructing a solution by picking the job to the depot, then the closest job to this, and so on until a route is filled.
 
 Formally the algorithm creates the sequence $R = \seq{v_0}$ and picks $v \in V$ such that $d_{0,i}$ is minimized. It repeat this until the route represented by $R$ is exceeds it capacity. Then a new route $R$ is constructed and the process is repeated with the remaining jobs. This continues until all jobs are allocated.
@@ -132,14 +147,14 @@ Formally the algorithm creates the sequence $R = \seq{v_0}$ and picks $v \in V$ 
 Although the Nearest Neighbour algorithm is simple to understand and implement it situations can occur where the performance is bad
 
 % ---------------------
-\subsubsection{Nearest insertion}
+\subsection{Nearest insertion}
 
 The algorithm was first proposed by ?
 
 This algorithm slightly improves upon the previous algorithm. The algorithm proceeds much the same as the Nearest Neighbour algorithm but instead of considering only the previous node it considers the entire sequence of jobs route so far in $R$. It finds an insertion point along $R$ such that for job $v_k$ insertion between vertices $v_i, v_j$ the function $c_{ik} + c_{kj} - c_{ij}$ is minimized.
 
 % ---------------------
-\subsubsection{Clark and Wright algorithm}
+\subsection{Clark and Wright algorithm}
 
 Clark-Wright's widely known construction algorithm first appeared in \cite{clark:1964}. The algorithm uses a concept of \emph{savings}. The algorithm starts with a separate route for each customer: from depot, to customer, and back to the depot. A saving value is calculated for every pair of customers. The saving value is the distance saved by one customer being serviced directly after the other without returning to the depot in between -- in other words the savings gained by combining two partial routes. Routes are then merged based on the largest savings.
 
@@ -157,66 +172,21 @@ The algorithm works as follows:
 
 \picscl{images/background-cw.pdf}{Clark Wright Savings Algorithm}{fig:cw_savings}{0.75}
 
-
-% =====================
-% Sub Section
-\subsection{2-phase construction algorithms}
-\label{2phasealgorithms}
+% ---------------------
+\subsection{2-opt}
 
 % ---------------------
-\subsubsection{Cluster first}
-
-We use kmeans clustering. The kmeans algorithm isn't guaranteed to produce same result each run. This is conventionally viewed as limitation of the algorithm. However for our purpose this is an advantage as we can use the randomness to better seed the population with different solutions.  
+\subsection{Or-opt}
 
 % ---------------------
-\subsubsection{Sweep}
-
-
-% =====================
-% Sub Section
-\subsection{Improvement heuristics}
+\subsection{Tabu search}
 
 % ---------------------
-\subsubsection{2-opt}
+\subsection{Genetic algorithms}
 
 % ---------------------
-\subsubsection{Or-opt}
+\subsection{Large neighbourhood search}
 
-% ---------------------
-\subsubsection{Or-opt improvements}
-
-% ---------------------
-\subsubsection{GENI}
-
-% ---------------------
-\subsubsection{$\lambda$-interchanges}
-
-% ---------------------
-\subsubsection{Ejection chains}
-\hquote{I want to know more about ejection chains}
-
-
-% =====================
-% Sub Section
-\subsection{Meta-heuristics}
-
-% ---------------------
-\subsubsection{Tabu search}
-
-% ---------------------
-\subsubsection{Genetic algorithms}
-
-% ---------------------
-\subsubsection{Memetic algorithms}
-
-% ---------------------
-\subsubsection{Large neighbourhood search}
-
-
-% =====================
-% SECTION
-% =====================
-\section{Real-world implementations}
 
 
 
