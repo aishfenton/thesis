@@ -1,0 +1,138 @@
+\begin{thebibliography}{10}
+
+\bibitem{balinski:64}
+M.L. Balinski and R.E. Quandt.
+\newblock On an integer program for a delivery problem.
+\newblock {\em Operations Research}, 12(2):300--304, 1964.
+
+\bibitem{GM:1974}
+L.R.~Miller B.E.~Gillett.
+\newblock A heuristic algorithm for the vehicle dispatch problem.
+\newblock {\em Operations Research}, 22:340--349, 1974.
+
+\bibitem{CMT:1981}
+Mingozzi~A. Christofides, N. and P.~Toth.
+\newblock Exact algorithms for the vehicle routing problem, based on spanning
+  tree and shortest path relaxations.
+\newblock {\em Mathematical Programming}, 20:255--282, 1981a.
+
+\bibitem{CE:1969}
+N.~Christofides and S.~Eilon.
+\newblock An algorithm for the vehicle dispatching problem.
+\newblock {\em ORQ}, 20:309--318, 1969.
+
+\bibitem{Dantzig:1954}
+Fulkerson Dantzig and Johnson.
+\newblock Solution of a large-scale traveling salesman problem.
+\newblock {\em Operations Research}, (2):393–410, 1954.
+
+\bibitem{Dantzig:1959}
+G.~B. Dantzig and J.~H. Ramser.
+\newblock The truck dispatching problem.
+\newblock {\em Management Science}, 6(1):80--91, Oct, 1959.
+
+\bibitem{RDS:1990}
+C.F.~Daganzo F.~Robuste and R.~Souleyrette II.
+\newblock Implementing vehicle routing models.
+\newblock {\em Transportation Research}, 24B:263--286, 1990.
+
+\bibitem{clark:1964}
+J.W.~Wright G.~Clark.
+\newblock Scheduling of vehicles from a central depot to a number of delivery
+  points.
+\newblock {\em Operations Research}, 12:568--581, 1964.
+
+\bibitem{Laporte:1999}
+Frederic~Semet Gilbert~Laporte.
+\newblock Classical heuristics for the vehicle routing problem.
+\newblock Technical report, Les Cahiers du Gerad, 1999.
+
+\bibitem{Hamilton:1856}
+W.R. Hamilton.
+\newblock Memorandum respecting a new system of roots of unity (the icosian
+  calculus).
+\newblock {\em Philosophical Magazine}, 12, 1856.
+
+\bibitem{RBL:1996}
+G~Laporte J~Renaud, F F~Boctor.
+\newblock A fast composite heuristic for the symmetric traveling salesman
+  problem.
+\newblock {\em INFORMS Journal on Computing}, 8:134--143, 1996.
+
+\bibitem{AG:1991}
+B.~Gavish K.~Altinkemer.
+\newblock Parallel savings based heuristic for the delivery problem.
+\newblock {\em Operations Research}, 39:456--469, 1991.
+
+\bibitem{Kirkman:1856}
+T.P. Kirkman.
+\newblock On the representation of polyhedra.
+\newblock {\em Philosophical Transactions of the Royal Society of London Series
+  A}, 146:413--418, 1856.
+
+\bibitem{LANO:87}
+G.~Laporte and Y~Nobert.
+\newblock {\em Surveys in Combinatorial Optimization}, chapter Exact algorithms
+  for the vehicle routing problem.
+\newblock 1987.
+
+\bibitem{GLP:1999}
+J~Potvin M~Gendreau, G~Laporte.
+\newblock Metaheuristics for the vehicle routing problem.
+\newblock Technical report, Les Cahiers du Gerad, 1998, revised 1999.
+
+\bibitem{HK:1985}
+A~H G R~Kan M~Haimovich.
+\newblock Bounds and heuristics for capacitated routing problems.
+\newblock {\em Mathematics of Operations Research}, 10:527--542, 1985.
+
+\bibitem{RTFNZ}
+Road Transport~Forum NZ.
+\newblock Road transport forum nz - transport facts.
+\newblock Website.
+
+\bibitem{Or:1976}
+I~Or.
+\newblock {\em Traveling salesman-type combinatorial problems and their
+  relation to the logistics of regional blood banking}.
+\newblock PhD thesis, Evanston, IL: Northwestern University, 1976.
+
+\bibitem{Osman:1993}
+I.~H. Osman.
+\newblock Metastrategy simulated annealing and tabu search algorithm for the
+  vehicle routing problem.
+\newblock {\em Annals of Operations Research}, 41:421--451, 1993.
+
+\bibitem{MJ:1976}
+S.R.~Jameson R.H.~Mole.
+\newblock A sequential route-building algorithm employing a generalized saving
+  criteria.
+\newblock {\em Operations Research}, 27:503--511, 1976.
+
+\bibitem{Robinson:1949}
+J.~Robinson.
+\newblock On the hamiltonian game (a traveling salesman problem).
+\newblock {\em Research Memorandum RM-303}, 1949.
+
+\bibitem{Schrijver}
+Alexander Schrijver.
+\newblock On the history of combinatorial optimization (till 1960).
+\newblock {\em ?}, ?:?, ?
+
+\bibitem{Solomon:1987}
+M.~M. Solomon.
+\newblock Algorithms for the vehicle routing and scheduling problems with time
+  window constraints.
+\newblock {\em Oper. Res.}, 35(2):254--265, 1987.
+
+\bibitem{TV2001}
+Paolo Toth and Daniele Vigo, editors.
+\newblock {\em The vehicle routing problem}.
+\newblock Society for Industrial and Applied Mathematics, Philadelphia, PA,
+  USA, 2001.
+
+\bibitem{Willard:1989}
+J.~A.~G. Willard.
+\newblock Vehicle routing using r-optimal tabu search., 1989.
+
+\end{thebibliography}

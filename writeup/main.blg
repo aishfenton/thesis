@@ -1,0 +1,75 @@
+This is BibTeX, Version 0.99c (TeX Live 2009)
+The top-level auxiliary file: main.aux
+White space in argument---line 27 of file main.aux
+ : \citation{NEED
+ :                A CITE FOR THIS}
+I'm skipping whatever remains of this command
+The style file: plain.bst
+Database file #1: bibliography.bib
+Warning--entry type for "Willard:1989" isn't style-file defined
+--line 1 of file bibliography.bib
+Warning--I didn't find a database entry for "?"
+Warning--I didn't find a database entry for "LMN:1986"
+Warning--I didn't find a database entry for "???"
+Warning--I didn't find a database entry for "??"
+Name 1 in "Dantzig, Fulkerson, and Johnson" has a comma at the end for entry Dantzig:1954
+while executing---line 1049 of file plain.bst
+Name 1 in "Laporte, G., and Nobert, Y" has a comma at the end for entry LANO:87
+while executing---line 1049 of file plain.bst
+Name 1 in "Christofides, N., Mingozzi, A., and Toth, P." has a comma at the end for entry CMT:1981
+while executing---line 1049 of file plain.bst
+Too many commas in name 1 of "Christofides, N., Mingozzi, A., and Toth, P." for entry CMT:1981
+while executing---line 1049 of file plain.bst
+Name 1 in "Christofides, N., Mingozzi, A., and Toth, P." has a comma at the end for entry CMT:1981
+while executing---line 1090 of file plain.bst
+Too many commas in name 1 of "Christofides, N., Mingozzi, A., and Toth, P." for entry CMT:1981
+while executing---line 1090 of file plain.bst
+Name 1 in "Dantzig, Fulkerson, and Johnson" has a comma at the end for entry Dantzig:1954
+while executing---line 1090 of file plain.bst
+Warning--there's a number but no volume in Dantzig:1954
+Name 1 in "Laporte, G., and Nobert, Y" has a comma at the end for entry LANO:87
+while executing---line 1090 of file plain.bst
+Warning--can't use both author and editor fields in LANO:87
+Warning--empty publisher in LANO:87
+You've used 25 entries,
+            2118 wiz_defined-function locations,
+            669 strings with 7452 characters,
+and the built_in function-call counts, 6696 in all, are:
+= -- 668
+> -- 224
+< -- 1
++ -- 97
+- -- 66
+* -- 409
+:= -- 1168
+add.period$ -- 74
+call.type$ -- 25
+change.case$ -- 107
+chr.to.int$ -- 0
+cite$ -- 28
+duplicate$ -- 262
+empty$ -- 586
+format.name$ -- 66
+if$ -- 1391
+int.to.chr$ -- 0
+int.to.str$ -- 25
+missing$ -- 21
+newline$ -- 127
+num.names$ -- 51
+pop$ -- 88
+preamble$ -- 1
+purify$ -- 83
+quote$ -- 0
+skip$ -- 176
+stack$ -- 0
+substring$ -- 461
+swap$ -- 25
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 96
+warning$ -- 3
+while$ -- 69
+width$ -- 27
+write$ -- 270
+(There were 9 error messages)

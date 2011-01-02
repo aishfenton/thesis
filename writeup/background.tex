@@ -76,29 +76,76 @@ The heuristic has been used to solve problems of up to 1000 customers with resul
 
 Alkinkemer and Gavish provide an interesting variation on the basic savings heuristic \cite{AG:1991}. They use a matching algorithm to combine multiple routes in a step. To do this they construct a graph where each vertex represents a route, each edge represents a feasible saving, and the edge's weight represents the saving that can be realized by the merge of the two routes. The algorithm proceed by solving a maximum cost weighted matching of the graph.
 
-A group of construction heuristics, know as Sequential Insertion Heuristics, had their first results due to Mole and Jameson \cite{MJ:1976}.  
+A group of construction heuristics, know as Sequential Insertion Heuristics, had their first results due to Mole and Jameson \cite{MJ:1976}.
 
 \subsubsection{Two-phase heuristics}
 
-We next look at two-phase heuristics. We start by looking at the cluster-first, route second sub-family. One of the foundational algorithms for this method is due to Gillett and Miller who provided a new approach called the sweep algorithm in their 1974 paper\cite{GM:1974}. This popularized the two-phase approach, although this method was suggested earlier by Wren in his 1971 book, and subsequently in Wren and Holliday's 1972 paper for Operations Research Quarterly. In this approach, a initial clustering phase is used to cluster the customers into a base set of routes. From here the routes are treated as separate \TSP\ and optimized accordingly. The two-phase approach typically doesn't prescribe a method for how the \TSP\ is solved and assumes that already developed \TSP\ methods can be used. The classic sweep algorithm uses a simple geometric method to cluster the customers, and has been shown to solve several benchmark \VRP\ problems to within 2\% to 9\% of the best known solutions \cite{TV2001}.
+We next look at two-phase heuristics. We start by looking at the cluster-first, route second sub-family. One of the foundational algorithms for this method is due to Gillett and Miller who provided a new approach called the Sweep Algorithm in their 1974 paper\cite{GM:1974}. This popularized the two-phase approach, although this method was suggested earlier by Wren in his 1971 book, and subsequently in Wren and Holliday's 1972 paper for Operations Research Quarterly. In this approach, a initial clustering phase is used to cluster the customers into a base set of routes. From here the routes are treated as separate \TSP\ and optimized accordingly. The two-phase approach typically doesn't prescribe a method for how the \TSP\ is solved and assumes that already developed \TSP\ methods can be used. The classic sweep algorithm uses a simple geometric method to cluster the customers, and has been shown to solve several benchmark \VRP\ problems to within 2\% to 9\% of the best known solutions \cite{TV2001}.
 
-Fisher and Jaikumas's 1981 paper builds upon the two-phase approach by providing a more sophisticated clustering method. They solve a General Assignment Problem to form the clusters instead. A limitation of their method is that the amount of vehicle routes must be fixed up front. Their method often produces results that are 1\% to 2\% better than similar results produced by the classic sweep algorithm \cite{TV2001}.
+Fisher and Jaikumas's 1981 paper builds upon the two-phase approach by providing a more sophisticated clustering method. They solve a General Assignment Problem to form the clusters instead. A limitation of their method is that the amount of vehicle routes must be fixed up front. Their method often produces results that are 1\% to 2\% better than similar results produced by the classic sweep algorithm \cite{TV2001}. 
 
--- TRUNCATED BRANCH AND BOUND
+Christofides, Mingozzi, and Toth expanded upon this approach in \cite{???} and proposed a method that uses a truncated branch and bound technique (similar to Christofiedes Exact method). At each step it builds a collection of feasible routes containing a customer $i$ for evaluation. It then evaluates each route and selects the route that the \TSP with the shortest distance can be produced from.
 
--- PETAL
+The Petal algorithm is a natural extension to the Sweep Algorithm. It was first proposed by Balinski and Quandt \cite{??} and then extended by Foster and Ryan \cite{??}. The basic process is to produce a collection of overlapping candidate routes (called petals) and then to solve a set partition problem to produce a feasible solution. As with other two-phase approaches it's assumed that the order of the customers within each routes is solved using any pick of existing \TSP heuristics. It has produced some competitive results for small solutions, but quickly becomes impractical where the set of candidate routes that must be considered is large.  
 
--- ROUTE FIRST, CLUSTER SECOND
+Lastly, there are route first, cluster second methods. The basic premise of these techniques are to first construct a "grand" \TSP\ tour such that all customers are visited. The second phase is then concerned with splitting this tour into feasible routes. Route first, cluster second methods are generally thought to be less competitive than other methods \cite{Laporte:1999}, although interestingly Haimovich and Rinnooy Kan have shown that if all customers have unit demand then a simple shortest path algorithm (which can be solved in polynomial time) can be used to produce a solution from a \TSP\ tour that is asymptotically optimal \cite{HK:1985}.
 
-It is generally accepted that route first, cluster second methods aren't competitive with other approaches \cite{Laporte:1999}. 
+\subsubsection{Iterative Improvement Heuristics}
 
-\subsubsection{Improvement Heuristics}
+Iterative Improvement methods follow a basic hilling climbing approach. They start with a solution, which may have been randomly generated, or produced by another heuristic technique, and then iteratively apply an operation to that solution to improve it. This continues until a local minimum is reached.
 
-\subsubsection{Meta-Heuristics}
+There have been a number of operations suggested. Christofides and Eilon gave one of the earliest iterative improvement methods in their paper \cite{CE:1969}. In this they made a simple change to the classic \TSP\ operation, 2-opt, increasing the amount of edges removed to three - the operation fittingly being called 3-opt. They found that their heuristics produced better results than the a 2-opt procedure could by itself. 
 
+In general operations, such as 3-opt, that remove edges and then search for a more optimal recombination of components take \BIGO{n^y} where $y$ is the number of edges removed. A rich strain of research has been on producing operations that reduce the amount of recombinations that must be searched. Or presents an operation that has since come to be known as Or-opt \cite{Or:1976}. Or-opt is a restricted 3-opt. It searches for a relocation of all sets of 3 consecutive vertices (i.e. chains), such that an improvement is made. If an improvement can't be made then it tries again with chains of 2 consecutive vertices, and so on. Or-Opt has been shown to produce similar results to that of 3-opt, but with a running time of \BIGO{n^2}. More recently Renaud, Boctor, and Laptorte have presented a restricted version of 4-opt (in a similar vain to Or-Opt) that has a running time of \BIGO{wn^2} \cite{RBL:1996}. 
+
+Iterative improvement heuristics are often used in combination with the other techniques. In this case they are run on the candidate solution after the initial heuristics has completed. However, for this purpose there is often a fine balance between producing an operation that improves a solution, and one that is sufficiently destructive enough to escape a local minimum.  Recently interest in iterative improvement heuristics has grown because of their use as part of meta-heuristic methods. 
+
+We present a more detailed description of some classic improvement operations in section \ref{sec:cvhid}.
+
+\subsection{Meta-Heuristics}
+
+Meta-Heuristics are a broad collection of methods that make few or no assumptions about the type problem being solved. They provide a framework that allows for individual problems to be modeled and 'plugged in' to the meta-heuristic. Typically meta-heuristics take an approach where a candidate solution (or solutions) is initially produced and then is iteratively refined towards the optimal solution. Intuitively meta-heuristics can be thought of searching a problem's problem space. Each iteration searches the neighbourhood of the current candidate solution(s) looking for new candidate solutions that move closer to the goal. 
+
+INSERT PIC OF SEARCH SPACE
+
+A limitation of meta-heuristics is that they aren't guaranteed to find an optimal solution (or even a good candidate). Indeed the theoretical underpinnings of what makes a meta-heuristic more effective than another is still poorly understood. Instead meta-heuristics in the literature tend to be tuned for specific problems and then validated empirically.
+
+There have been a number of meta-heuristics produced for the \VRP\ in recent years. Many of the most competitive results produced in the last ten years have been from meta-heuristic approaches. We next review some of the more well known meta-heuristic results for \VRP.
+
+\subsubsection{Simulated Annealing}
+
+Simulated Annealing is inspired by the annealing process used in metallurgy. The algorithm starts with a candidate solution (which can be randomly selected) and then move to nearby solutions with a probability dependent on the quality of the solution and a global parameter $T$, that is reduced over the algorithm. By analogy to the metallurgy process $T$ represents the current temperature of the solution. Initially $T$ is high. This lets the algorithm free itself from any local minimum that it may be caught in. It is then cooled over time forcing the algorithm to converge to a new solution. 
+
+One of the first results was given by Robuste, Daganzo and Souleyrette \cite{RDS:1990}. They define the search neighbourhood all solutions that can be obtained from the current solution by applying one of three operations: relocating part of a route to another position within the same route, and exchanging customers between two routes. They tested their solution on some large real-world instances of up to 500 customers. They self-reported some success with their method but as their test cases are unique no direct comparison is possible. 
+
+Osman has given probably the best know Simulated Annealing results for \VRP \cite{Osman:1993}. His algorithm expands upon many areas of the basic Simulated Annealing approach. The method start by using the Clark and Wright algorithm to produce a starting position. It defines its neighbourhood as candidate solutions that can be searched by applying a $\lambda-interchange$ operation. $\lambda-interchange$ works by selecting two sequences (i.e. chains) of customers $S_p, S_q$ from two routes, $p$ and $q$, such that $\length{S_p}, \length{S_q} < \lambda$ (note the chains aren't necessary of the same length). The customers within each set are then exchanged until an exchange produces an infeasible solution. As the neighbourhood produced by $\lambda-interchange$ is typically large Osman restricts $\lambda$ to $\le 2$ and take the first move that provides an improvement. Osman also uses a sophisticated cooling schedule; his main change being that the temperature is cooled continuously while improvements are found, or if no improvement he resets the temperature (using $T_i = max(\frac{T_r}{2}, T_b)$, where $T_r$ is the reset temperature, and $T_b$ is temperature of the best solution found so far).
+
+Although Simulated Annealing has produced some good results, and in many cases outperforms the classic heuristics (compare \cite{Laporte:1999} with \cite{GLP:1999}), it is not competitive with the tabu search implementation. 
+
+\subsubsection{Tabu Search}
+
+Tabu Search follows the general approach shared by many meta-heuristics; it iteratively improving a candidate solution by searching for improvements within the current solution's neighborhood. Tabu search starts with a candidate solution, that may be generated randomly or by using another heuristic. Unlike Simulated Annealing, the best improvement within the current neighbourhood is always taken as the next move. This introduces the problem of cycling between candidate solutions. To overcome this Tabu Search introduces a list of solutions that have already been investigated and are forbidden as next moves (hence its name of Tabu List). 
+
+The first instance of Tabu Search being used for \VRP\ is by Willard \cite{Willard:1989}. Willard's approach made use of the fact that \VRP\ instances can be transformed into a \MTSP\ instances and solved. The algorithm makes use of a combination of simple vertex exchange and relocate operations. Although opening the door for further research its results weren't competitive with the best classic heuristics. 
+
+Osman gives a more competitive use of Tabu Search in \cite{Osman:1993}. As with his Simulated Annealing method he makes use of the $\lambda-interchange$ operation to define the search neighbourhood. Osman provides two alternative methods to control how much of the neighbourhood is searched to select the next move - Best-Improvement (BI) and First-Improvement (FI). Best-Improvement searches the entire neighbourhood and selects the move that is the most optimal. First-Improvement searches only until a move is found that is more optimal than the current position. This heuristic produces some competitive results that often out perform the classic heuristics. However it has been refined and improved upon by newer Tabu Search methods.
+
+
+
+% 
 % - Tabu
+%   * TABUROUTE
+%   * Taillards
+%   * Xu and Kelly
+% 
 % - GA
-% - SA
+%   * Gideon
+%   * Generous
+
+% - Large Neighbourhood ???
+%   * Gideon
+%   * Generous
+
 
 % RESULTS TABLE FROM VRP BOOK / PAPER
 
@@ -126,15 +173,16 @@ It is generally accepted that route first, cluster second methods aren't competi
 
 \subsubsection{Biology inspired methods}
 
-% - PSO
-% - Ant Colony
-% - Bees Algorithm
+% what's here?
+
+% - TIMELINE OF CLASSIC RESULTS
 
 
 % =====================
 % SECTION
 % =====================
 \section{Classic \VRP\ heuristics in depth}
+\label{sec:cvhid}
 
 This section reviews some of the more common heuristics algorithms. BECAUSE THEY CAN BE USED AS IMPROVEMENT TECHNIQUES WHEN DESIGNING META-HEURISTICS
 
@@ -178,14 +226,26 @@ The algorithm works as follows:
 % ---------------------
 \subsection{Or-opt}
 
+% String Exchange + Cross
+
+% ---------------------
+\subsection{Osman-opt}
+
 % ---------------------
 \subsection{Tabu search}
 
-% ---------------------
-\subsection{Genetic algorithms}
+% - Adaptive memory maybe?
 
 % ---------------------
 \subsection{Large neighbourhood search}
+
+
+\section{An introduction to Swarm Intelligence}
+
+% - PSO
+% - Ant Colony
+% - Bees Algorithm
+
 
 
 

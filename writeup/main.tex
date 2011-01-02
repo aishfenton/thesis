@@ -6,7 +6,7 @@
 %!TEX TS-program = xelatex 
 %!TEX encoding = UTF-8 Unicode
 
-\documentclass[11pt, a4paper]{book}
+\documentclass[11pt, a4paper]{report}
 
 \usepackage[pdftitle={Bees Algorithms, and the Logging Problem},
 pdfauthor={M.Dinneen, A.J.L.Fenton},
@@ -30,14 +30,14 @@ pdfauthor={M.Dinneen, A.J.L.Fenton},
 % \setsansfont{Avenir LT Std}
 % \setmonofont{Lucida Sans Typewriter}
 
-% \textwidth      = 6.0 in
-% \textheight     = 9 in
-% \oddsidemargin  = 0.0 in
-% \evensidemargin = 0.0 in
-% \topmargin      = 0.0 in
-% \headheight     = 0.0 in
-% \parskip        = 0.2in
-% \parindent      = 0.0in
+\textwidth      = 6.0 in
+\textheight     = 9 in
+\oddsidemargin  = 0.0 in
+\evensidemargin = 0.0 in
+\topmargin      = 0.0 in
+\headheight     = 0.0 in
+\parskip        = 0.2in
+\parindent      = 0.0in
 
 % \renewcommand{\multirowsetup}{\centering}
 
@@ -57,7 +57,6 @@ pdfauthor={M.Dinneen, A.J.L.Fenton},
 \newcommand{\MTSP}{\mbox{MTSP}}
 \newcommand{\BPP}{\mbox{BPP}}
 
-
 \input{macros.tex}
 
 % =====================
@@ -69,11 +68,7 @@ pdfauthor={M.Dinneen, A.J.L.Fenton},
 
 \input{title_page.tex}
 
-\frontmatter
 \input{front_matter.tex}
-
-\mainmatter
-% \pagestyle{plain}
 
 \input{introduction.tex}
 \input{background.tex}
@@ -87,7 +82,8 @@ pdfauthor={M.Dinneen, A.J.L.Fenton},
 % =====================
 % SECTION
 % =====================
-\bibliography{bibliography.bib}
+
 \bibliographystyle{plain}
+\bibliography{bibliography}
 
 \end{document}
