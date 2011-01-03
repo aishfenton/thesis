@@ -79,8 +79,11 @@ Alkinkemer and Gavish provide an interesting variation on the basic savings heur
 A group of construction heuristics, know as Sequential Insertion Heuristics, had their first results due to Mole and Jameson \cite{MJ:1976}.
 
 \subsubsection{Two-phase heuristics}
+\label{twophaseheuristics}
 
-We next look at two-phase heuristics. We start by looking at the cluster-first, route second sub-family. One of the foundational algorithms for this method is due to Gillett and Miller who provided a new approach called the Sweep Algorithm in their 1974 paper\cite{GM:1974}. This popularized the two-phase approach, although this method was suggested earlier by Wren in his 1971 book, and subsequently in Wren and Holliday's 1972 paper for Operations Research Quarterly. In this approach, a initial clustering phase is used to cluster the customers into a base set of routes. From here the routes are treated as separate \TSP\ and optimized accordingly. The two-phase approach typically doesn't prescribe a method for how the \TSP\ is solved and assumes that already developed \TSP\ methods can be used. The classic sweep algorithm uses a simple geometric method to cluster the customers, and has been shown to solve several benchmark \VRP\ problems to within 2\% to 9\% of the best known solutions \cite{TV2001}.
+We next look at two-phase heuristics. We start by looking at the cluster-first, route second sub-family. One of the foundational algorithms for this method is due to Gillett and Miller who provided a new approach called the Sweep Algorithm in their 1974 paper\cite{GM:1974}. This popularized the two-phase approach, although this method was suggested earlier by Wren in his 1971 book, and subsequently in Wren and Holliday's 1972 paper for Operations Research Quarterly. In this approach, a initial clustering phase is used to cluster the customers into a base set of routes. From here the routes are treated as separate \TSP\ and optimized accordingly. The two-phase approach typically doesn't prescribe a method for how the \TSP\ is solved and assumes that already developed \TSP\ methods can be used. The classic sweep algorithm uses a simple geometric method to cluster the customers. Routes are built by sweeping a ray, centered at the depot, clockwise around the space enclosing the problem's locations. The Sweep method is surprising effective and has been shown to solve several benchmark \VRP\ problems to within 2\% to 9\% of the best known solutions \cite{TV2001}.
+
+== PIC OF SWEEP == 
 
 Fisher and Jaikumas's 1981 paper builds upon the two-phase approach by providing a more sophisticated clustering method. They solve a General Assignment Problem to form the clusters instead. A limitation of their method is that the amount of vehicle routes must be fixed up front. Their method often produces results that are 1\% to 2\% better than similar results produced by the classic sweep algorithm \cite{TV2001}. 
 
@@ -106,7 +109,7 @@ We present a more detailed description of some classic improvement operations in
 
 Meta-Heuristics are a broad collection of methods that make few or no assumptions about the type problem being solved. They provide a framework that allows for individual problems to be modeled and 'plugged in' to the meta-heuristic. Typically meta-heuristics take an approach where a candidate solution (or solutions) is initially produced and then is iteratively refined towards the optimal solution. Intuitively meta-heuristics can be thought of searching a problem's problem space. Each iteration searches the neighbourhood of the current candidate solution(s) looking for new candidate solutions that move closer to the goal. 
 
-INSERT PIC OF SEARCH SPACE
+== INSERT PIC OF SEARCH SPACE ==
 
 A limitation of meta-heuristics is that they aren't guaranteed to find an optimal solution (or even a good candidate). Indeed the theoretical underpinnings of what makes a meta-heuristic more effective than another is still poorly understood. Instead meta-heuristics in the literature tend to be tuned for specific problems and then validated empirically.
 
@@ -122,7 +125,54 @@ Osman has given probably the best know Simulated Annealing results for \VRP \cit
 
 Although Simulated Annealing has produced some good results, and in many cases outperforms the classic heuristics (compare \cite{Laporte:1999} with \cite{GLP:1999}), it is not competitive with the tabu search implementation. 
 
+\subsubsection{Genetic Algorithms}
+
+Genetic Algorithms where first proposed in \cite{Holland:1975}. They've since been applied to many problem domains and are particularly well suited to applications that must work across a few distinct problems. In fact they were the first evolutionary inspired algorithms to be applied to combinatorial problems \cite{Potvin:2009}. The basic operation of a GA is as follows:
+
+\begin{algorithm}
+    Generate the initial population\\
+    \While{termination condition not meet}{
+        Evaluate the fitness of each individual\\
+        Select the fittest pairs\\
+        Mate pairs and produce next generation\\
+        Mutate (optional)\\
+    }
+\end{algorithm}
+
+In classic Genetic Algorithms each candidate solution is encoded as a binary string (i.e. chromosome). Each individual (i.e. candidate solution) is initially created randomly and used to seed the population. There are many techniques suggested in the literature for initially 'bootstraping' the population by making use of other heuristics to produce a stronger initial population, however special care must be taken with Genetic Algorithms to ensure that diversity is maintained within the population - otherwise there is a risk of premature convergence. 
+
+Next the fittest individuals are selected from the population, and reproduction (crossover) and mutation operations are applyed to them to produce the next generation. A classic crossover operation takes individuals encoded as binary strings and splits them at one or two points. The parts are then recombined to form a new candidate solution. The idea being that the crossover produces a new candidate solution from two successful partial solutions. This process is repeated until a termination condition is meet (often a predetermined running time), or until the population has converged on a fitness.
+
+Special consideration needs to be given to how discrete optimisation problems, such as the \VRP, are represented and how their operators are constructed. For instance, consider how the classic crossover operation would work on a \TSP path. When two parts of two separate solutions are combined they are likely to contain duplicates. Therefore it is more common for the \VRP\ (and the \TSP\ as well) to use a direct representation, rather than a binary encoding. In this instance the \VRP is represented as collection of sequences, each holdings a sequence of customers. The Genetic Algorithm then must use operators specially designed for this representation of the problem. 
+
+Two commonly used crossover operators are Order Crossover (OX) and Edge Assembly Crossover (EAX). OX \cite{OSH:1987} operates by placing two cuts points within each route. The the substring between the two cut points is copied from the first parent directly into the offspring. The remainder of the string from the second parent is then copied to the offspring, but with any duplicates removed. This potentially leaves an incomplete solution, where not all the customers have been routed. The solutions is then "repaired" by inserting any remaining customers using an insertion heuristic.
+
+== PIC OF OX Operator == 
+
+Another common crossover operator is EAX. EAX was originally designed for the \TSP\ but has been adapted to the \VRP by \cite{Nagata:2007}. EAX operates using the following process:
+
+\begin{enumerate}
+    \item Combine the two candidate solutions into a single graph by merging each solutions edge sets.
+    \item Create a partition set of the graph's cycles by alternately selecting an edge from each graph.
+    \item Randomly select a subset of the cycles.
+    \item Generate a (incomplete) child by taking one of the parents and removing all edges from the selected subset of cycles. Then add back in the edges from the parent that wasn't chosen. 
+    \item Not all cycles in the child are connected to the route. Repair them by iteratively merging the disconnected cycles to the connected cycles.
+\end{enumerate}
+
+== PIC OF EAX ==
+
+An alternative, and interesting, approach found in the literature is to instead encode a set of operations and parameters that are feed to another heuristic, that in turn produces a candidate solution. An early example of this was suggested by \cite{??} who encoded a ordering of the customers. The ordering is then feed into an Insertion heuristic to produce the actual candidate solutions.
+
+An influential adaption of Genetic Algorithms for solving \VRPTW\ was given in \cite{TNJ:1991} with their GIDEON algorithm. GIDEON uses an approach inspired by the sweep heuristic (an overview is provided in section \ref{twophaseheuristics}). Routes are built by sweeping a ray, centered at the depot, clockwise around the space enclosing the problem's locations. Customers are collected into candidate routes based on a set of parameters that are refined by the GA. GIDEON uses the GA to evolve these parameters rather than to operate on the problem directly. Finally GIDEON uses a local search method to optimize customers with the routes, making use of the $\lambda-interchange$ operation (see section \ref{tabusearch} for a description of this operator).
+
+More recently there have been two very promising application of Genetic Algorithms to \VRP. Nagata \cite{Nagata:2007} has adapted the EAX operator for with the \VRP. His method reached the best known solution for a number of the classic \VRP\ benchmark instances by Christofides, Mingozzi and Toth \cite{CMT:1981}.  
+
+% - HGA-VRP
+
+% Most powerful results in litrature use GA as global selector of best local search. Problem with GA is that doesn't take advantage of enough info about the problem space.
+
 \subsubsection{Tabu Search}
+\label{tabusearch}
 
 Tabu Search follows the general approach shared by many meta-heuristics; it iteratively improving a candidate solution by searching for improvements within the current solution's neighborhood. Tabu search starts with a candidate solution, that may be generated randomly or by using another heuristic. Unlike Simulated Annealing, the best improvement within the current neighbourhood is always taken as the next move. This introduces the problem of cycling between candidate solutions. To overcome this Tabu Search introduces a list of solutions that have already been investigated and are forbidden as next moves (hence its name of Tabu List). 
 
@@ -130,13 +180,12 @@ The first instance of Tabu Search being used for \VRP\ is by Willard \cite{Willa
 
 Osman gives a more competitive use of Tabu Search in \cite{Osman:1993}. As with his Simulated Annealing method he makes use of the $\lambda-interchange$ operation to define the search neighbourhood. Osman provides two alternative methods to control how much of the neighbourhood is searched to select the next move - Best-Improvement (BI) and First-Improvement (FI). Best-Improvement searches the entire neighbourhood and selects the move that is the most optimal. First-Improvement searches only until a move is found that is more optimal than the current position. This heuristic produces some competitive results that often out perform the classic heuristics. However it has been refined and improved upon by newer Tabu Search methods.
 
+Toth and Vigo introduced the concept of Granular Tabu Search (GTS) \cite{GHL:1998}. Their method makes use of a process that removes moves from the neighbourhood that are unlikely to produce good results. They reintroduce these moves back into the process if the algorithm is stuck in a local minimum. Their idea follows from an existing idea known as candidate lists. Toth and Vigo's method has produced many competitive results.
+
+Taillard gave a very successful application of Tabu Search in \cite{Taillard:1993}. Talliard's Tabu Search uses Or's $\lambda-interchange$ as it's neighbourhood structure. It borrows two novel concepts from \cite{GHL:1994}, the use of a more sophisticated tabu mechanism - the duration (or number of iterations) that an item is tabu for is chosen randomly, and a diversification strategy, where vertices that are frequently moved without giving an improvement are penalised. An novel aspect of Taillard's algorithm is it's decomposing of the problem into sub-problems. The problem is split into regions using a simple segmentation of the region centred about the depot (Taillard also provides an alternative approach for problems where the customers are evenly distributed around the depot). From here each subproblem is solved individually, with customers being exchanged between neighboring segments periodically. Taillard observes that exchanging customer beyond neighboring segments is unlikely to produce an improvement, so can safely be ignored. Taillard's method has produced some of the currently best known results for the standard Christofides, Mingozzi and Toth problem sets \cite{CMT:1981}. 
 
 
-% 
-% - Tabu
-%   * TABUROUTE
-%   * Taillards
-%   * Xu and Kelly
+
 % 
 % - GA
 %   * Gideon

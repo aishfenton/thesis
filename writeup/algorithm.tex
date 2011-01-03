@@ -27,6 +27,10 @@ Design goals:
 
 % - Infeasible solutons admisible, just penalisted. Helps escape local minimum, like in TABUROUTE. 
 
+% - Avoid the problem of Tabu Search moving cities around the depot more frequently, because removes are random. \cite{Taillard:1993}.
+
+% - Takes advantage of Taillards observation that the move between tours don't need to be huge. It is suffient to move to the tour in an adjoining segment. This is achieved here by the NEAREST cities list, and much simplier and quicker.
+
 
 % =====================
 % Sub Section
