@@ -46,8 +46,9 @@ The Vehicle Routing Problem (\VRP) seeks to solve the problem of constructing ro
 \VRP\ was first formally defined by Dantzig and Ramser, in \cite{Dantzig:1959} and has remained an important problem in logistics and transport (the original name given to the problem presented by Dantzig and Ramser was The Truck Scheduling Problem). The Vehicle Routing Problem is closely related to two problems, the Multiple Traveling Salesman Problem \MTSP\ and the Bin Packing Problem \BPP.
 
 % =====================
-% Sub Section
-\subsection{Exact Methods}
+% SECTION
+% =====================
+\section{Exact Methods}
 
 The first efforts were concerned with exact solutions, and proceeded using many of the same techniques brought to bear on \TSP. 
 We follow Laporte and Nobert's survey \cite{LANO:87} and classify exact algorithms for the \VRP\ into three families: Direct tree search methods, Dynamic programming, and Integer linear programming.
@@ -63,14 +64,44 @@ A Set Partitioning algorithm was given by Balinski, and Quandt in 1964 to produc
 Notwithstanding the above results, exact methods have been of more use in advancing theoretical understanding of \VRP\ than to providing solutions to real life problems. This can mostly be attributed to the fact that real-life \VRP\ instances often involve hundreds of customers, and involve richer constraints than are modeled in a simple \VRP.
 
 % =====================
-% Sub Section
-\subsection{Classic Heuristics}
+% SECTION
+% =====================
+\section{Classic Heuristics}
 
 Classic \VRP\ heuristics can be classified into three families. Constructive heuristics; Two-phase heuristics, which again can be classified into two sub-families: cluster first and then route, and route first and then cluster; and Improvement methods.
 
-\subsubsection{Constructive heuristics}
+\subsection{Constructive heuristics}
+
+% % % ---------------------
+% \subsection{Nearest neighbour}
+% The most simple algorithm, this codifies the intuitive principle of constructing a solution by picking the job to the depot, then the closest job to this, and so on until a route is filled.
+% 
+% Formally the algorithm creates the sequence $R = \seq{v_0}$ and picks $v \in V$ such that $d_{0,i}$ is minimized. It repeat this until the route represented by $R$ is exceeds it capacity. Then a new route $R$ is constructed and the process is repeated with the remaining jobs. This continues until all jobs are allocated.
+% 
+% Although the Nearest Neighbour algorithm is simple to understand and implement it situations can occur where the performance is bad
 
 We start by looking at Constructive heuristics. Constructive heuristics build a solutions from the ground up. They typically provide a recipe for building each route, such that the total cost of all routes is minimized. An early and influential result was given by Clarke and Wright in their 1964 paper, Scheduling of vehicles from a central depot to a number of delivery points \cite{clark:1964}. In this paper they present a heuristic method for solving \VRP\ problems that improved upon Dantzig and Ramser's work -- it is commonly known as the Clarke-Wright heuristic. The heuristic is based on the simple process of combining routes (starting with each route containing a single customer) such that the combination reduces the overall cost (typically distance) while still producing feasible solutions.
+
+
+% % ---------------------
+% \subsection{Clark and Wright algorithm}
+% 
+% Clark-Wright's widely known construction algorithm first appeared in \cite{clark:1964}. The algorithm uses a concept of \emph{savings}. The algorithm starts with a separate route for each customer: from depot, to customer, and back to the depot. A saving value is calculated for every pair of customers. The saving value is the distance saved by one customer being serviced directly after the other without returning to the depot in between -- in other words the savings gained by combining two partial routes. Routes are then merged based on the largest savings.
+% 
+% The algorithm comes in two flavours: sequential and parallel. The sequential version sequentially adds customers to a route until a route has reached capacity (or based on some other constraint such as maximum route length) and then produces the next. The parallel version builds each route in parallel. The parallel version out performs the sequential version in most cases\cite{Laporte:1999} and is the version considered in our approach.
+% 
+% The algorithm is surprising adaptable and has been extended to deal with more specialized vehicle routing problems were additional objectives and constraints must be considered. The algorithm's flexibility derives from its algebraic treatment of the problem rather than exploiting the problem's underlying spatial properties, as many of the two-phase algorithms do \ref{2phasealgorithms}. The algorithms savings formula can be adjusted to accommodate other objectives. An example of this is Solomon's equally ubiquitous algorithm \cite{Solomon:1987} which extends the Clark and Wright algorithm to cater for time constraints. 
+% 
+% The algorithm works as follows:
+% 
+% \begin{itemize}
+%  \item Prime the solution with routes $R = \set{x_0, x_i, x_0}$ for all jobs $x_i \in X$.
+%  \item For all $i,j$ calculate $s_{ij} = c_{i0} + c_{j0} - c_{ij}$.
+%  \item Process each $S_{ij}$ in descending order, find routes $r_1 \in R : r_1 = \set{0,...,x_i,x_0}$ and $r_2 \in R: r_2 = \set{0,x_j,...,0}$. Merge these together such that $R' = \set{0,...,x_i, x+j,...,0}$. Stop once capacity constraints or route length constraint is exceeded.
+% \end{itemize}
+% 
+% \picscl{images/background-cw.pdf}{Clark Wright Savings Algorithm}{fig:cw_savings}{0.75}
+% 
 
 The heuristic has been used to solve problems of up to 1000 customers with results often within 10\% of optimal using only a 180 seconds of runtime \cite{TV2001}. This classic algorithm has been extended by Gaskell (1967), Yellow (1970) and Paessens (1988), who have suggested alternatives to the savings formulas used by Clarke and Wright. These approaches typically introduce additional parameters to guide the algorithm towards selecting routes with geometric properties that are likely to produce better combinations.
 
@@ -78,7 +109,7 @@ Alkinkemer and Gavish provide an interesting variation on the basic savings heur
 
 A group of construction heuristics, know as Sequential Insertion Heuristics, had their first results due to Mole and Jameson \cite{MJ:1976}.
 
-\subsubsection{Two-phase heuristics}
+\subsection{Two-phase heuristics}
 \label{twophaseheuristics}
 
 We next look at two-phase heuristics. We start by looking at the cluster-first, route second sub-family. One of the foundational algorithms for this method is due to Gillett and Miller who provided a new approach called the Sweep Algorithm in their 1974 paper\cite{GM:1974}. This popularized the two-phase approach, although this method was suggested earlier by Wren in his 1971 book, and subsequently in Wren and Holliday's 1972 paper for Operations Research Quarterly. In this approach, a initial clustering phase is used to cluster the customers into a base set of routes. From here the routes are treated as separate \TSP\ and optimized accordingly. The two-phase approach typically doesn't prescribe a method for how the \TSP\ is solved and assumes that already developed \TSP\ methods can be used. The classic sweep algorithm uses a simple geometric method to cluster the customers. Routes are built by sweeping a ray, centered at the depot, clockwise around the space enclosing the problem's locations. The Sweep method is surprising effective and has been shown to solve several benchmark \VRP\ problems to within 2\% to 9\% of the best known solutions \cite{TV2001}.
@@ -93,9 +124,18 @@ The Petal algorithm is a natural extension to the Sweep Algorithm. It was first 
 
 Lastly, there are route first, cluster second methods. The basic premise of these techniques are to first construct a "grand" \TSP\ tour such that all customers are visited. The second phase is then concerned with splitting this tour into feasible routes. Route first, cluster second methods are generally thought to be less competitive than other methods \cite{Laporte:1999}, although interestingly Haimovich and Rinnooy Kan have shown that if all customers have unit demand then a simple shortest path algorithm (which can be solved in polynomial time) can be used to produce a solution from a \TSP\ tour that is asymptotically optimal \cite{HK:1985}.
 
-\subsubsection{Iterative Improvement Heuristics}
+\subsection{Iterative Improvement Heuristics}
 
 Iterative Improvement methods follow a basic hilling climbing approach. They start with a solution, which may have been randomly generated, or produced by another heuristic technique, and then iteratively apply an operation to that solution to improve it. This continues until a local minimum is reached.
+
+% % ---------------------
+% \subsection{2-opt}
+% 
+% % ---------------------
+% \subsection{Or-opt}
+% 
+% % String Exchange + Cross
+
 
 There have been a number of operations suggested. Christofides and Eilon gave one of the earliest iterative improvement methods in their paper \cite{CE:1969}. In this they made a simple change to the classic \TSP\ operation, 2-opt, increasing the amount of edges removed to three - the operation fittingly being called 3-opt. They found that their heuristics produced better results than the a 2-opt procedure could by itself. 
 
@@ -103,9 +143,10 @@ In general operations, such as 3-opt, that remove edges and then search for a mo
 
 Iterative improvement heuristics are often used in combination with the other techniques. In this case they are run on the candidate solution after the initial heuristics has completed. However, for this purpose there is often a fine balance between producing an operation that improves a solution, and one that is sufficiently destructive enough to escape a local minimum.  Recently interest in iterative improvement heuristics has grown because of their use as part of meta-heuristic methods. 
 
-We present a more detailed description of some classic improvement operations in section \ref{sec:cvhid}.
-
-\subsection{Meta-Heuristics}
+% =====================
+% SECTION
+% =====================
+\section{Meta-Heuristics}
 
 Meta-Heuristics are a broad collection of methods that make few or no assumptions about the type problem being solved. They provide a framework that allows for individual problems to be modeled and 'plugged in' to the meta-heuristic. Typically meta-heuristics take an approach where a candidate solution (or solutions) is initially produced and then is iteratively refined towards the optimal solution. Intuitively meta-heuristics can be thought of searching a problem's problem space. Each iteration searches the neighbourhood of the current candidate solution(s) looking for new candidate solutions that move closer to the goal. 
 
@@ -115,19 +156,30 @@ A limitation of meta-heuristics is that they aren't guaranteed to find an optima
 
 There have been a number of meta-heuristics produced for the \VRP\ in recent years. Many of the most competitive results produced in the last ten years have been from meta-heuristic approaches. We next review some of the more well known meta-heuristic results for \VRP.
 
-\subsubsection{Simulated Annealing}
+\subsection{Simulated Annealing}
 
-% from simulated annealing. With such an acceptance criteria, the temporary solution xt is always accepted if c(xt ) ≤ c(x), and accepted with probability e−(c(xt )−c(x))/T if c(x) < c(xt ). Here T > 0 is the current temperature. The temperature is initialized at T0 > 0 and is decreased gradually, for example by performing the update Tnew = αTold at each iteration, where 0 < α < 1 is a parameter. The idea is that T is relatively high initially, thus allowing deteriorating solutions to be accepted. As the search progresses T decreases and towards the end of the search only a few or no deteriorating solutions will be accepted. If
+Simulated Annealing is inspired by the annealing process used in metallurgy. The algorithm starts with a candidate solution (which can be randomly selected) and then moves to nearby solutions with a probability dependent on the quality of the solution and a global parameter $T$, which is reduced over the algorithm. In classic implementations the following formula is used to control the probability of a move: 
 
-Simulated Annealing is inspired by the annealing process used in metallurgy. The algorithm starts with a candidate solution (which can be randomly selected) and then move to nearby solutions with a probability dependent on the quality of the solution and a global parameter $T$, that is reduced over the algorithm. By analogy to the metallurgy process $T$ represents the current temperature of the solution. Initially $T$ is high. This lets the algorithm free itself from any local minimum that it may be caught in. It is then cooled over time forcing the algorithm to converge to a new solution. 
+\[
+e^{-\frac{f(s')-f(s)}{T}}
+\]
+
+Where $f(s)$ and $f(s')$ represent the solution quality of the current solution, and the new solution respectively. By analogy to the metallurgy process $T$ represents the current temperature of the solution. Initially $T$ is high. This lets the algorithm free itself from any local minimum that it may be caught in. It is then cooled over time forcing the algorithm to converge to a new solution. 
 
 One of the first results was given by Robuste, Daganzo and Souleyrette \cite{RDS:1990}. They define the search neighbourhood all solutions that can be obtained from the current solution by applying one of three operations: relocating part of a route to another position within the same route, and exchanging customers between two routes. They tested their solution on some large real-world instances of up to 500 customers. They self-reported some success with their method but as their test cases are unique no direct comparison is possible. 
 
-Osman has given probably the best know Simulated Annealing results for \VRP \cite{Osman:1993}. His algorithm expands upon many areas of the basic Simulated Annealing approach. The method start by using the Clark and Wright algorithm to produce a starting position. It defines its neighbourhood as candidate solutions that can be searched by applying a $\lambda-interchange$ operation. $\lambda-interchange$ works by selecting two sequences (i.e. chains) of customers $S_p, S_q$ from two routes, $p$ and $q$, such that $\length{S_p}, \length{S_q} < \lambda$ (note the chains aren't necessary of the same length). The customers within each set are then exchanged until an exchange produces an infeasible solution. As the neighbourhood produced by $\lambda-interchange$ is typically large Osman restricts $\lambda$ to $\le 2$ and take the first move that provides an improvement. Osman also uses a sophisticated cooling schedule; his main change being that the temperature is cooled continuously while improvements are found, or if no improvement he resets the temperature (using $T_i = max(\frac{T_r}{2}, T_b)$, where $T_r$ is the reset temperature, and $T_b$ is temperature of the best solution found so far).
+Osman has given probably the best know Simulated Annealing results for \VRP \cite{Osman:1993}. His algorithm expands upon many areas of the basic Simulated Annealing approach. The method start by using the Clark and Wright algorithm to produce a starting position. It defines its neighbourhood as candidate solutions that can be searched by applying a $\lambda-interchange$ operation. 
+
+% === PIC OF lambda-interchange ===
+% \subsection{lambda-interchange}
+
+$\lambda-interchange$ works by selecting two sequences (i.e. chains) of customers $S_p, S_q$ from two routes, $p$ and $q$, such that $\length{S_p}, \length{S_q} < \lambda$ (note the chains aren't necessary of the same length). The customers within each set are then exchanged until an exchange produces an infeasible solution. As the neighbourhood produced by $\lambda-interchange$ is typically large Osman restricts $\lambda$ to $\le 2$ and take the first move that provides an improvement. 
+
+Osman also uses a sophisticated cooling schedule; his main change being that the temperature is cooled continuously while improvements are found, or if no improvement he resets the temperature (using $T_i = max(\frac{T_r}{2}, T_b)$, where $T_r$ is the reset temperature, and $T_b$ is temperature of the best solution found so far). 
 
 Although Simulated Annealing has produced some good results, and in many cases outperforms the classic heuristics (compare \cite{Laporte:1999} with \cite{GLP:1999}), it is not competitive with the tabu search implementation. 
 
-\subsubsection{Genetic Algorithms}
+\subsection{Genetic Algorithms}
 
 Genetic Algorithms where first proposed in \cite{Holland:1975}. They've since been applied to many problem domains and are particularly well suited to applications that must work across a few distinct problems. In fact they were the first evolutionary inspired algorithms to be applied to combinatorial problems \cite{Potvin:2009}. The basic operation of a GA is as follows:
 
@@ -171,7 +223,7 @@ Generally speaking Genetic Algorithms haven't been as competitive in \VRP\ as ot
 
 Both methods have reached the best known solution for a number of the classic \VRP\ benchmark instances by Christofides, Mingozzi and Toth \cite{CMT:1981} and are competitive with the best Tabu Search methods.
 
-\subsubsection{Tabu Search}
+\subsection{Tabu Search}
 \label{tabusearch}
 
 Tabu Search follows the general approach shared by many meta-heuristics; it iteratively improving a candidate solution by searching for improvements within the current solution's neighborhood. Tabu search starts with a candidate solution, that may be generated randomly or by using another heuristic. Unlike Simulated Annealing, the best improvement within the current neighbourhood is always taken as the next move. This introduces the problem of cycling between candidate solutions. To overcome this Tabu Search introduces a list of solutions that have already been investigated and are forbidden as next moves (hence its name of Tabu List). 
@@ -184,7 +236,7 @@ Toth and Vigo introduced the concept of Granular Tabu Search (GTS) \cite{GHL:199
 
 Taillard gave a very successful application of Tabu Search in \cite{Taillard:1993}. Talliard's Tabu Search uses Or's $\lambda-interchange$ as it's neighbourhood structure. It borrows two novel concepts from \cite{GHL:1994}, the use of a more sophisticated tabu mechanism - the duration (or number of iterations) that an item is tabu for is chosen randomly, and a diversification strategy, where vertices that are frequently moved without giving an improvement are penalised. An novel aspect of Taillard's algorithm is it's decomposing of the problem into sub-problems. The problem is split into regions using a simple segmentation of the region centred about the depot (Taillard also provides an alternative approach for problems where the customers are evenly distributed around the depot). From here each subproblem is solved individually, with customers being exchanged between neighboring segments periodically. Taillard observes that exchanging customer beyond neighboring segments is unlikely to produce an improvement, so can safely be ignored. Taillard's method has produced some of the currently best known results for the standard Christofides, Mingozzi and Toth problem sets \cite{CMT:1981}. 
 
-\subsubsection{Large Neighbourhood Search}
+\subsection{Large Neighbourhood Search}
 
 Large Neighbourhood Search (commonly abbreviated to LNS) was recently proposed as a heuristic by Shaw \cite{Shaw:1998}. Large Neighbourhood Search is a type heuristic belonging to the family known as Very Large Scale Neighbourhood search (VLSN)\footnote{LNS is somewhat confusingly named given that it a type of VLSN, and not a competing approach}. Very Large Scale Neighborhood search is based on a simple premise that rather than searching within a neighborhood of solutions that can be obtained from a single (and typically quite granular) operation, such as $2-opt$, it might be profitable to consider a much broader neighborhood; A neighbourhood of candidate solutions that are obtained from applying many simultaneous changes to the current solution. What distinguishes these heuristics from others is that the neighborhood under consideration is typically exponentially large, and sometimes infeasible to search. Therefore much attention is given to providing practical methods to search these neighborhoods. 
 
@@ -220,6 +272,104 @@ Ropke makes use of several destroy functions. He uses a simple random removal he
 
 Ropke presents a series of results that show that his Large Neighbourhood Search is very competitive for solving the \VRP\ and a large number of related problems, \CVRP, \VRPTW, \PDPTW, and \DARP). Considering that Large Neighbourhood Search was only proposed in 1998 it has been very successful. In a short space of time it has attracted a large amount of research and has produced some of the most competitive results.
 
+% =====================
+% SECTION
+% =====================
+\section{Swarm Intelligence}
+
+A recent area of research is in producing heuristics that mimic certain aspects of Swarm behaviour. Probably the most well known heuristics in this class are Particle Swarm Optimisation (PSO) and Ant Colony Optimisation (ACO). 
+
+\subsection{Ant Colony Optimization}
+
+Ant Colony Optimization is inspired by how ants forage for food and communicate successful sites back to the colony. Real life initially forage for food randomly. Once they find a food source they return to the colony and in the process lay down a pheromone trail. Other ants that then stumble upon the pheromone trail follow it with a probability dependent on how strong (and old) the pheromone trail is. If they do follow it and find food, then they return too, strengthening the pheromone trail. The strength of the pheromone trail reduces over time meaning that younger and shorter pheromone trails, that do not take as long to traverse, attract more ants.  
+
+== PIC OF ACO ON GRAPH ==
+
+Ant Colony Optimisation mimics this behaviour on a graph by simulating ants marching along a graph that represents the problem being solved. The basic operation of the algorithm is as follows: 
+
+\begin{algorithm}
+   \KwData{A graph representing the problem}
+   \While{termination condition not meet}{
+      positionAnts()\\
+      \While{solution being built}{
+         marchAnts()\\
+      }
+      updatePheromones()\\
+   }
+\end{algorithm}
+ 
+At each iteration of the algorithm the ants are positioned randomly within the graph. The ants are then stochastically marched through the graph until they have completed a candidate solution (in the case of a \TSP this would be a tour of all vertices). At each stage of the march each ant selects their next edge based on the following probability formula:
+
+\[
+   p_{ij}^k = \frac{ [\tau_{ij}^{\alpha}] [\eta_{ij}^{\beta}] }{ \sum_{l \in N^k} [\tau_{il}^{\alpha}] [\eta_{il}^{\beta}] }
+\]
+
+Where $p_{ij}^k$ is probability that ant $k$ will traverse edge \edge{i}{j}, $N^k$ is the set of all edges that haven't been traversed by ant $k$ yet, $\tau$ is the amount of pheromone that has been deposited at an edge, $\eta$ is the desirability of an edge (based on a priori knowledge specific to the problem), and $\alpha$ and $\beta$ are global parameters that control how much influence each term has.
+
+Once the march is complete and a set of candidate solutions have been constructed (by each ant $k$), update the pheromones deposited on each edge by the follow equation:
+
+\[
+   \tau_{ij} = (1 - \rho) \tau_{ij} + \sum_{k=1}^m \Delta \tau_{ij}^k
+\]
+
+Where $0 < \rho \le 1$ is the pheromone persistence, and $\Delta \tau_{ij}^k$ is a function that gives the amount of pheromone deposited by ant $k$. The function is defined as:
+
+\[
+   \Delta \tau_{ij}^k = \left\{
+   \begin{array}{l l}
+     1 / C^k & \quad \text{if edge $\edge{i}{j}$ is visited by ant $k$} \\
+     0       & \quad \text{otherwise} \\
+   \end{array} \right.
+\]
+
+Where $C^k$ represents the total distance traveled through the graph by ant $k$. This ensures that shorter paths result in more pheromone being deposited.
+
+As an example of Ant Colony Optimization's use in combinatorial problems, we show how it can be applied to the \TSP. We build a weighted graph with $i \in V$ representing each customer and $\edge{i}{j} \in E$ and $w_{ij}$ representing the cost of travel between each customer. And at each stage of the iteration we ensure that the following constraints are met:
+
+\begin{itemize}
+   \item Each customer is visited at most once
+   \item We set $\eta_{ij}$ to be equal to $w_{ij}$
+\end{itemize}
+
+When the Ant Colony Optimizer starts it positions each ant at random customer within the graph. Each step of the ant's march then builds a tour through the customers. Once a ant has completed a tour then we have produced a candidate solution for the \TSP. The solutions will be of variable quality. We use the length of the tours to ensure that more pheromone is deposited on shorter tours. At the end of $n$ iterations the ants will have converged on an optimal solution (but like all meta-heuristics there's no guarantee that this the global optimum).
+
+== PIC OF IT BEING USED ON A TSP == 
+ 
+Ant Colony Optimization has been applied to \VRP\ by Bullnheimer, Hartl, and Strauss in \cite{BHS:1999A}, \cite{BHS:1999B}. They adapted the straight implementation used for the \TSP\ (detailed immediately above) by forcing the ant to create a new route each time it exceeds the capacity or maximum distance constraint. They also use a modified edge selection rule that also takes into account the vehicle's capacity and it's proximity to the depot. The updated rule is now given by:
+
+\[
+   p_{ij}^k = \frac{ [\tau_{ij}^{\alpha}] [\eta_{ij}^{\beta}] [s_{ij}] [\kappa_{ij}]  }{ \sum_{l \in N^k} [\tau_{il}^{\alpha}] [\eta_{il}^{\beta}] [s_{il}] [\kappa_{il}] }
+\]
+
+Where $s$ represents the proximity of customers $i, j$ to the depot, and $\kappa = (Q^i + q^j) / Q$ ($Q$ giving the max capacity, $Q^i$ giving the capacity already used on the vehicle, and $q^j$ is the additional load to be added). $\kappa$ influences the ants take advantage of available vehicle capacity. 
+
+Bullnheimer et al.'s implementations of Ant Colony Optimization for \VRP\ produces good quality solutions for the Christofides, Mingozzi and Toth problems \cite{CMT:1981}, but is not competitive with the best modern meta-heuristics.
+
+More recently Reimann, Stummer, and Doerner have presented a more competitive implementation of Ant Colony Optimization for \VRP\ \cite{RSD:2002}. Their implementation operates on a graph where $\edge{i}{j} \in E$ representing the savings of combining two routes, as given by the classic Clark and Wright savings heuristic \cite{clark:1964}. Each ant selects an ordering of how the merges are applied. This implementation is reported to be competitive with the best meta-heuristics \cite{Potvin:2009}.   
+ 
+% 
+% - WHAT ABOUT PSO IF I NEED MORE TO WRITE ABOUT
+% 
+
+\subsection{Bees Algorithm}
+
+% The Bees Algorithm is an optimisation algorithm inspired by the natural foraging behaviour of honey bees to find the optimal solution[4]. The algorithm requires a number of parameters to be set, namely: number of scout bees (n), number of sites selected out of n visited sites (m), number of best sites out of m selected sites (e), number of bees recruited for best e sites (nep), number of bees recruited for the other (m-e) selected sites (nsp), initial size of patches (ngh) which includes site and its neighbourhood and stopping criterion.
+%   The pseudo code for the bees algorithm in its simplest form[4]:
+%   
+%   1. Initialise population with random solutions.
+%   2. Evaluate fitness of the population.
+%   3. While (stopping criterion not met) //Forming new population.
+%   4.   Select sites for neighbourhood search.
+%   5.   Recruit bees for selected sites (more bees for best e sites) and evaluate fitnesses.
+%   6.   Select the fittest bee from each patch.
+%   7.   Assign remaining bees to search randomly and evaluate their fitnesses.
+%   8. End While.
+%                                                                                                            
+% In first step, the bees algorithm starts with the scout bees (n) being placed randomly in the search space. In step 2, the fitnesses of the sites visited by the scout bees are evaluated. In step 4, bees that have the highest fitnesses are chosen as “selected bees” and sites visited by them are chosen for neighbourhood search. Then, in steps 5 and 6, the algorithm conducts searches in the neighbourhood of the selected sites, assigning more bees to search near to the best e sites. The bees can be chosen directly according to the fitnesses associated with the sites they are visiting. Alternatively, the fitness values are used to determine the probability of the bees being selected. Searches in the neighbourhood of the best e sites which represent more promising solutions are made more detailed by recruiting more bees to follow them than the other selected bees. Together with scouting, this differential recruitment is a key operation of the Bees Algorithm. However, in step 6, for each patch only the bee with the highest fitness will be selected to form the next bee population. In nature, there is no such a restriction. This restriction is introduced here to reduce the number of points to be explored. In step 7, the remaining bees in the population are assigned randomly around the search space scouting for new potential solutions. These steps are repeated until a stopping criterion is met. At the end of each iteration, the colony will have two parts to its new population – those that were the fittest representatives from a patch and those that have been sent out randomly.[4]
+
+
+
+% - TIMELINE OF CLASSIC RESULTS
 % RESULTS TABLE FROM VRP BOOK / PAPER
 
 % – cluster first, route second (Fisher, Jaikumas, Net- works, 1981)
@@ -243,68 +393,6 @@ Ropke presents a series of results that show that his Large Neighbourhood Search
 % 2004  Population search (Prins, Computers & Operations Research; Mester and Br ̈aysy, Computers & Opera- tions Research)
 % 2004 Ant systems optimization (Reinmann, Doerner, Hartl, Computers & Operations Research)
 % 2005  Attribute based hill climber heuristic (Derigs, Kaiser)
-
-\section{An introduction to Swarm Intelligence}
-
-% - PSO
-% - Ant Colony
-% - Bees Algorithm
-
-% - TIMELINE OF CLASSIC RESULTS
-
-
-% =====================
-% SECTION
-% =====================
-\section{Classic \VRP\ heuristics in depth}
-\label{sec:cvhid}
-
-This section reviews some of the more common heuristics algorithms. BECAUSE THEY CAN BE USED AS IMPROVEMENT TECHNIQUES WHEN DESIGNING META-HEURISTICS
-
-% ---------------------
-\subsection{Nearest neighbour}
-The most simple algorithm, this codifies the intuitive principle of constructing a solution by picking the job to the depot, then the closest job to this, and so on until a route is filled.
-
-Formally the algorithm creates the sequence $R = \seq{v_0}$ and picks $v \in V$ such that $d_{0,i}$ is minimized. It repeat this until the route represented by $R$ is exceeds it capacity. Then a new route $R$ is constructed and the process is repeated with the remaining jobs. This continues until all jobs are allocated.
-
-Although the Nearest Neighbour algorithm is simple to understand and implement it situations can occur where the performance is bad
-
-% ---------------------
-\subsection{Nearest insertion}
-
-The algorithm was first proposed by ?
-
-This algorithm slightly improves upon the previous algorithm. The algorithm proceeds much the same as the Nearest Neighbour algorithm but instead of considering only the previous node it considers the entire sequence of jobs route so far in $R$. It finds an insertion point along $R$ such that for job $v_k$ insertion between vertices $v_i, v_j$ the function $c_{ik} + c_{kj} - c_{ij}$ is minimized.
-
-% ---------------------
-\subsection{Clark and Wright algorithm}
-
-Clark-Wright's widely known construction algorithm first appeared in \cite{clark:1964}. The algorithm uses a concept of \emph{savings}. The algorithm starts with a separate route for each customer: from depot, to customer, and back to the depot. A saving value is calculated for every pair of customers. The saving value is the distance saved by one customer being serviced directly after the other without returning to the depot in between -- in other words the savings gained by combining two partial routes. Routes are then merged based on the largest savings.
-
-The algorithm comes in two flavours: sequential and parallel. The sequential version sequentially adds customers to a route until a route has reached capacity (or based on some other constraint such as maximum route length) and then produces the next. The parallel version builds each route in parallel. The parallel version out performs the sequential version in most cases\cite{Laporte:1999} and is the version considered in our approach.
-
-The algorithm is surprising adaptable and has been extended to deal with more specialized vehicle routing problems were additional objectives and constraints must be considered. The algorithm's flexibility derives from its algebraic treatment of the problem rather than exploiting the problem's underlying spatial properties, as many of the two-phase algorithms do \ref{2phasealgorithms}. The algorithms savings formula can be adjusted to accommodate other objectives. An example of this is Solomon's equally ubiquitous algorithm \cite{Solomon:1987} which extends the Clark and Wright algorithm to cater for time constraints. 
-
-The algorithm works as follows:
-
-\begin{itemize}
-	\item Prime the solution with routes $R = \set{x_0, x_i, x_0}$ for all jobs $x_i \in X$.
-	\item For all $i,j$ calculate $s_{ij} = c_{i0} + c_{j0} - c_{ij}$.
-	\item Process each $S_{ij}$ in descending order, find routes $r_1 \in R : r_1 = \set{0,...,x_i,x_0}$ and $r_2 \in R: r_2 = \set{0,x_j,...,0}$. Merge these together such that $R' = \set{0,...,x_i, x+j,...,0}$. Stop once capacity constraints or route length constraint is exceeded.
-\end{itemize}
-
-\picscl{images/background-cw.pdf}{Clark Wright Savings Algorithm}{fig:cw_savings}{0.75}
-
-% ---------------------
-\subsection{2-opt}
-
-% ---------------------
-\subsection{Or-opt}
-
-% String Exchange + Cross
-
-% ---------------------
-\subsection{Osman-opt}
 
 
 
