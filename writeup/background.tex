@@ -117,6 +117,8 @@ There have been a number of meta-heuristics produced for the \VRP\ in recent yea
 
 \subsubsection{Simulated Annealing}
 
+% from simulated annealing. With such an acceptance criteria, the temporary solution xt is always accepted if c(xt ) ≤ c(x), and accepted with probability e−(c(xt )−c(x))/T if c(x) < c(xt ). Here T > 0 is the current temperature. The temperature is initialized at T0 > 0 and is decreased gradually, for example by performing the update Tnew = αTold at each iteration, where 0 < α < 1 is a parameter. The idea is that T is relatively high initially, thus allowing deteriorating solutions to be accepted. As the search progresses T decreases and towards the end of the search only a few or no deteriorating solutions will be accepted. If
+
 Simulated Annealing is inspired by the annealing process used in metallurgy. The algorithm starts with a candidate solution (which can be randomly selected) and then move to nearby solutions with a probability dependent on the quality of the solution and a global parameter $T$, that is reduced over the algorithm. By analogy to the metallurgy process $T$ represents the current temperature of the solution. Initially $T$ is high. This lets the algorithm free itself from any local minimum that it may be caught in. It is then cooled over time forcing the algorithm to converge to a new solution. 
 
 One of the first results was given by Robuste, Daganzo and Souleyrette \cite{RDS:1990}. They define the search neighbourhood all solutions that can be obtained from the current solution by applying one of three operations: relocating part of a route to another position within the same route, and exchanging customers between two routes. They tested their solution on some large real-world instances of up to 500 customers. They self-reported some success with their method but as their test cases are unique no direct comparison is possible. 
@@ -165,11 +167,9 @@ An alternative, and interesting, approach found in the literature is to instead 
 
 An influential adaption of Genetic Algorithms for solving \VRPTW\ was given in \cite{TNJ:1991} with their GIDEON algorithm. GIDEON uses an approach inspired by the sweep heuristic (an overview is provided in section \ref{twophaseheuristics}). Routes are built by sweeping a ray, centered at the depot, clockwise around the space enclosing the problem's locations. Customers are collected into candidate routes based on a set of parameters that are refined by the GA. GIDEON uses the GA to evolve these parameters rather than to operate on the problem directly. Finally GIDEON uses a local search method to optimize customers with the routes, making use of the $\lambda-interchange$ operation (see section \ref{tabusearch} for a description of this operator).
 
-More recently there have been two very promising application of Genetic Algorithms to \VRP. Nagata \cite{Nagata:2007} has adapted the EAX operator for with the \VRP. His method reached the best known solution for a number of the classic \VRP\ benchmark instances by Christofides, Mingozzi and Toth \cite{CMT:1981}.  
+Generally speaking Genetic Algorithms haven't been as competitive in \VRP\ as other meta-heuristics. However, more recently there have been two very promising application of Genetic Algorithms to \VRP. Nagata \cite{Nagata:2007} has adapted the EAX operator for with the \VRP. And Berger and Barkaoui have presented a Hybrid Genetic Algorithm called HGA-VRP in \cite{BM:2003}. HGA-VRP adapts a construction heuristic to be used as a crossover operator. The basic idea is that a set of routes are selected from each parent that are located close to each other. Customers are then removed from one parent and inserted into the second using an operation inspired by Solomon's construction heuristic for \VRPTW \cite{Solomon:1987}.
 
-% - HGA-VRP
-
-% Most powerful results in litrature use GA as global selector of best local search. Problem with GA is that doesn't take advantage of enough info about the problem space.
+Both methods have reached the best known solution for a number of the classic \VRP\ benchmark instances by Christofides, Mingozzi and Toth \cite{CMT:1981} and are competitive with the best Tabu Search methods.
 
 \subsubsection{Tabu Search}
 \label{tabusearch}
@@ -184,17 +184,41 @@ Toth and Vigo introduced the concept of Granular Tabu Search (GTS) \cite{GHL:199
 
 Taillard gave a very successful application of Tabu Search in \cite{Taillard:1993}. Talliard's Tabu Search uses Or's $\lambda-interchange$ as it's neighbourhood structure. It borrows two novel concepts from \cite{GHL:1994}, the use of a more sophisticated tabu mechanism - the duration (or number of iterations) that an item is tabu for is chosen randomly, and a diversification strategy, where vertices that are frequently moved without giving an improvement are penalised. An novel aspect of Taillard's algorithm is it's decomposing of the problem into sub-problems. The problem is split into regions using a simple segmentation of the region centred about the depot (Taillard also provides an alternative approach for problems where the customers are evenly distributed around the depot). From here each subproblem is solved individually, with customers being exchanged between neighboring segments periodically. Taillard observes that exchanging customer beyond neighboring segments is unlikely to produce an improvement, so can safely be ignored. Taillard's method has produced some of the currently best known results for the standard Christofides, Mingozzi and Toth problem sets \cite{CMT:1981}. 
 
+\subsubsection{Large Neighbourhood Search}
 
+Large Neighbourhood Search (commonly abbreviated to LNS) was recently proposed as a heuristic by Shaw \cite{Shaw:1998}. Large Neighbourhood Search is a type heuristic belonging to the family known as Very Large Scale Neighbourhood search (VLSN)\footnote{LNS is somewhat confusingly named given that it a type of VLSN, and not a competing approach}. Very Large Scale Neighborhood search is based on a simple premise that rather than searching within a neighborhood of solutions that can be obtained from a single (and typically quite granular) operation, such as $2-opt$, it might be profitable to consider a much broader neighborhood; A neighbourhood of candidate solutions that are obtained from applying many simultaneous changes to the current solution. What distinguishes these heuristics from others is that the neighborhood under consideration is typically exponentially large, and sometimes infeasible to search. Therefore much attention is given to providing practical methods to search these neighborhoods. 
 
-% 
-% - GA
-%   * Gideon
-%   * Generous
+Large Neighbourhood Search uses a Destroy and Repair metaphor for how it searches within its neighbourhood. The basic operation is as follows.
 
-% - Large Neighbourhood ???
-%   * Gideon
-%   * Generous
+\begin{algorithm}
+   $x$ = an initial solution\\
+   \While{termination condition not meet}{
+      $x^t$ = $x$\\
+      $destroy(x^t)$ \\
+      $repair(x^t)$ \\
+      \If {$x_t$ better than current solution}{
+         $x = x_t$
+      }
+   }
+   \KwResult{ $x$ }
+\end{algorithm}
 
+Firstly a starting position is generated. This can be done randomly or by using another heuristic. Then for each iteration of the algorithm a new position is generated by destroying part of the candidate solution and then by repairing it. If the new solution is better than the current solution, then this is selected as the new position and loop repeats. This can be seen as being a type of Very Large Scale Neighborhood because at each iteration the number of neighboring solutions that can be built from the partially destroyed solution is exponential on the size of the items removed (i.e. destroyed).
+
+Obviously a key component of this approach are the functions used to destroy and repair the solution. Care must be given to how these functions are constructed. They must pinpoint an improving solution from a very large neighbourhood of candidates, while also providing enough degrees of freedom to escape local minimum.
+
+Empiric evidence in the literature shows that even surprisingly simple functions can be effective (more effective in some cases) \cite{Shaw:1998}\cite{Ropke:2005}. In applications of Large Neighbourhood Search to \VRP\ a pair of simple operations are commonly used (alongside more complex ones) for the destroy and repair functions. Specifically, part of the candidate solution is destroyed by randomly selecting and removing $n$ customers. Then it is repaired by finding the least cost reinsertion points back into the solution for the $n$ customers.
+
+Shaw applied Large Neighbourhood Search to \VRP\ in his original paper introducing the method\cite{Shaw:1998}. Shaw introduces a few novel approaches to the destroy and repair functions. His destroy function removes a set of 'related' customers. He defines related customer to be any two customers that share a similar geographic location, that are sequentially routed, or that share a number of similar constraints (such as overlapping time windows if times constraints are used). The idea of removing related customers, over simply removing random customers, is that related customers are more likely to be profitable exchanged (likewise unrelated customers are more likely to be reinserted back in their original positions). Shaw's repair function made use of a simply branch and bound method that finds the minimum cost reinsertion points within the partial solution. His results where immediately impressive and reached the many of the best known solutions on the Christofides, Mingozzi and Toth problems \cite{CMT:1981}.
+
+More recently Ropke proposed an extension to the basic Large Neighbourhood Search process in \cite{Ropke:2005}. His method adds the concept of using a collection of destroy and repairs functions, rather than using a single pair. Which function to use is selected at each iteration based on it's previous performance. In this way the algorithm self adapts to using the most effective function to search the neighbourhood. 
+
+Ropke makes use of several destroy functions. He uses a simple random removal heuristic, Shaw's removal heuristic, and a worst removal heuristic, which removes the most costly customers (in terms of that customer's contribution the routes overall cost). Likewise for insertion he makes use of several different functions. These include a simple greedy insertion heuristic, and a novel insertion method he calls the 'regret heuristic'. Informally the regret heuristic reinserts those customers first who are most impacted (in terms of increased cost) by not being inserted into their minimum positions. Specifically let $U$ be the set of customers to be reinserted. let $x_{ik} = \set{1,...,m}$ be a variable that gives the $k$'th lowest cost for inserting customer $i \in U$ into the partial solution. Now let $c_i^* = x_{i2} - x_{i1}$, in other words the cost difference between inserting customer $i$ into it's second best position and its first. Now in each iteration of the repair function choose a customer that maximizes:
+\[
+   \operatorname*{max}_{i \in U} c_i^*
+\]
+
+Ropke presents a series of results that show that his Large Neighbourhood Search is very competitive for solving the \VRP\ and a large number of related problems, \CVRP, \VRPTW, \PDPTW, and \DARP). Considering that Large Neighbourhood Search was only proposed in 1998 it has been very successful. In a short space of time it has attracted a large amount of research and has produced some of the most competitive results.
 
 % RESULTS TABLE FROM VRP BOOK / PAPER
 
@@ -220,9 +244,11 @@ Taillard gave a very successful application of Tabu Search in \cite{Taillard:199
 % 2004 Ant systems optimization (Reinmann, Doerner, Hartl, Computers & Operations Research)
 % 2005  Attribute based hill climber heuristic (Derigs, Kaiser)
 
-\subsubsection{Biology inspired methods}
+\section{An introduction to Swarm Intelligence}
 
-% what's here?
+% - PSO
+% - Ant Colony
+% - Bees Algorithm
 
 % - TIMELINE OF CLASSIC RESULTS
 
@@ -279,21 +305,6 @@ The algorithm works as follows:
 
 % ---------------------
 \subsection{Osman-opt}
-
-% ---------------------
-\subsection{Tabu search}
-
-% - Adaptive memory maybe?
-
-% ---------------------
-\subsection{Large neighbourhood search}
-
-
-\section{An introduction to Swarm Intelligence}
-
-% - PSO
-% - Ant Colony
-% - Bees Algorithm
 
 
 
