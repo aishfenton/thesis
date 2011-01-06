@@ -23,7 +23,12 @@ Design goals:
 % =====================
 % SECTION
 % =====================
-\section{Algorithm}
+\section{Problem Representation}
+
+% =====================
+% SECTION
+% =====================
+\section{Modified Bees algorithm}
 
 % - Infeasible solutons admisible, just penalisted. Helps escape local minimum, like in TABUROUTE. 
 
@@ -32,63 +37,55 @@ Design goals:
 % - Takes advantage of Taillards observation that the move between tours don't need to be huge. It is suffient to move to the tour in an adjoining segment. This is achieved here by the NEAREST cities list, and much simplier and quicker.
 
 
-% =====================
-% Sub Section
-\subsection{Classic Bees algorithm}
-
-% =====================
-% Sub Section
-\subsection{Representation}
-
-% =====================
-% Sub Section
-\subsection{Changes from classic Bees Algorithm}
+% ---------------------
+\subsection{Deeper driller}
 
 % ---------------------
-\subsubsection{Deeper driller}
+\subsection{Keeping Bees separate}
 
 % ---------------------
-\subsubsection{Tabu List}
+\subsection{Tabu List}
 
 % - GRAPH OF HOW SITES ARE KEPT DISTINCT, AND THERE SPREAD
 
 % ---------------------
-\subsubsection{Aged Sites}
+\subsection{Aged sites}
+
+% - The problem with sending bees out to find random sites, and lopsided search, and how we fix it (aging of sites)
+
+% ---------------------
+\subsection{Selection of when to wonder around}
 
 % - GRAPH OF ALL SITES PROGRESS, WITH RESTARTS
 
-% ---------------------
-\subsubsection{Different Operations}
 
 % =====================
-% Sub Section
-\subsection{Operations}
-
-% ---------------------
-\subsubsection{2-Opt}
-
-% ---------------------
-\subsubsection{3-Opt}
-
-% ---------------------
-\subsubsection{Vertex-Swap}
-
-% ---------------------
-\subsubsection{Inverse}
-
-% ---------------------
-\subsubsection{Large Neighbourhood Search}
-
-    % Insertion
-    % Optimisation is to search local area only
-
-    % dependent on how the partial solution is repaired. Shaw [51] proposed to gradually increase the degree of destruction, while Ropke and Pisinger [45] choose the degree of destruction randomly in each iteration by choosing the degree from a specific range dependent on the instance size. The destroy method must also be chosen such
-
-    % erations. However, from a diversification point of view, an optimal repair operation may not be attractive: only improving or identical-cost solutions will be produced
-    
-% ---------------------
-% \subsubsection{Starting points}
+% SECTION
+% =====================
+\section{Problem Initiation}
 
 %   * Intial starting thingie ? k-means
 % We use kmeans clustering. The kmeans algorithm isn't guaranteed to produce the same result each run. This is conventionally viewed as limitation of the algorithm. However for our purpose this is an advantage as we can use the randomness to better seed the population with different solutions.  
 
+
+% =====================
+% SECTION
+% =====================
+\section{Large Neighbourhood Search}
+
+% ---------------------
+\subsection{Destroy}
+
+% - Worst
+% - Random
+
+% dependent on how the partial solution is repaired. Shaw [51] proposed to gradually increase the degree of destruction, while Ropke and Pisinger [45] choose the degree of destruction randomly in each iteration by choosing the degree from a specific range dependent on the instance size. The destroy method must also be chosen such
+
+% ---------------------
+\subsection{Repair}
+
+% - Random best (random order)
+
+% - Candidate lists
+
+    % However, from a diversification point of view, an optimal repair operation may not be attractive: only improving or identical-cost solutions will be produced

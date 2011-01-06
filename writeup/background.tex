@@ -5,13 +5,64 @@
 % ---------------------
 % =====================
 \chapter{Background}
-This section reviews the background of Vehicle Routing Problem (\VRP) and Pickup Delivery Problem (\PDP). Classic and more modern heuristics for solving the \VRP\ and related problems are reviewed as well providing a review of real-world implementations and results. 
+This section provides history and background material on the Vehicle Routing Problem. In particular we review the solution methods that been brought to bear on the Vehicle Routing Problem and some of the classic results reported in the literature. 
+
+This chapter is laid out as follows. We start in section \ref{sec:vo} by informally defining what the Vehicle Routing Problem is and by providing a timeline of the major milestones in its research. We also reviewing here a closely related problem, the Traveling Salesman Problem, which is a cornerstone of the Vehicle Routing Problem. We then review in section \ref{sec:em} the \emph{Exact Methods} that have been developed to solve the Vehicle Routing Problem. These are distinguished from the other methods we review in that they provide exact solutions, where the globally best answer is produced. We follow this in section \ref{sec:ch} by reviewing the \emph{Classic Heuristics} that have been developed for the Vehicle Routing Problem. These methods aren't guaranteed to find the globally best answer, but rather aim to produce close to optimal solutions using algorithms with fast running times that are able to scale to large problem instances. In section \ref{sec:mh} we review \emph{Meta-heuristic} methods that have been adapted for the Vehicle Routing Problem. These methods provide some of the most competitive results available for solving the Vehicle Routing Problem and are considered the state-of-the-art currently. Lastly in section \ref{sec:si} we review a modern family of meta-heuristics called \emph{Swarm Intelligence} that has been inspired by the problem solving abilities exhibited by some groups of animals and natural processes. These last methods have become a popular area of research recently and are starting to produce competitive results to many problems. This thesis uses a Swarm Intelligence method for solving the Vehicle Routing Problem.
+
 
 % =====================
 % SECTION
 % =====================
-\section{\TSP\ introduction and history}
-The traveling salesman problem can informally be defined as given $n$ points on a map provide a route through each of the $n$ points such that each point is only used once and the total distance travelled is minimized. The problem's name, traveling salesman, comes from the classic real-world example of the problem: a salesman is sent on a trip to visit $n$ cities. What is order should she visit the cities in, such that she covers the least distance? See figure \ref{fig:tsp_example}
+\section{\VRP\ overview}
+\label{sec:vo}
+
+The Vehicle Routing Problem (\VRP) seeks to solve the problem of constructing routes for a fleet of vehicles. Each route takes the vehicle through a set of customers to deliver a good (or service) at different locations. The routes must be constructed such that all constraints are meet, classically, the vehicle's capacity isn't exceeded by the number of customers being serviced. The goal is to minimize the cost of distributing the goods, which typically has meant minimizing the distance travelled across all routes.
+
+== INFORMAL DESCRIPTION == 
+
+== PIC OF VRP PROBLEM ==
+
+\VRP\ was first formally defined by Dantzig and Ramser, in \cite{Dantzig:1959} and has remained an important problem in logistics and transport (the original name given to the problem presented by Dantzig and Ramser was The Truck Scheduling Problem). The Vehicle Routing Problem is closely related to two problems, the Multiple Traveling Salesman Problem \MTSP\ and the Bin Packing Problem \BPP.
+
+% \VRP\ is one of the most the studied combinator optimization problems. Hundreds of papers been written on it  
+% 
+% Out of \VRP\ comes a family of related problems. These attempt to model other constraints that are encountered in real-world applications of the \VRP. Classic problems have included: \VRP\ with Time Windows that introduces a time window constraints  against each customer, that the vehicle must arrive within. \VRP\ multiple depot, where the vehicles are displayed from multiple start points. \VRP\ with Pick   
+
+% The large number of real-world applications, both in North America and Europe, have widely shown that the use of computerized procedures for the distribution process planning produces substantial savings (generally 5\% to 20\%) in globabl transportation costs. http://books.google.co.nz/books?hl=en&lr=&id=TeMgA5S74skC&oi=fnd&pg=PR5&dq=vehicle+routing+problem+history&ots=AhY2KbKu40&sig=F-oubQFGcQzDw-RODKMXg2C-jX8#v=onepage&q=vehicle%20routing%20problem%20history&f=false
+
+
+% - TIMELINE OF CLASSIC RESULTS
+% RESULTS TABLE FROM VRP BOOK / PAPER
+
+% – cluster first, route second (Fisher, Jaikumas, Net- works, 1981)
+% – intra-route improvement methods (TSP heuristics)
+% – inter-route improvement methods (λ-interchanges, Osman, 1993; cyclic exchanges, Thompson and Psaraf- fis, 1993; edge exchange schemes, Kindervater and Savelsbergh, 1997; ejection chains (Xu and Kelly, 1996; Rego and Roucairol, 1996; Rego, 1998); very large neighbourhood search (Ergun et al., 2003)
+% – SERR (De Franceschi, Fischetti, Toth, working pa- per, 2004)
+% --
+% 1989 First tabu search implementation (Willard, M.Sc. thesis, Imperial College)
+% 1991  First version of Taburoute (Gendreau, Hertz, Laporte, Tristan I Conference)
+% 1993  Tabu search (Taillard, Networks)
+% 1993 Simulated Annealing and tabu search (Osman, Annals of Operations Research)
+% 1994  Taburoute (Gendreau, Hertz, Laporte, Management Science)
+% 1995 Adaptive memory (Rochat, Taillard, Journal of Heuristics)
+% 1996  Ejection chains (Rego, Roucairol, Meta-Heuristics: Theory and Applications)
+% 9
+% 2001 Unified tabu search algorithm (Cordeau, Laporte, Mercier, Journal of the Operational Research Society)
+% 2002  Adaptive memory (Tarantilis, Kiranoudis, Annals of Operations Research)
+% 2003  Granular tabu search (Toth, Vigo, INFORMS Journal on Computing)
+% 2003 Very large neighbourhood search (Ergun, Orlin, Steele-Feldman, working paper, MIT)
+% 2004 Deterministic annealing (Li, Golden, Wasil, Computers & Operations Research)
+% 2004  Population search (Prins, Computers & Operations Research; Mester and Br ̈aysy, Computers & Opera- tions Research)
+% 2004 Ant systems optimization (Reinmann, Doerner, Hartl, Computers & Operations Research)
+% 2005  Attribute based hill climber heuristic (Derigs, Kaiser)
+
+
+
+% ====================
+\subsection{\TSP\ introduction and history}
+\label{sec:tiah}
+
+The traveling salesman problem can informally be defined as given $n$ points on a map provide a route through each of the $n$ points such that each point is only used once and the total distance travelled is minimized. The problem's name, the \emph{Traveling Salesman}, comes from the classic real-world example of the problem. A salesman is sent on a trip to visit $n$ cities. What is order should she visit the cities in, such that she covers the least distance? See figure \ref{fig:tsp_example}
 
 \picscl{images/background.pdf}{Traveling Salesman Problem}{fig:tsp_example}{0.75}
 
@@ -29,26 +80,12 @@ A generalization of \TSP is \MTSP, where multiple routes are allowed to be const
 
 \MTSP leads us naturally into the a class of problems derived from the Vehicle Routing Problem (\VRP). \VRP -- and it's family of related problems -- can be understood as being a combination of \MTSP\ along with  other constraints, which are in themselves often combinatorially hard problems.    
 
-% =====================
-% SECTION
-% =====================
-\section{\VRP\ introduction and history}
-The Vehicle Routing Problem (\VRP) seeks to solve the problem of constructing routes for a fleet of vehicles. Each route takes the vehicle through a set of customers to deliver a good (or service) at different locations. The routes must be constructed such that all constraints are meet, classically, the vehicle's capacity isn't exceeded by the number of customers being serviced. The goal is to minimize the cost of distributing the goods, which typically has meant minimizing the distance travelled across all routes.
-
-% The large number of real-world applications, both in North America and Europe, have widely shown that the use of computerized procedures for the distribution process planning produces substantial savings (generally 5\% to 20\%) in globabl transportation costs. http://books.google.co.nz/books?hl=en&lr=&id=TeMgA5S74skC&oi=fnd&pg=PR5&dq=vehicle+routing+problem+history&ots=AhY2KbKu40&sig=F-oubQFGcQzDw-RODKMXg2C-jX8#v=onepage&q=vehicle%20routing%20problem%20history&f=false
-
-% ---
-
-% \VRP\ is one of the most the studied combinator optimization problems. Hundreds of papers been written on it  
-% 
-% Out of \VRP\ comes a family of related problems. These attempt to model other constraints that are encountered in real-world applications of the \VRP. Classic problems have included: \VRP\ with Time Windows that introduces a time window constraints  against each customer, that the vehicle must arrive within. \VRP\ multiple depot, where the vehicles are displayed from multiple start points. \VRP\ with Pick   
-
-\VRP\ was first formally defined by Dantzig and Ramser, in \cite{Dantzig:1959} and has remained an important problem in logistics and transport (the original name given to the problem presented by Dantzig and Ramser was The Truck Scheduling Problem). The Vehicle Routing Problem is closely related to two problems, the Multiple Traveling Salesman Problem \MTSP\ and the Bin Packing Problem \BPP.
 
 % =====================
 % SECTION
 % =====================
-\section{Exact Methods}
+\section{Exact methods}
+\label{sec:em}
 
 The first efforts were concerned with exact solutions, and proceeded using many of the same techniques brought to bear on \TSP. 
 We follow Laporte and Nobert's survey \cite{LANO:87} and classify exact algorithms for the \VRP\ into three families: Direct tree search methods, Dynamic programming, and Integer linear programming.
@@ -66,7 +103,8 @@ Notwithstanding the above results, exact methods have been of more use in advanc
 % =====================
 % SECTION
 % =====================
-\section{Classic Heuristics}
+\section{Classic heuristics}
+\label{sec:ch}
 
 Classic \VRP\ heuristics can be classified into three families. Constructive heuristics; Two-phase heuristics, which again can be classified into two sub-families: cluster first and then route, and route first and then cluster; and Improvement methods.
 
@@ -110,7 +148,7 @@ Alkinkemer and Gavish provide an interesting variation on the basic savings heur
 A group of construction heuristics, know as Sequential Insertion Heuristics, had their first results due to Mole and Jameson \cite{MJ:1976}.
 
 \subsection{Two-phase heuristics}
-\label{twophaseheuristics}
+\label{sec:tph}
 
 We next look at two-phase heuristics. We start by looking at the cluster-first, route second sub-family. One of the foundational algorithms for this method is due to Gillett and Miller who provided a new approach called the Sweep Algorithm in their 1974 paper\cite{GM:1974}. This popularized the two-phase approach, although this method was suggested earlier by Wren in his 1971 book, and subsequently in Wren and Holliday's 1972 paper for Operations Research Quarterly. In this approach, a initial clustering phase is used to cluster the customers into a base set of routes. From here the routes are treated as separate \TSP\ and optimized accordingly. The two-phase approach typically doesn't prescribe a method for how the \TSP\ is solved and assumes that already developed \TSP\ methods can be used. The classic sweep algorithm uses a simple geometric method to cluster the customers. Routes are built by sweeping a ray, centered at the depot, clockwise around the space enclosing the problem's locations. The Sweep method is surprising effective and has been shown to solve several benchmark \VRP\ problems to within 2\% to 9\% of the best known solutions \cite{TV2001}.
 
@@ -134,7 +172,6 @@ Iterative Improvement methods follow a basic hilling climbing approach. They sta
 % % ---------------------
 % \subsection{Or-opt}
 % 
-% % String Exchange + Cross
 
 
 There have been a number of operations suggested. Christofides and Eilon gave one of the earliest iterative improvement methods in their paper \cite{CE:1969}. In this they made a simple change to the classic \TSP\ operation, 2-opt, increasing the amount of edges removed to three - the operation fittingly being called 3-opt. They found that their heuristics produced better results than the a 2-opt procedure could by itself. 
@@ -146,7 +183,8 @@ Iterative improvement heuristics are often used in combination with the other te
 % =====================
 % SECTION
 % =====================
-\section{Meta-Heuristics}
+\section{Meta-heuristics}
+\label{sec:mh}
 
 Meta-Heuristics are a broad collection of methods that make few or no assumptions about the type problem being solved. They provide a framework that allows for individual problems to be modeled and 'plugged in' to the meta-heuristic. Typically meta-heuristics take an approach where a candidate solution (or solutions) is initially produced and then is iteratively refined towards the optimal solution. Intuitively meta-heuristics can be thought of searching a problem's problem space. Each iteration searches the neighbourhood of the current candidate solution(s) looking for new candidate solutions that move closer to the goal. 
 
@@ -217,14 +255,14 @@ Another common crossover operator is EAX. EAX was originally designed for the \T
 
 An alternative, and interesting, approach found in the literature is to instead encode a set of operations and parameters that are feed to another heuristic, that in turn produces a candidate solution. An early example of this was suggested by \cite{??} who encoded a ordering of the customers. The ordering is then feed into an Insertion heuristic to produce the actual candidate solutions.
 
-An influential adaption of Genetic Algorithms for solving \VRPTW\ was given in \cite{TNJ:1991} with their GIDEON algorithm. GIDEON uses an approach inspired by the sweep heuristic (an overview is provided in section \ref{twophaseheuristics}). Routes are built by sweeping a ray, centered at the depot, clockwise around the space enclosing the problem's locations. Customers are collected into candidate routes based on a set of parameters that are refined by the GA. GIDEON uses the GA to evolve these parameters rather than to operate on the problem directly. Finally GIDEON uses a local search method to optimize customers with the routes, making use of the $\lambda-interchange$ operation (see section \ref{tabusearch} for a description of this operator).
+An influential adaption of Genetic Algorithms for solving \VRPTW\ was given in \cite{TNJ:1991} with their GIDEON algorithm. GIDEON uses an approach inspired by the sweep heuristic (an overview is provided in section \ref{sec:tph}). Routes are built by sweeping a ray, centered at the depot, clockwise around the space enclosing the problem's locations. Customers are collected into candidate routes based on a set of parameters that are refined by the GA. GIDEON uses the GA to evolve these parameters rather than to operate on the problem directly. Finally GIDEON uses a local search method to optimize customers with the routes, making use of the $\lambda-interchange$ operation (see section \ref{sec:ts} for a description of this operator).
 
 Generally speaking Genetic Algorithms haven't been as competitive in \VRP\ as other meta-heuristics. However, more recently there have been two very promising application of Genetic Algorithms to \VRP. Nagata \cite{Nagata:2007} has adapted the EAX operator for with the \VRP. And Berger and Barkaoui have presented a Hybrid Genetic Algorithm called HGA-VRP in \cite{BM:2003}. HGA-VRP adapts a construction heuristic to be used as a crossover operator. The basic idea is that a set of routes are selected from each parent that are located close to each other. Customers are then removed from one parent and inserted into the second using an operation inspired by Solomon's construction heuristic for \VRPTW \cite{Solomon:1987}.
 
 Both methods have reached the best known solution for a number of the classic \VRP\ benchmark instances by Christofides, Mingozzi and Toth \cite{CMT:1981} and are competitive with the best Tabu Search methods.
 
 \subsection{Tabu Search}
-\label{tabusearch}
+\label{sec:ts}
 
 Tabu Search follows the general approach shared by many meta-heuristics; it iteratively improving a candidate solution by searching for improvements within the current solution's neighborhood. Tabu search starts with a candidate solution, that may be generated randomly or by using another heuristic. Unlike Simulated Annealing, the best improvement within the current neighbourhood is always taken as the next move. This introduces the problem of cycling between candidate solutions. To overcome this Tabu Search introduces a list of solutions that have already been investigated and are forbidden as next moves (hence its name of Tabu List). 
 
@@ -275,9 +313,14 @@ Ropke presents a series of results that show that his Large Neighbourhood Search
 % =====================
 % SECTION
 % =====================
-\section{Swarm Intelligence}
+\section{Swarm intelligence}
+\label{sec:si}
 
-A recent area of research is in producing heuristics that mimic certain aspects of Swarm behaviour. Probably the most well known heuristics in this class are Particle Swarm Optimisation (PSO) and Ant Colony Optimisation (ACO). 
+A recent area of research is in producing heuristics that mimic certain aspects of Swarm behaviour. Probably the most well known heuristics in this class are Particle Swarm Optimisation (PSO) and Ant Colony Optimisation (ACO). Swarm Intelligence is interesting to combinatorial optimisation researches as it demonstrates a form of emergent intelligence, where individual members with limited reasoning capability and simple behaviours, are able to achieve collective goals that are remarkable sophisticated.
+
+In the context of combinatorial optimisation these behaviours can be mimicked and exploited to produce algorithms that are able to produce solutions to complex problems by simulating a number of agents who in themselves only need to perform rudimentary operations. A feature of this class of algorithms is the ease with which they can be parallelized, making them more easily adaptable to large scale problems.
+
+Swarm Intelligence algorithms have been employed to solve a number of problems. We look at two examples here, Ant Colony Optimisation, and the Bees Algorithm, which this thesis makes use of.
 
 \subsection{Ant Colony Optimization}
 
@@ -353,46 +396,39 @@ More recently Reimann, Stummer, and Doerner have presented a more competitive im
 
 \subsection{Bees Algorithm}
 
-% The Bees Algorithm is an optimisation algorithm inspired by the natural foraging behaviour of honey bees to find the optimal solution[4]. The algorithm requires a number of parameters to be set, namely: number of scout bees (n), number of sites selected out of n visited sites (m), number of best sites out of m selected sites (e), number of bees recruited for best e sites (nep), number of bees recruited for the other (m-e) selected sites (nsp), initial size of patches (ngh) which includes site and its neighbourhood and stopping criterion.
-%   The pseudo code for the bees algorithm in its simplest form[4]:
-%   
-%   1. Initialise population with random solutions.
-%   2. Evaluate fitness of the population.
-%   3. While (stopping criterion not met) //Forming new population.
-%   4.   Select sites for neighbourhood search.
-%   5.   Recruit bees for selected sites (more bees for best e sites) and evaluate fitnesses.
-%   6.   Select the fittest bee from each patch.
-%   7.   Assign remaining bees to search randomly and evaluate their fitnesses.
-%   8. End While.
-%                                                                                                            
-% In first step, the bees algorithm starts with the scout bees (n) being placed randomly in the search space. In step 2, the fitnesses of the sites visited by the scout bees are evaluated. In step 4, bees that have the highest fitnesses are chosen as “selected bees” and sites visited by them are chosen for neighbourhood search. Then, in steps 5 and 6, the algorithm conducts searches in the neighbourhood of the selected sites, assigning more bees to search near to the best e sites. The bees can be chosen directly according to the fitnesses associated with the sites they are visiting. Alternatively, the fitness values are used to determine the probability of the bees being selected. Searches in the neighbourhood of the best e sites which represent more promising solutions are made more detailed by recruiting more bees to follow them than the other selected bees. Together with scouting, this differential recruitment is a key operation of the Bees Algorithm. However, in step 6, for each patch only the bee with the highest fitness will be selected to form the next bee population. In nature, there is no such a restriction. This restriction is introduced here to reduce the number of points to be explored. In step 7, the remaining bees in the population are assigned randomly around the search space scouting for new potential solutions. These steps are repeated until a stopping criterion is met. At the end of each iteration, the colony will have two parts to its new population – those that were the fittest representatives from a patch and those that have been sent out randomly.[4]
+Over the last decade, and inspired by the success of Ant Colony Optimisation, there have been a numerous algorithms proposed that aim to mimic the behaviour of bees. These includes Bee colony optimization that has been applied to many different combinatorial problems, Marriage in honey Bees Optimization (MBO) that has been applied to propositional satisfiability problems, BeeHive that has been applied to timetabling problems, the Virtual Bee Algorithm (VBA) that is used for function optimisation, Honey-bee mating optimisation (HBMO) for cluster analysis, and finally the Bees Algorithm that is the focus of this thesis. See \cite{LJDS:2009} for a bibliography and high level overview on many of these algorithms. 
 
+=== CAN EXTEND OUT IF NEEDED ===
 
+The Bees Algorithm was first proposed by \cite{PGKORZ:2005}. It is inspired by the foraging behaviour of honeys bees. Bee colonies must search a large geographic area around their hive in order to find sites with enough pollen that it can sustain a hive. Its essential that the colony makes the right choices in what sites are exploited and how much resource is expended on a particular site. They achieve this by sending scout bees out in all directions from the hive. Once a scout bee has found a promising site it returns to the hive and recruits hive mates to forage at the site too. The bee does this by performing a \emph{waggle} dance. The dance communicates the location and quality of the site (i.e. fitness). Over time as more bees successfully forage at the site, more are recruited into exploiting that site. This last aspect is similar in process to how ants divert more resource to promising areas when foraging. 
 
-% - TIMELINE OF CLASSIC RESULTS
-% RESULTS TABLE FROM VRP BOOK / PAPER
+== PIC OF WAGGLE DANCE ==
 
-% – cluster first, route second (Fisher, Jaikumas, Net- works, 1981)
-% – intra-route improvement methods (TSP heuristics)
-% – inter-route improvement methods (λ-interchanges, Osman, 1993; cyclic exchanges, Thompson and Psaraf- fis, 1993; edge exchange schemes, Kindervater and Savelsbergh, 1997; ejection chains (Xu and Kelly, 1996; Rego and Roucairol, 1996; Rego, 1998); very large neighbourhood search (Ergun et al., 2003)
-% – SERR (De Franceschi, Fischetti, Toth, working pa- per, 2004)
-% --
-% 1989 First tabu search implementation (Willard, M.Sc. thesis, Imperial College)
-% 1991  First version of Taburoute (Gendreau, Hertz, Laporte, Tristan I Conference)
-% 1993  Tabu search (Taillard, Networks)
-% 1993 Simulated Annealing and tabu search (Osman, Annals of Operations Research)
-% 1994  Taburoute (Gendreau, Hertz, Laporte, Management Science)
-% 1995 Adaptive memory (Rochat, Taillard, Journal of Heuristics)
-% 1996  Ejection chains (Rego, Roucairol, Meta-Heuristics: Theory and Applications)
-% 9
-% 2001 Unified tabu search algorithm (Cordeau, Laporte, Mercier, Journal of the Operational Research Society)
-% 2002  Adaptive memory (Tarantilis, Kiranoudis, Annals of Operations Research)
-% 2003  Granular tabu search (Toth, Vigo, INFORMS Journal on Computing)
-% 2003 Very large neighbourhood search (Ergun, Orlin, Steele-Feldman, working paper, MIT)
-% 2004 Deterministic annealing (Li, Golden, Wasil, Computers & Operations Research)
-% 2004  Population search (Prins, Computers & Operations Research; Mester and Br ̈aysy, Computers & Opera- tions Research)
-% 2004 Ant systems optimization (Reinmann, Doerner, Hartl, Computers & Operations Research)
-% 2005  Attribute based hill climber heuristic (Derigs, Kaiser)
+Informally the algorithm can be described as follows. Bees are initially sent out to random locations. The fitness of each site is then calculated. A proportion of the bees are reassigned to those sites that had the highest fitness values. Here each bee searches the local neighbor of the site looking to improve site's fitness. The remainder of the bees are sent out scouting for new sites, in other words they are reinitialized to a random position. This process repeats until some site reaches a satisfactory level of fitness -- or the optimal solution is reached, if this is known in advance.
+
+More formally the algorithm operates as follows:
+
+\begin{algorithm}[H]
+   \caption{IntervalRestriction\label{IR}}
+   $B = \set{b_1, b_2,..., b_n}$
+   setToRandomPosition($B$)\\
+   \While{termination condition not meet}{
+      sortByFitness($B$) \\
+      $E = \set{b_1, b_2,...,b_e}$ \\
+      $R = \set{b_{e+1}, b_{e+2},...,b_{m}}$ \\
+      searchNeighbourhood($E \UNION \set{c_1,...,c_{nep}}$) \\
+      searchNeighbourhood($R \UNION \set{d_1,...,d_{nsp}}$) \\
+      setToRandomPosition($B - (E \UNION R)$) \\
+   }
+\end{algorithm}
+
+$B$ is the set of bees that are used to search the search space. Initially the bees are set to random positions. Function $sortByFitness$ sorts the bees in order of maximum fitness. It then proceeds by taking the $m$ most promising sites found by the bees. It does this by partitioning these into two sets, $E, N \subset B$. $E$ is the first $e$ best sites, and represents the so called \emph{elite} bees. $N$ is the $m - e$ next most promising sites. The $searchNeighbourhood$ function explores the neighbourhood around a provided set of bees. Each sites in $E$ and $N$ is explored. $nep$ bees are recruited for the search of each $b \in E$, and $nsp$ are recruited for the search of each $b \in N$. In practice this means that $nep$ and $nsp$ moves are explored, respectively, within the neighbourhoods of each site. These moves are typically made stochastically, but it is imaginable that a deterministic approach could be used too. The remaining $n - m$ bees (in other words, those not in $E$ and $N$) are set to random positions. This is repeated until the termination conditions is met, which may be a running time threshold or a predetermined fitness level. 
+
+The promised advantage of the Bees Algorithm over other meta-heuristics is its ability to escape local minima and its ability to navigate search topologies with rough terrain (such as in figure \ref{fig:rtst}). It achieves this by scouting the search space for the most promising sites, and then by committing more resource to those sites that are producing results.
+
+\picscl{images/search_space.pdf}{Search space with a rough terrain}{fig:rtst}{0.66}
+
+The Bees Algorithm has been applied to manufacturing cell formation, training neural networks for pattern recognition, scheduling jobs for a production machine, data clustering, and many others. See \cite{beesalg} for more examples and a comprehensive bibliography. However, as best as we know the Bees Algorithm hasn't been used on the Vehicle Routing Problem until now.
 
 
 
