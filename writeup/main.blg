@@ -7,11 +7,15 @@ I'm skipping whatever remains of this command
 The style file: plain.bst
 Database file #1: bibliography.bib
 Warning--entry type for "Willard:1989" isn't style-file defined
---line 1 of file bibliography.bib
+--line 151 of file bibliography.bib
+A bad cross reference---entry "Potvin:2009"
+refers to entry "DBLP:series/sci/2009-161", which doesn't exist
 Warning--I didn't find a database entry for "?"
 Warning--I didn't find a database entry for "LMN:1986"
 Warning--I didn't find a database entry for "???"
 Warning--I didn't find a database entry for "??"
+Warning--I didn't find a database entry for "beesalg"
+Warning--I didn't find a database entry for "DBLP:series/sci/2009-161"
 Name 1 in "Dantzig, Fulkerson, and Johnson" has a comma at the end for entry Dantzig:1954
 while executing---line 1049 of file plain.bst
 Name 1 in "Laporte, G., and Nobert, Y" has a comma at the end for entry LANO:87
@@ -20,6 +24,11 @@ Name 1 in "Christofides, N., Mingozzi, A., and Toth, P." has a comma at the end 
 while executing---line 1049 of file plain.bst
 Too many commas in name 1 of "Christofides, N., Mingozzi, A., and Toth, P." for entry CMT:1981
 while executing---line 1049 of file plain.bst
+Too many commas in name 1 of "Pham, Ghanbarzadeh, Koc, Otri S, Rahim S and Zaidi M" for entry PGKORZ:2005
+while executing---line 1049 of file plain.bst
+Too many commas in name 1 of "Pham, Ghanbarzadeh, Koc, Otri S, Rahim S and Zaidi M" for entry PGKORZ:2005
+while executing---line 1049 of file plain.bst
+Warning--empty publisher in BM:2003
 Name 1 in "Christofides, N., Mingozzi, A., and Toth, P." has a comma at the end for entry CMT:1981
 while executing---line 1090 of file plain.bst
 Too many commas in name 1 of "Christofides, N., Mingozzi, A., and Toth, P." for entry CMT:1981
@@ -31,45 +40,54 @@ Name 1 in "Laporte, G., and Nobert, Y" has a comma at the end for entry LANO:87
 while executing---line 1090 of file plain.bst
 Warning--can't use both author and editor fields in LANO:87
 Warning--empty publisher in LANO:87
-You've used 25 entries,
+Warning--empty institution in GHL:1998
+Too many commas in name 1 of "Pham, Ghanbarzadeh, Koc, Otri S, Rahim S and Zaidi M" for entry PGKORZ:2005
+while executing---line 1090 of file plain.bst
+Too many commas in name 1 of "Pham, Ghanbarzadeh, Koc, Otri S, Rahim S and Zaidi M" for entry PGKORZ:2005
+while executing---line 1090 of file plain.bst
+Warning--empty institution in PGKORZ:2005
+Warning--empty publisher in Potvin:2009
+Warning--empty booktitle in Shaw:1998
+Warning--empty publisher in Shaw:1998
+You've used 40 entries,
             2118 wiz_defined-function locations,
-            669 strings with 7452 characters,
-and the built_in function-call counts, 6696 in all, are:
-= -- 668
-> -- 224
-< -- 1
-+ -- 97
-- -- 66
-* -- 409
-:= -- 1168
-add.period$ -- 74
-call.type$ -- 25
-change.case$ -- 107
+            770 strings with 9972 characters,
+and the built_in function-call counts, 11591 in all, are:
+= -- 1183
+> -- 353
+< -- 10
++ -- 157
+- -- 104
+* -- 663
+:= -- 1916
+add.period$ -- 122
+call.type$ -- 40
+change.case$ -- 171
 chr.to.int$ -- 0
-cite$ -- 28
-duplicate$ -- 262
-empty$ -- 586
-format.name$ -- 66
-if$ -- 1391
+cite$ -- 49
+duplicate$ -- 516
+empty$ -- 994
+format.name$ -- 104
+if$ -- 2497
 int.to.chr$ -- 0
-int.to.str$ -- 25
-missing$ -- 21
-newline$ -- 127
-num.names$ -- 51
-pop$ -- 88
+int.to.str$ -- 40
+missing$ -- 33
+newline$ -- 202
+num.names$ -- 82
+pop$ -- 161
 preamble$ -- 1
-purify$ -- 83
+purify$ -- 132
 quote$ -- 0
-skip$ -- 176
+skip$ -- 386
 stack$ -- 0
-substring$ -- 461
-swap$ -- 25
-text.length$ -- 1
+substring$ -- 789
+swap$ -- 124
+text.length$ -- 10
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 96
-warning$ -- 3
-while$ -- 69
-width$ -- 27
-write$ -- 270
-(There were 9 error messages)
+type$ -- 154
+warning$ -- 9
+while$ -- 115
+width$ -- 42
+write$ -- 432
+(There were 14 error messages)

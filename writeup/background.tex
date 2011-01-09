@@ -136,7 +136,7 @@ We start by looking at \emph{constructive} heuristics. Constructive heuristics b
 
 A trivial but intuitive constructive heuristic is the \emph{Nearest Neighbour} method. In this method routes are built-up sequentially. At each step the customer nearest to the last routed customer is chosen. This continues until the route reaches its maximum capacity, at which point a new route is started. In practice the Nearest Neighbour algorithm tends to provide poor results and is rarely used. 
  
-\picscl{images/nn.pdf}{An example of the Nearest Neighbour method being applied. A partially constructed route selects customer $j$ to add, as it's closest to the last added customer, $i$}{fig:nn}{0.55}
+\picscl{images/nn.pdf}{Shown is an example of the Nearest Neighbour method being applied. A partially constructed route selects customer $j$ to add, as it's closest to the last added customer, $i$}{fig:nn}{0.55}
 
 An early and influential result was given by Clarke and Wright in their 1964 paper \cite{clark:1964}. In their paper they presented a heuristic method that has since become known as the \emph{Clarke Wright Savings} heuristic. The method improved upon Dantzig and Ramser's earlier work. The heuristic is based on the simple premise of iteratively combining routes in order of those pairs that provide the largest saving. 
 
@@ -182,7 +182,7 @@ This classic algorithm has been extended by Gaskell (1967), Yellow (1970) and Pa
 
 We next look at two-phase heuristics. We start by looking at the cluster-first, route second sub-family. One of the foundational algorithms for this method is due to Gillett and Miller who provided a new approach called the Sweep Algorithm in their 1974 paper\cite{GM:1974}. This popularized the two-phase approach, although this method was suggested earlier by Wren in his 1971 book, and subsequently in Wren and Holliday's 1972 paper for Operations Research Quarterly. In this approach, a initial clustering phase is used to cluster the customers into a base set of routes. From here the routes are treated as separate \TSP\ and optimized accordingly. The two-phase approach typically doesn't prescribe a method for how the \TSP\ is solved and assumes that already developed \TSP\ methods can be used. The classic sweep algorithm uses a simple geometric method to cluster the customers. Routes are built by sweeping a ray, centered at the depot, clockwise around the space enclosing the problem's locations. The Sweep method is surprising effective and has been shown to solve several benchmark \VRP\ problems to within 2\% to 9\% of the best known solutions \cite{TV2001}.
 
-\picscl{images/sweep.pdf}{Sweep Algorithm. The ray is being swept clickwise. One route has already been formed, and a second is about to start at customer $i$}{fig:sweep}{0.55}
+\picscl{images/sweep.pdf}{This diagram shows an example of the Sweep process being run. The ray is swept clockwise around the geographic area. In this example one route has already been formed, and a second is about to start at customer $i$}{fig:sweep}{0.55}
 
 Fisher and Jaikumas's 1981 paper builds upon the two-phase approach by providing a more sophisticated clustering method. They solve a General Assignment Problem to form the clusters instead. A limitation of their method is that the amount of vehicle routes must be fixed up front. Their method often produces results that are 1\% to 2\% better than similar results produced by the classic sweep algorithm \cite{TV2001}. 
 
@@ -218,9 +218,9 @@ Iterative improvement heuristics are often used in combination with the other te
 
 Meta-Heuristics are a broad collection of methods that make few or no assumptions about the type problem being solved. They provide a framework that allows for individual problems to be modeled and 'plugged in' to the meta-heuristic. Typically meta-heuristics take an approach where a candidate solution (or solutions) is initially produced and then is iteratively refined towards the optimal solution. Intuitively meta-heuristics can be thought of searching a problem's search space. Each iteration searches the neighbourhood of the current candidate solution(s) looking for new candidate solutions that move closer to the goal. 
 
-== INSERT PIC OF SEARCH SPACE ==
+\picscl{images/good_search_space.pdf}{This diagram shows an example of a search space that a meta-heuristic moves through. In this example the peak at the centre of the figure is the globally best answer, but there are also hills and valleys that the meta-heuristic may become caught in. These are known as local minima and maxima}{fig:gss}{0.66}
 
-A limitation of meta-heuristics is that they aren't guaranteed to find an optimal solution (or even a good candidate). Indeed the theoretical underpinnings of what makes a meta-heuristic more effective than another is still poorly understood. Instead meta-heuristics in the literature tend to be tuned for specific problems and then validated empirically.
+A limitation of meta-heuristics is that they aren't guaranteed to find an optimal solution (or even a good candidate!). Moreover the theoretical underpinnings of what makes one meta-heuristic more effective than another are still poorly understood. Meta-heuristics within the literature tend to be tuned for specific problems and then validated empirically.
 
 There have been a number of meta-heuristics produced for the \VRP\ in recent years. Many of the most competitive results produced in the last ten years have been from meta-heuristic approaches. We next review some of the more well known meta-heuristic results for \VRP.
 
@@ -238,10 +238,9 @@ One of the first results was given by Robuste, Daganzo and Souleyrette \cite{RDS
 
 Osman has given probably the best know Simulated Annealing results for \VRP \cite{Osman:1993}. His algorithm expands upon many areas of the basic Simulated Annealing approach. The method start by using the Clark and Wright algorithm to produce a starting position. It defines its neighbourhood as candidate solutions that can be searched by applying a $\lambda-interchange$ operation.
 
-% === PIC OF lambda-interchange ===
-% \subsection{lambda-interchange}
+$\lambda-interchange$ works by selecting two sequences (i.e. chains) of customers $C_p, C_q$ from two routes, $R_p$ and $R_q$, such that $\length{C_p}, \length{C_q} < \lambda$ (note the chains aren't necessary of the same length). The customers within each chain are then exchanged until an exchange produces an infeasible solution. As the neighbourhood produced by $\lambda-interchange$ is typically large Osman restricts $\lambda$ to $\le 2$ and suggests that the first move that provides an improvement is used rather than exhaustively searching the entire neighbourhood.
 
-$\lambda-interchange$ works by selecting two sequences (i.e. chains) of customers $S_p, S_q$ from two routes, $p$ and $q$, such that $\length{S_p}, \length{S_q} < \lambda$ (note the chains aren't necessary of the same length). The customers within each set are then exchanged until an exchange produces an infeasible solution. As the neighbourhood produced by $\lambda-interchange$ is typically large Osman restricts $\lambda$ to $\le 2$ and take the first move that provides an improvement. 
+\picscl{images/lambdaopt.pdf}{This diagram shows an example of of $\lambda-interchange$ being applied to a candidate solution. Two sequences of customers $C_p$ and $C_q$ are selected from routes $R_p$, $R_q$ respectively. Customers from $C_p$ are then swapped with $C_q$ where feasible.}{fig:lambdaopt}{0.66}
 
 Osman also uses a sophisticated cooling schedule; his main change being that the temperature is cooled continuously while improvements are found, or if no improvement he resets the temperature (using $T_i = max(\frac{T_r}{2}, T_b)$, where $T_r$ is the reset temperature, and $T_b$ is temperature of the best solution found so far). 
 
@@ -252,26 +251,27 @@ Although Simulated Annealing has produced some good results, and in many cases o
 Genetic Algorithms where first proposed in \cite{Holland:1975}. They've since been applied to many problem domains and are particularly well suited to applications that must work across a few distinct problems. In fact they were the first evolutionary inspired algorithms to be applied to combinatorial problems \cite{Potvin:2009}. The basic operation of a GA is as follows:
 
 \begin{algorithm}
-    Generate the initial population\\
-    \While{termination condition not meet}{
-        Evaluate the fitness of each individual\\
-        Select the fittest pairs\\
-        Mate pairs and produce next generation\\
-        Mutate (optional)\\
-    }
+   \caption{Simple Genetic Algorithm}
+   Generate the initial population\\
+   \While{termination condition not meet}{
+      Evaluate the fitness of each individual\\
+      Select the fittest pairs\\
+      Mate pairs and produce next generation\\
+      Mutate (optional)\\
+   }
 \end{algorithm}
 
 In classic Genetic Algorithms each candidate solution is encoded as a binary string (i.e. chromosome). Each individual (i.e. candidate solution) is initially created randomly and used to seed the population. There are many techniques suggested in the literature for initially 'bootstraping' the population by making use of other heuristics to produce a stronger initial population, however special care must be taken with Genetic Algorithms to ensure that diversity is maintained within the population - otherwise there is a risk of premature convergence. 
 
 Next the fittest individuals are selected from the population, and reproduction (crossover) and mutation operations are applyed to them to produce the next generation. A classic crossover operation takes individuals encoded as binary strings and splits them at one or two points. The parts are then recombined to form a new candidate solution. The idea being that the crossover produces a new candidate solution from two successful partial solutions. This process is repeated until a termination condition is meet (often a predetermined running time), or until the population has converged on a fitness.
 
-Special consideration needs to be given to how discrete optimisation problems, such as the \VRP, are represented and how their operators are constructed. For instance, consider how the classic crossover operation would work on a \TSP path. When two parts of two separate solutions are combined they are likely to contain duplicates. Therefore it is more common for the \VRP\ (and the \TSP\ as well) to use a direct representation, rather than a binary encoding. In this instance the \VRP is represented as collection of sequences, each holdings a sequence of customers. The Genetic Algorithm then must use operators specially designed for this representation of the problem. 
+Special consideration needs to be given to how discrete optimisation problems, such as the \VRP, are represented and how their operators are constructed. For instance, consider how the classic crossover operation would work on a \TSP path. When two parts of two separate solutions are combined they are likely to contain duplicates. Therefore it is more common for the \VRP\ (and the \TSP\ as well) to use a direct representation, rather than a binary encoding. In this instance the \VRP\ is represented as collection of sequences, each holdings a sequence of customers. The Genetic Algorithm then must use operators specially designed for this representation of the problem. 
 
-Two commonly used crossover operators are Order Crossover (OX) and Edge Assembly Crossover (EAX). OX \cite{OSH:1987} operates by placing two cuts points within each route. The the substring between the two cut points is copied from the first parent directly into the offspring. The remainder of the string from the second parent is then copied to the offspring, but with any duplicates removed. This potentially leaves an incomplete solution, where not all the customers have been routed. The solutions is then "repaired" by inserting any remaining customers using an insertion heuristic.
+Two commonly used crossover operators are Order Crossover ($OX$) and Edge Assembly Crossover ($EAX$). $OX$ \cite{OSH:1987} operates by placing two cuts points within each route. The substring between the two cut points is copied from the first parent directly into the offspring. The remainder of the string from the second parent is then copied to the offspring, but with any duplicates removed. This potentially leaves an incomplete solution, where not all the customers have been routed. The solutions is then \emph{repaired} by inserting any remaining customers using an insertion heuristic.
 
-== PIC OF OX Operator == 
+\picscl{images/ox.pdf}{This diagram shows the $OX$ crossover operator being applied to two tours of the customers. A child is produced by taking customers at position $c_3, c_4, c_5$ from the second parent and injecting these into the same position in the first parent, removing any duplicates. This leaves customer $4,5$ unrouted, so these are reinserted back into the child in the order that they appear in the first parent}{fig:ox}{0.75}
 
-Another common crossover operator is EAX. EAX was originally designed for the \TSP\ but has been adapted to the \VRP by \cite{Nagata:2007}. EAX operates using the following process:
+Another common crossover operator is $EAX$. $EAX$ was originally designed for the \TSP\ but has been adapted to the \VRP\ by \cite{Nagata:2007}. $EAX$ operates using the following process:
 
 \begin{enumerate}
     \item Combine the two candidate solutions into a single graph by merging each solutions edge sets.
@@ -281,7 +281,7 @@ Another common crossover operator is EAX. EAX was originally designed for the \T
     \item Not all cycles in the child are connected to the route. Repair them by iteratively merging the disconnected cycles to the connected cycles.
 \end{enumerate}
 
-== PIC OF EAX ==
+\picscl{images/eax.pdf}{This diagram shows an example of of $EAX$ being applied on two parent solutions, $P1$ and $P2$. The parents are first merged together. Then a new graph is created by selecting alternate edges from each parent $P1$, $P2$. A subset of cycles are then taken and applied to $P1$, such that any edges from $P1$ are removed. The child solution produced is infeasible (it contains broken routes). These would need to be repaired.}{fig:eax}{0.40}
 
 An alternative, and interesting, approach found in the literature is to instead encode a set of operations and parameters that are feed to another heuristic, that in turn produces a candidate solution. An early example of this was suggested by \cite{??} who encoded a ordering of the customers. The ordering is then feed into an Insertion heuristic to produce the actual candidate solutions.
 
@@ -311,6 +311,7 @@ Large Neighbourhood Search (commonly abbreviated to LNS) was recently proposed a
 Large Neighbourhood Search uses a Destroy and Repair metaphor for how it searches within its neighbourhood. The basic operation is as follows.
 
 \begin{algorithm}
+   \caption{Large Neighbourhood Search}
    $x$ = an initial solution\\
    \While{termination condition not meet}{
       $x^t$ = $x$\\
@@ -352,15 +353,16 @@ In the context of combinatorial optimisation these behaviours can be mimicked an
 
 Swarm Intelligence algorithms have been employed to solve a number of problems. We look at two examples here, Ant Colony Optimisation, and the Bees Algorithm, which this thesis makes use of.
 
-\subsection{Ant Colony Optimization}
+\subsection{Ant Colony Optimisation}
 
 Ant Colony Optimization is inspired by how ants forage for food and communicate successful sites back to the colony. Real life initially forage for food randomly. Once they find a food source they return to the colony and in the process lay down a pheromone trail. Other ants that then stumble upon the pheromone trail follow it with a probability dependent on how strong (and old) the pheromone trail is. If they do follow it and find food, then they return too, strengthening the pheromone trail. The strength of the pheromone trail reduces over time meaning that younger and shorter pheromone trails, that do not take as long to traverse, attract more ants.  
 
-== PIC OF ACO ON GRAPH ==
+\picscl{images/aco.pdf}{This diagram depicts how ants make use of pheromone trails to optimise their exploitation of local food sources}{fig:aco}{1}
 
 Ant Colony Optimisation mimics this behaviour on a graph by simulating ants marching along a graph that represents the problem being solved. The basic operation of the algorithm is as follows: 
 
 \begin{algorithm}
+   \caption{Ant Colony Optimisation}
    \KwData{A graph representing the problem}
    \While{termination condition not meet}{
       positionAnts()\\
@@ -406,7 +408,7 @@ As an example of Ant Colony Optimization's use in combinatorial problems, we sho
 
 When the Ant Colony Optimizer starts it positions each ant at random customer within the graph. Each step of the ant's march then builds a tour through the customers. Once a ant has completed a tour then we have produced a candidate solution for the \TSP. The solutions will be of variable quality. We use the length of the tours to ensure that more pheromone is deposited on shorter tours. At the end of $n$ iterations the ants will have converged on an optimal solution (but like all meta-heuristics there's no guarantee that this the global optimum).
 
-== PIC OF IT BEING USED ON A TSP == 
+\picscl{images/acotsp.pdf}{Shown is an example of ACO being used to solve a \TSP. Initially the ants explore the entire graph. At the end of each iteration the more optimal tours will have more pheromone deposited on them, meaning in the next iteration the ants are more likely to pick these edges when constructing their tour. Eventually the ants converge on a solution}{fig:aco}{0.66}
  
 Ant Colony Optimization has been applied to \VRP\ by Bullnheimer, Hartl, and Strauss in \cite{BHS:1999A}, \cite{BHS:1999B}. They adapted the straight implementation used for the \TSP\ (detailed immediately above) by forcing the ant to create a new route each time it exceeds the capacity or maximum distance constraint. They also use a modified edge selection rule that also takes into account the vehicle's capacity and it's proximity to the depot. The updated rule is now given by:
 
@@ -432,14 +434,14 @@ Over the last decade, and inspired by the success of Ant Colony Optimisation, th
 
 The Bees Algorithm was first proposed by \cite{PGKORZ:2005}. It is inspired by the foraging behaviour of honeys bees. Bee colonies must search a large geographic area around their hive in order to find sites with enough pollen that it can sustain a hive. Its essential that the colony makes the right choices in what sites are exploited and how much resource is expended on a particular site. They achieve this by sending scout bees out in all directions from the hive. Once a scout bee has found a promising site it returns to the hive and recruits hive mates to forage at the site too. The bee does this by performing a \emph{waggle} dance. The dance communicates the location and quality of the site (i.e. fitness). Over time as more bees successfully forage at the site, more are recruited into exploiting that site. This last aspect is similar in process to how ants divert more resource to promising areas when foraging. 
 
-== PIC OF WAGGLE DANCE ==
+\picscl{images/waggle.pdf}{The \emph{waggle} dance performed a honey bee \cite{biodidac:website}. The direction moved by the bee indicates the angle that the other bees must fly relative to the sun to find the food source. And the duration of the dance indicates its distance}{fig:aco}{0.15}
 
 Informally the algorithm can be described as follows. Bees are initially sent out to random locations. The fitness of each site is then calculated. A proportion of the bees are reassigned to those sites that had the highest fitness values. Here each bee searches the local neighbor of the site looking to improve site's fitness. The remainder of the bees are sent out scouting for new sites, in other words they are reinitialized to a random position. This process repeats until some site reaches a satisfactory level of fitness -- or the optimal solution is reached, if this is known in advance.
 
 More formally the algorithm operates as follows:
 
 \begin{algorithm}[H]
-   \caption{IntervalRestriction\label{IR}}
+   \caption{Bees Algorithm}
    $B = \set{b_1, b_2,..., b_n}$
    setToRandomPosition($B$)\\
    \While{termination condition not meet}{
@@ -456,12 +458,7 @@ $B$ is the set of bees that are used to search the search space. Initially the b
 
 The promised advantage of the Bees Algorithm over other meta-heuristics is its ability to escape local minima and its ability to navigate search topologies with rough terrain (such as in figure \ref{fig:rtst}). It achieves this by scouting the search space for the most promising sites, and then by committing more resource to those sites that are producing results.
 
-\picscl{images/search_space.pdf}{Search space with a rough terrain}{fig:rtst}{0.66}
+\picscl{images/rough_search_space.pdf}{Shown is a search space with many valleys and hills. These search spaces provide a challenge meta-heuristic approaches as there are many local minima and maxima to get caught in. The Bees Algorithm ameliorates this by searching in many different areas simultaneously}{fig:rtst}{0.66}
 
 The Bees Algorithm has been applied to manufacturing cell formation, training neural networks for pattern recognition, scheduling jobs for a production machine, data clustering, and many others. See \cite{beesalg} for more examples and a comprehensive bibliography. However, as best as we know the Bees Algorithm hasn't been used on the Vehicle Routing Problem until now.
-
-
-
-
-
 

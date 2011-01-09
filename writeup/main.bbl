@@ -1,5 +1,16 @@
 \begin{thebibliography}{10}
 
+\bibitem{BHS:1999A}
+C.~Strauss B.~Bullnheimer, R. F.~Hartl.
+\newblock Applying the ant system to the vehicle routing problem.
+\newblock {\em Meta-heuristics: Advances and trends in local search paradigms
+  for optimization}, page 285–296, 1999.
+
+\bibitem{BHS:1999B}
+C.~Strauss B.~Bullnheimer, R. F.~Hartl.
+\newblock An improved ant system algorithm for the vehicle routing problem.
+\newblock {\em Annals of Operations Research}, 89:319–328, 1999.
+
 \bibitem{balinski:64}
 M.L. Balinski and R.E. Quandt.
 \newblock On an integer program for a delivery problem.
@@ -9,6 +20,13 @@ M.L. Balinski and R.E. Quandt.
 L.R.~Miller B.E.~Gillett.
 \newblock A heuristic algorithm for the vehicle dispatch problem.
 \newblock {\em Operations Research}, 22:340--349, 1974.
+
+\bibitem{BM:2003}
+Jean Berger and Mohamed Barkaoui.
+\newblock A hybrid genetic algorithm for the capacitated vehicle routing
+  problem.
+\newblock In {\em Genetic and Evolutionary Computation — GECCO 2003}, volume
+  2723 of {\em Lecture Notes in Computer Science}, pages 198--198. 2003.
 
 \bibitem{CMT:1981}
 Mingozzi~A. Christofides, N. and P.~Toth.
@@ -53,6 +71,19 @@ W.R. Hamilton.
   calculus).
 \newblock {\em Philosophical Magazine}, 12, 1856.
 
+\bibitem{Holland:1975}
+J.~H. Holland.
+\newblock Adaptation in natural and artificial systems.
+\newblock {\em The University of Michigan Press}, 1975.
+
+\bibitem{OSH:1987}
+J.R.C~Holland I.M~Oliver, D.J.~Smith.
+\newblock A study of permutation crossover operators on the traveling salesman
+  problem.
+\newblock {\em Grefenstette - Proceedings of the Second International
+  Conference on Genetic Algorithms and Their Applications}, pages 224--230,
+  1987.
+
 \bibitem{RBL:1996}
 G~Laporte J~Renaud, F F~Boctor.
 \newblock A fast composite heuristic for the symmetric traveling salesman
@@ -76,6 +107,17 @@ G.~Laporte and Y~Nobert.
   for the vehicle routing problem.
 \newblock 1987.
 
+\bibitem{LJDS:2009}
+Chee~Peng Lim, Lakhmi~C. Jain, and Satchidananda Dehuri, editors.
+\newblock {\em Innovations in Swarm Intelligence}, volume 248 of {\em Studies
+  in Computational Intelligence}.
+\newblock Springer, 2009.
+
+\bibitem{GHL:1994}
+G.~Laporte M.~Gendreau, A.~Hertz.
+\newblock A tabu search heuristic for the vehicle routing problem.
+\newblock {\em Management Science}, 40:1276--1290, 1994.
+
 \bibitem{GLP:1999}
 J~Potvin M~Gendreau, G~Laporte.
 \newblock Metaheuristics for the vehicle routing problem.
@@ -85,6 +127,17 @@ J~Potvin M~Gendreau, G~Laporte.
 A~H G R~Kan M~Haimovich.
 \newblock Bounds and heuristics for capacitated routing problems.
 \newblock {\em Mathematics of Operations Research}, 10:527--542, 1985.
+
+\bibitem{RSD:2002}
+K.~Doerner M.~Reimann, M.~Stummer.
+\newblock A savings-based ant system for the vehicle routing problem.
+\newblock {\em Proceedings of the Genetic and Evolutionary Computation
+  Conference}, page 1317–1325, 2002.
+
+\bibitem{Nagata:2007}
+Y.~Nagata.
+\newblock Edge assembly crossover for the capacitated vehicle routing problem.
+\newblock {\em EvoCOP, LNCS}, 4446:142--153, 2007.
 
 \bibitem{RTFNZ}
 Road Transport~Forum NZ.
@@ -103,27 +156,62 @@ I.~H. Osman.
   vehicle routing problem.
 \newblock {\em Annals of Operations Research}, 41:421--451, 1993.
 
-\bibitem{MJ:1976}
-S.R.~Jameson R.H.~Mole.
-\newblock A sequential route-building algorithm employing a generalized saving
-  criteria.
-\newblock {\em Operations Research}, 27:503--511, 1976.
+\bibitem{GHL:1998}
+D.~Vigo P.~Toth.
+\newblock The granular tabu search (and it's applications to the vehicle
+  routing problem).
+\newblock Technical report, 1998.
+
+\bibitem{PGKORZ:2005}
+Koc Otri S Rahim~S Pham, Ghanbarzadeh and Zaidi M.
+\newblock The bees algorithm.
+\newblock Technical report, 2005.
+
+\bibitem{Potvin:2009}
+Jean-Yves Potvin.
+\newblock A review of bio-inspired algorithms for vehicle routing.
+\newblock In {\em Bio-inspired Algorithms for the Vehicle Routing Problem},
+  pages 1--34. 2009.
 
 \bibitem{Robinson:1949}
 J.~Robinson.
 \newblock On the hamiltonian game (a traveling salesman problem).
 \newblock {\em Research Memorandum RM-303}, 1949.
 
+\bibitem{Ropke:2005}
+Stefan Ropke.
+\newblock {\em Heuristic and exact algorithms for vehicle routing problems}.
+\newblock PhD thesis, Department of Computer Science, University of Copenhagen
+  (DIKU), 2005.
+
 \bibitem{Schrijver}
 Alexander Schrijver.
 \newblock On the history of combinatorial optimization (till 1960).
 \newblock {\em ?}, ?:?, ?
+
+\bibitem{Shaw:1998}
+P.~Shaw.
+\newblock Using constraint programming and local search methods to solve
+  vehicle routing problems.
+\newblock pages 417--431. 1998.
 
 \bibitem{Solomon:1987}
 M.~M. Solomon.
 \newblock Algorithms for the vehicle routing and scheduling problems with time
   window constraints.
 \newblock {\em Oper. Res.}, 35(2):254--265, 1987.
+
+\bibitem{TNJ:1991}
+P.L.~Juell S.R.~Thangiah, K.E.~Nygard.
+\newblock Gideon: A genetic algorithm system for vehicle routing with time
+  windows.
+\newblock {\em Proceedings of 7th IEEE Conference on Artificial Intelligence
+  Applications}, pages 322--328, 1991.
+
+\bibitem{Taillard:1993}
+E.~D. Taillard.
+\newblock Parallel iterative search methods for vehicle routing problems.
+\newblock {\em Networks}, 23:661--673, 1993.
 
 \bibitem{TV2001}
 Paolo Toth and Daniele Vigo, editors.
@@ -133,6 +221,7 @@ Paolo Toth and Daniele Vigo, editors.
 
 \bibitem{Willard:1989}
 J.~A.~G. Willard.
-\newblock Vehicle routing using r-optimal tabu search., 1989.
+\newblock Vehicle routing using r-optimal tabu search. m.sc. dissertation,
+  1989.
 
 \end{thebibliography}

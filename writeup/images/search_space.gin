@@ -1,11 +1,14 @@
 set term pdf
-
-set output 'search_space.pdf'
 set isosamples 50
-set view 30, 310
-splot 1 + (x*x + y*y)/4000 - cos(x) * cos((y)/sqrt(2)) with lines lt rgb "#222222" ti ""
+set pm3d
+set palette gray
+set view 45, 310
+unset colorbox
+
+## Good space
+set output 'good_search_space.pdf'
+sinc(x,y) = sin(sqrt(x**2+y**2)) / sqrt(x**2+y**2)
+splot [-12:12.01] [-12:12.01] sinc(x,y) with lines lt rgb "#999999" ti ""
 
 set output 'rough_search_space.pdf'
-set isosamples 50
-set view 30, 310
-splot 1 + (x*x + y*y)/4000 - cos(x) * cos((y)/sqrt(2)) with lines lt rgb "#222222" ti ""
+splot 1 + (x*x + y*y)/4000 - cos(x) * cos((y)/sqrt(2)) with lines lt rgb "#999999" ti ""
