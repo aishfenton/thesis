@@ -16,20 +16,42 @@ This chapter is laid out as follows. We start in section \ref{sec:vo} by informa
 \section{\VRP\ overview}
 \label{sec:vo}
 
-The Vehicle Routing Problem (\VRP) seeks to solve the problem of constructing routes for a fleet of vehicles. Each route takes the vehicle through a set of customers to deliver a good (or service) at different locations. The routes must be constructed such that all constraints are meet, classically, the vehicle's capacity isn't exceeded by the number of customers being serviced. The goal is to minimize the cost of distributing the goods, which typically has meant minimizing the distance travelled across all routes.
+The Vehicle Routing Problem (\VRP) seeks to solve the problem of assigning and ordering work for a finite number of resources, such that the cost of undertaking that work is minimized. Often the context used is that of a fleet of vehicles delivering goods to a set of customers, although the problem can equally be applied across many different industries and scenarios (including non-logistics scenarios, such as microchip layout). The aim is split the deliveries between the vehicles and to specify an order in which each vehicle undertakes the work, such that the distance travelled by them is minimized and any pre-stated constraints are met. In the classic version of the \VRP\ the constraints that must be met are: 
 
-== INFORMAL DESCRIPTION == 
+\begin{enumerate}
+   \item Each vehicle must start and end its route at the depot.
+   \item All goods must be delivered.
+   \item The goods can only be dropped off a single time and by a single vehicle.
+   \item Each good requires a specified amount of capacity. However, each vehicle has a finite amount of capacity that can't be exceeded. This adds to the complexity of the problem as this necessary influences the selection of deliveries assigned to each vehicle.
+\end{enumerate}
 
-== PIC OF VRP PROBLEM ==
+\picscl{images/vrp.pdf}{An example of customers being assigned to three selected vehicle routes. The depot is the black dot in the centre.}{fig:vrp_example}{0.55}
 
-\VRP\ was first formally defined by Dantzig and Ramser, in \cite{Dantzig:1959} and has remained an important problem in logistics and transport (the original name given to the problem presented by Dantzig and Ramser was The Truck Scheduling Problem). The Vehicle Routing Problem is closely related to two problems, the Multiple Traveling Salesman Problem \MTSP\ and the Bin Packing Problem \BPP.
+More formally the \VRP\ can be represented as a graph $(V,E)$. The vertices of the graph $V$ represent all locations that can be visited, this includes each customers location and the location of the depot. For convenience let $v^d$ denote the vertex that represents the depot. We denote the set of customers as $C = 1,2,...,n$. Now the set of edges $E$ corresponds to valid connections between customers and connections to the depot -- in the typical case all connections are possible. Each edge $\edge{i,j} \in E$ has a corresponding cost $c_{ij}$. The cost is typically the travel distance between the two locations.
 
-% \VRP\ is one of the most the studied combinator optimization problems. Hundreds of papers been written on it  
-% 
-% Out of \VRP\ comes a family of related problems. These attempt to model other constraints that are encountered in real-world applications of the \VRP. Classic problems have included: \VRP\ with Time Windows that introduces a time window constraints  against each customer, that the vehicle must arrive within. \VRP\ multiple depot, where the vehicles are displayed from multiple start points. \VRP\ with Pick   
+A solution to the given \VRP\ instance can be represented as a family of 'routes', denoted by $\schd$. Each route itself is a sequence of customer visits that are performed by a single vehicle, denoted by $R = \seq{v_1, v_2,..., v_k}$ such that $v_i \in V$, and $v_1$ and $v_k$ are always the depot. Each customer has a demand $d_i, i \in C$. And $q$ is the maximum demand permissible for any route (i.e. the maximum capacity). The cost of the solution, and the value we aim to minimize, is given by the following formula:
 
-% The large number of real-world applications, both in North America and Europe, have widely shown that the use of computerized procedures for the distribution process planning produces substantial savings (generally 5\% to 20\%) in globabl transportation costs. http://books.google.co.nz/books?hl=en&lr=&id=TeMgA5S74skC&oi=fnd&pg=PR5&dq=vehicle+routing+problem+history&ots=AhY2KbKu40&sig=F-oubQFGcQzDw-RODKMXg2C-jX8#v=onepage&q=vehicle%20routing%20problem%20history&f=false
+\[
+   \sum_{R \in \schd} \sum_{v_i \in R} c_{v_i, v_{i+1}}
+\]
 
+We can now formalize the \VRP\ constraints as follows:
+
+\begin{align}
+   & \bigunion_{R \in \schd} = V \label{eq:vf1}\\
+   & (R_i - v^d) \intersect R_j = \emptyset  && \forall R_i, R_j \in \schd \label{eq:vf2}\\
+   & v_i = v_j                               && \forall R_i \in \schd, \lnot \exists v_i, v_j \in (R_i - v^d) \label{eq:vf3}\\
+   & v_0, v_k \in R_i = v^d                  && \forall R_i \in \schd \label{eq:vf4}\\
+   & \sum_{v \in R_i} d_v < q                && \forall R_i \in \schd \label{eq:vf5}
+\end{align}
+
+Equation \ref{eq:vf1} specifies that all customers are included in at least one route. \ref{eq:vf2} and \ref{eq:vf3} ensure that each customer is only visited once, across all routes. \ref{eq:vf4} ensures that each route starts and end with at the depot. Lastly \ref{eq:vf5} ensures that each route doesn't exceed it's capacity. This version of the problem has come to be known as the Capacitated Vehicle Routing Problem (often appreciated to \CVRP\ in the literature). See chapter \ref{chap:pd} for an alternative formation, which states the problem as a linear programming problem, as is standard in the \VRP\ literature.
+
+\VRP\ was first formally introduced in 1959 by Dantzig and Ramser in \cite{Dantzig:1959} -- the original name used in their paper was the Truck Scheduling Problem. The \VRP\ has remained an important problem in logistics and transport, and is one of the most the studied of all combinatorial optimization problems. Hundreds of papers have been written on it over the 50 period. From the large number of implementations carried out over this period it has been shown that \VRP\ has real benefits to offer transport and logistics companies. Anywhere from 5\% to 20\% savings have been reported where a vehicle routing procedure has been implemented \cite{TV2001}.
+
+From the \VRP\ comes a family of related problems. These problems model other constraints that are encountered in real-world applications of the \VRP. Classic problems include: \VRP\ with Time Windows, (appreciated to \VRPTW) that introduces a time window constraints against each customer, that the vehicle must arrive within. \VRP\ with Multiple Depots (appreciated to \MDVRP), where the vehicles are dispatched from multiple starting points. And finally the Pickup and Delivery Problem (appreciated to \PDP), where goods are both picked up delivered during the course of the route (such as a courier would do).
+
+== PIC OF TIMELINE ==
 
 % - TIMELINE OF CLASSIC RESULTS
 % RESULTS TABLE FROM VRP BOOK / PAPER
@@ -57,16 +79,19 @@ The Vehicle Routing Problem (\VRP) seeks to solve the problem of constructing ro
 % 2005  Attribute based hill climber heuristic (Derigs, Kaiser)
 
 
-
 % ====================
 \subsection{\TSP\ introduction and history}
 \label{sec:tiah}
 
-The traveling salesman problem can informally be defined as given $n$ points on a map provide a route through each of the $n$ points such that each point is only used once and the total distance travelled is minimized. The problem's name, the \emph{Traveling Salesman}, comes from the classic real-world example of the problem. A salesman is sent on a trip to visit $n$ cities. What is order should she visit the cities in, such that she covers the least distance? See figure \ref{fig:tsp_example}
+The \VRP\ is can be seen as a combination two combinatorial hard problems, the Traveling Salesman Problem (more precisely the \MTSP), and the Bin Packing Problem, \BPP.
 
-\picscl{images/background.pdf}{Traveling Salesman Problem}{fig:tsp_example}{0.75}
+The Traveling Salesman Problem (commonly abbreviated to \TSP) can informally be defined as follows: given $n$ points on a map provide a route through each of the $n$ points such that each point is only used once and the total distance travelled is minimized. The problem's name, the \emph{Traveling Salesman}, comes from the classic real world example of the problem. A salesman is sent on a trip to visit $n$ cities. They must select which order to visit the cities in, such that the least amount of distance needs to be traversed.
 
-\TSP\ is related to a classic graph theory problem, the Hamiltonian path. Hamiltonian circuits have been studied since 1856 by both Hamilton \cite{Hamilton:1856} and Kirkman \cite{Kirkman:1856}. The traveling salesman problem has been informally discussed probably for many years \cite{Schrijver} but didn't become actively studied until after 1928 where Menger, Whitney, Flood and Robinson produced much of the early results in the field. Robinson's RAND report \cite{Robinson:1949} might have been the first article to call the problem by the name it has since become known, the Traveling Salesman Problem.  
+Although the problem sounds like it might be easily solvable, it is in fact \nphard. The best known exact algorithms for solving the \TSP\ still require a running time of $\BIGO{2^n}$. Karp's famous paper, Reducibility Among Combinatorial Problems, in 1972 showed that the Hamiltonian Circuit problem is \npcomplete. This implied the NP-hardness of \TSP, and thus supplied the mathematical explanation for the apparent difficulty of finding optimal tours.
+
+\picscl{images/tsp.pdf}{Shown is an example of a 16 city \TSP\ tour around New Zealand's North Island. This tour is one of  20,922,789,888,000 possible tours for these 16 cities.}{fig:tsp}{0.75}
+
+\TSP\ has a history reaching back many years. It is itself related to another classic graph theory problem, the Hamiltonian circuit. Hamiltonian circuits have been studied since 1856 by both Hamilton \cite{Hamilton:1856} and Kirkman \cite{Kirkman:1856}. Whereas the Traveling Salesman Problem has been informally discussed for many years \cite{Schrijver} it didn't become actively studied until after 1928, where Menger, Whitney, Flood and Robinson produced much of the early results in the field. Robinson's RAND report \cite{Robinson:1949} is probably the first article to call the problem by the name it has since become known, the Traveling Salesman Problem. 
 
 \begin{quote}
   The purpose of this note is to give a method for solving a problem related to the traveling salesman problem. One formulation is to find the shortest route for a salesman starting from Washington, visiting all the state capitals and then returning to Washington. More generally, to find the shortest closed curve containing $n$ given points in the plane.
@@ -74,12 +99,9 @@ The traveling salesman problem can informally be defined as given $n$ points on 
 
 An early result was provided by Dantzig, Fulkerson, and  Johnson \cite{Dantzig:1954}. Their paper gave an exact method for solving a 49 city problem, a large number of cities for the time. Their algorithm used the cutting plane method to provide an exact solution. This approach has been the inspiration for many subsequent approaches, and is still the bedrock of algorithms that attempt to provide an exact solution.  
 
-Karp's famous paper, Reducibility Among Combinatorial Problems, in 1972 showed that the Hamiltonian Circuit problem is NP-complete. This implied the NP-hardness of \TSP, and thus supplied the mathematical explanation for the apparent difficulty of finding optimal tours.
+A generalization of \TSP is \MTSP, where multiple routes are allowed to be constructed (i.e. multiple salesman can be used to visit the cities). The pure \MTSP\ can trivially be turned into a \TSP\ by constructing a graph $G$ with $n - 1$ additional copies of the starting node to the graph and by forbidding travel directly between these $n$ starting nodes. Note however that the pure formulation of \MTSP\ places no additional constraints on how the routes are constructed. Real life applications of the \MTSP\ typically require additional constraints, such as limiting the size or duration of each route (i.e. one salesman shouldn't be working a 12 hour shift, while another has no work).
 
-A generalization of \TSP is \MTSP, where multiple routes are allowed to be constructed (i.e. multiple salesman can be used to visit the cities). The pure \MTSP\ can trivially be turned into a \TSP by constructing a graph $G$ with $n - 1$ additional copies of the starting node to the graph and forbidding travel directly between each $n$ starting nodes. Note however that the pure formulation of \MTSP\ places no additional constraints on a route. In real life applications \MTSP\ is typically employed with additional constraints, such as each route should be of equal size (e.g. work should be balanced among the salesman), or no route should exceed a total distance or time (e.g. a anyone salesman shouldn't be asked to work more than 8 hours a day). 
-
-\MTSP leads us naturally into the a class of problems derived from the Vehicle Routing Problem (\VRP). \VRP -- and it's family of related problems -- can be understood as being a combination of \MTSP\ along with  other constraints, which are in themselves often combinatorially hard problems.    
-
+\MTSP\ leads us naturally into the a family of problems given by the Vehicle Routing Problem (\VRP). \VRP -- and it's family of related problems -- can be understood as being a generalization of \MTSP\ that incorporates additional constraints. Some of these constraints, such as introducing capacity limits, introduce other dimensions to the problem that are in themselves hard combinatorial problems.
 
 % =====================
 % SECTION
@@ -87,8 +109,7 @@ A generalization of \TSP is \MTSP, where multiple routes are allowed to be const
 \section{Exact methods}
 \label{sec:em}
 
-The first efforts were concerned with exact solutions, and proceeded using many of the same techniques brought to bear on \TSP. 
-We follow Laporte and Nobert's survey \cite{LANO:87} and classify exact algorithms for the \VRP\ into three families: Direct tree search methods, Dynamic programming, and Integer linear programming.
+The first efforts at providing solutions to the \VRP\ were concerned with exact methods. These started by sharing many of the same techniques brought to bear on \TSP. We follow Laporte and Nobert's survey \cite{LANO:87} and classify exact algorithms for the \VRP\ into three families: Direct tree search methods, Dynamic programming, and Integer linear programming.
 
 The first classic Direct tree search results are due to Christolds and Ellison. Their 1969 paper in Operations Research Quarterly provided the first branch and bound algorithm for exactly solving the \VRP \cite{CE:1969}. Unfortunately it's time and memory requirements where such that it was only able to solve problems of up to 13 customers. This result was later improved upon by Christolds in 1976 by using a different branch model. This improvement allowed him to solve for up to 31 customers. 
 
@@ -106,53 +127,62 @@ Notwithstanding the above results, exact methods have been of more use in advanc
 \section{Classic heuristics}
 \label{sec:ch}
 
-Classic \VRP\ heuristics can be classified into three families. Constructive heuristics; Two-phase heuristics, which again can be classified into two sub-families: cluster first and then route, and route first and then cluster; and Improvement methods.
+In this section we review the classic heuristic methods that have been developed for the \VRP. These methods aren't guaranteed to find the globally best answer, but rather aim to produce close to optimal solutions using algorithms with fast running times that are able to scale to large problem instances. Classic heuristics for the \VRP\ can be classified into three families. Constructive heuristics; Two-phase heuristics, which is again divided into two sub-families: cluster first and then route, and route first and then cluster; and Improvement methods.
 
 \subsection{Constructive heuristics}
+\label{subsec:conheu}
 
-% % % ---------------------
-% \subsection{Nearest neighbour}
-% The most simple algorithm, this codifies the intuitive principle of constructing a solution by picking the job to the depot, then the closest job to this, and so on until a route is filled.
-% 
-% Formally the algorithm creates the sequence $R = \seq{v_0}$ and picks $v \in V$ such that $d_{0,i}$ is minimized. It repeat this until the route represented by $R$ is exceeds it capacity. Then a new route $R$ is constructed and the process is repeated with the remaining jobs. This continues until all jobs are allocated.
-% 
-% Although the Nearest Neighbour algorithm is simple to understand and implement it situations can occur where the performance is bad
+We start by looking at \emph{constructive} heuristics. Constructive heuristics build a solutions from the ground up. They typically provide a recipe for building each route, such that the total cost of all routes is minimized.
 
-We start by looking at Constructive heuristics. Constructive heuristics build a solutions from the ground up. They typically provide a recipe for building each route, such that the total cost of all routes is minimized. An early and influential result was given by Clarke and Wright in their 1964 paper, Scheduling of vehicles from a central depot to a number of delivery points \cite{clark:1964}. In this paper they present a heuristic method for solving \VRP\ problems that improved upon Dantzig and Ramser's work -- it is commonly known as the Clarke-Wright heuristic. The heuristic is based on the simple process of combining routes (starting with each route containing a single customer) such that the combination reduces the overall cost (typically distance) while still producing feasible solutions.
+A trivial but intuitive constructive heuristic is the \emph{Nearest Neighbour} method. In this method routes are built-up sequentially. At each step the customer nearest to the last routed customer is chosen. This continues until the route reaches its maximum capacity, at which point a new route is started. In practice the Nearest Neighbour algorithm tends to provide poor results and is rarely used. 
+ 
+\picscl{images/nn.pdf}{An example of the Nearest Neighbour method being applied. A partially constructed route selects customer $j$ to add, as it's closest to the last added customer, $i$}{fig:nn}{0.55}
 
+An early and influential result was given by Clarke and Wright in their 1964 paper \cite{clark:1964}. In their paper they presented a heuristic method that has since become known as the \emph{Clarke Wright Savings} heuristic. The method improved upon Dantzig and Ramser's earlier work. The heuristic is based on the simple premise of iteratively combining routes in order of those pairs that provide the largest saving. 
 
-% % ---------------------
-% \subsection{Clark and Wright algorithm}
-% 
-% Clark-Wright's widely known construction algorithm first appeared in \cite{clark:1964}. The algorithm uses a concept of \emph{savings}. The algorithm starts with a separate route for each customer: from depot, to customer, and back to the depot. A saving value is calculated for every pair of customers. The saving value is the distance saved by one customer being serviced directly after the other without returning to the depot in between -- in other words the savings gained by combining two partial routes. Routes are then merged based on the largest savings.
-% 
-% The algorithm comes in two flavours: sequential and parallel. The sequential version sequentially adds customers to a route until a route has reached capacity (or based on some other constraint such as maximum route length) and then produces the next. The parallel version builds each route in parallel. The parallel version out performs the sequential version in most cases\cite{Laporte:1999} and is the version considered in our approach.
-% 
-% The algorithm is surprising adaptable and has been extended to deal with more specialized vehicle routing problems were additional objectives and constraints must be considered. The algorithm's flexibility derives from its algebraic treatment of the problem rather than exploiting the problem's underlying spatial properties, as many of the two-phase algorithms do \ref{2phasealgorithms}. The algorithms savings formula can be adjusted to accommodate other objectives. An example of this is Solomon's equally ubiquitous algorithm \cite{Solomon:1987} which extends the Clark and Wright algorithm to cater for time constraints. 
-% 
-% The algorithm works as follows:
-% 
-% \begin{itemize}
-%  \item Prime the solution with routes $R = \set{x_0, x_i, x_0}$ for all jobs $x_i \in X$.
-%  \item For all $i,j$ calculate $s_{ij} = c_{i0} + c_{j0} - c_{ij}$.
-%  \item Process each $S_{ij}$ in descending order, find routes $r_1 \in R : r_1 = \set{0,...,x_i,x_0}$ and $r_2 \in R: r_2 = \set{0,x_j,...,0}$. Merge these together such that $R' = \set{0,...,x_i, x+j,...,0}$. Stop once capacity constraints or route length constraint is exceeded.
-% \end{itemize}
-% 
-% \picscl{images/background-cw.pdf}{Clark Wright Savings Algorithm}{fig:cw_savings}{0.75}
-% 
+\picscl{images/cw.pdf}{Clark Wright Savings Algorithm. Customers $i,j$ are selected candidate to merge. The merge results in a new route $R'$}{fig:cw_savings}{0.55}
 
-The heuristic has been used to solve problems of up to 1000 customers with results often within 10\% of optimal using only a 180 seconds of runtime \cite{TV2001}. This classic algorithm has been extended by Gaskell (1967), Yellow (1970) and Paessens (1988), who have suggested alternatives to the savings formulas used by Clarke and Wright. These approaches typically introduce additional parameters to guide the algorithm towards selecting routes with geometric properties that are likely to produce better combinations.
+The algorithm works as follows:
 
-Alkinkemer and Gavish provide an interesting variation on the basic savings heuristic \cite{AG:1991}. They use a matching algorithm to combine multiple routes in a step. To do this they construct a graph where each vertex represents a route, each edge represents a feasible saving, and the edge's weight represents the saving that can be realized by the merge of the two routes. The algorithm proceed by solving a maximum cost weighted matching of the graph.
+\begin{algorithm}[H]
+   \caption{Clark Write Savings Algorithm}
+   initializeRoutes()
+   $M$ = savingsMatrix($V$)\\
+   $L$ = sortBySavings($SM$)
+   \For{$l_{ij} \leftarrow L$}{
+      $R^i, R^j$ = findRoutes($l_{ij}$)
+      \If{feasibleMerge($R^i, R^j$)}{
+         combineRoute($R^i, R^j$)
+      }
+   }
+\end{algorithm}
 
-A group of construction heuristics, know as Sequential Insertion Heuristics, had their first results due to Mole and Jameson \cite{MJ:1976}.
+The algorithm starts by initializing a candidate solution. For this it creates a route $R = \seq{v_0, v_i, v_0}$ for all $v \in V$. It then calculates a matrix $M$ that contains the savings $s_{ij} = c_{i0} + c_{j0} - c_{ij}$ for all edges $\edge{i,j} \in E$. It then produces a list $L$ that enumerates each cell $i,j$ of the matrix in descending order of the savings. For each entry in the list $l_{ij} \in L$ select the two routes, $R^i, R^j$ that contain customers $i, j \in V$ and test to see if the merge is permissible. The merge is permissible iff:
+
+\begin{enumerate}
+   \item $R^i \neq R^j$.
+   \item $i,j$ are the first or last vertices (excluding the depot $v^d$) of their respective routes.
+   \item The combined demand of the two routes doesn't exceed the maximum allowed $q$.
+\end{enumerate}
+
+The heuristic comes in two flavours, sequential and parallel. The sequential version adds the additional constraint the only one route can be constructed at a time. In this case one of $R^i, R^j$ must be the current route under construction. If $l_{ij}$ results in two new routes then this list item is ignored. If the merge is permissible then we merge routes $R^i, R^j$ such that $R' = \seq{v_0,...,i,j,...,v_k}$. In the parallel version, once the entire list of savings has been enumerated then the resulting candidate solution is returned as the answer. In the sequential version the \emph{for loop} is repeated until no feasible merges remain.
+
+The Clark Write Savings heuristic has been used to solve problems of up to 1000 customers with results often within 10\% of optimal using only a 180 seconds of runtime \cite{TV2001}. The parallel version of the Clark Write Savings Algorithm outperforms the sequential version in most cases\cite{Laporte:1999} and is typically the one employed.
+
+The heuristic has proven to be surprising adaptable and has been extended to deal with more specialized vehicle routing problems where additional objectives and constraints must be factored in. Its flexibility is a result of its algebraic treatment of the problem \cite{Laporte:1999}. Unlike many other \VRP\ heuristics that exploit the problem's spatial properties (such as many of the two-phase heuristics \ref{subsec:conheu}), the savings formula can easily be adapted to take into consideration other objectives. An example of this is Solomon's equally ubiquitous algorithm \cite{Solomon:1987} which extends the Clark Wright Savings algorithm to cater for time constraints. 
+
+This classic algorithm has been extended by Gaskell (1967), Yellow (1970) and Paessens (1988), who have suggested alternatives to the savings formulas used by Clarke and Wright. These approaches typically introduce additional parameters to guide the algorithm towards selecting routes with geometric properties that are likely to produce better combinations. Alkinkemer and Gavish provide an interesting variation on the basic savings heuristic \cite{AG:1991}. They use a matching algorithm to combine multiple routes in each step. To do this they construct a graph such that each vertex represents a route, each edge represents a feasible saving, and the edge's weight represent the saving that can be realized by the merge of the two routes. The algorithm proceeds by solving a maximum cost weighted matching of the graph.
+
+== IF MORE CONTENT NEEDED, THEN TALK ABOUT Sequential Insertion Heuristics ==
+
+% A group of construction heuristics, know as Sequential Insertion Heuristics, had their first results due to Mole and Jameson \cite{MJ:1976}.
 
 \subsection{Two-phase heuristics}
 \label{sec:tph}
 
 We next look at two-phase heuristics. We start by looking at the cluster-first, route second sub-family. One of the foundational algorithms for this method is due to Gillett and Miller who provided a new approach called the Sweep Algorithm in their 1974 paper\cite{GM:1974}. This popularized the two-phase approach, although this method was suggested earlier by Wren in his 1971 book, and subsequently in Wren and Holliday's 1972 paper for Operations Research Quarterly. In this approach, a initial clustering phase is used to cluster the customers into a base set of routes. From here the routes are treated as separate \TSP\ and optimized accordingly. The two-phase approach typically doesn't prescribe a method for how the \TSP\ is solved and assumes that already developed \TSP\ methods can be used. The classic sweep algorithm uses a simple geometric method to cluster the customers. Routes are built by sweeping a ray, centered at the depot, clockwise around the space enclosing the problem's locations. The Sweep method is surprising effective and has been shown to solve several benchmark \VRP\ problems to within 2\% to 9\% of the best known solutions \cite{TV2001}.
 
-== PIC OF SWEEP == 
+\picscl{images/sweep.pdf}{Sweep Algorithm. The ray is being swept clickwise. One route has already been formed, and a second is about to start at customer $i$}{fig:sweep}{0.55}
 
 Fisher and Jaikumas's 1981 paper builds upon the two-phase approach by providing a more sophisticated clustering method. They solve a General Assignment Problem to form the clusters instead. A limitation of their method is that the amount of vehicle routes must be fixed up front. Their method often produces results that are 1\% to 2\% better than similar results produced by the classic sweep algorithm \cite{TV2001}. 
 
@@ -164,21 +194,21 @@ Lastly, there are route first, cluster second methods. The basic premise of thes
 
 \subsection{Iterative Improvement Heuristics}
 
-Iterative Improvement methods follow a basic hilling climbing approach. They start with a solution, which may have been randomly generated, or produced by another heuristic technique, and then iteratively apply an operation to that solution to improve it. This continues until a local minimum is reached.
+Iterative Improvement methods follow an approach where an initial candidate solution is iteratively improved by applying a single operation. The operation applied is typically fairly simple and only changes a small part of the candidate solution, such as the position of a single customer or edge within the solution. The set of solutions that is obtainable from a current candidate solution $S$ by applying an operator $Op$ is known as $S$'s neighbourhood. In \emph{Iterative Improvement} heuristics, a new solution $S'$ is selected by exhaustively searching the entire neighbourhood of $S$ for the best improvement possible. If no improvement can be found then the heuristic terminates. The initial candidate solution, that is the starting point, can be randomly selected or can be produced using another heuristic (for this the Constructive Heuristics are typically used, see \ref{sec:ch}).
+ 
+Probably one of the best known improvement operators is $2-opt$. The $2-opt$ operator takes two edges $\edge{i,j}, \edge{k,l} \in T$, where $T$ are the edges traversed by a particular route $R = \seq{v_1, ..., v_i, v_j, ..., v_k, v_l, ..., v_n}$, and removes these from the candidate solution. This splits the route into two disconnected components, $D_1 = \seq{v_j, ..., v_k}, D_2 = \seq{v_1, ..., v_i,v_l, ..., v_n}$. A new candidate solution is produced by reconnecting $D_1$ to $D_2$ using the same vertices $i,j,l,k$ but with alternate edges, such that $\edge{i,j}, \edge{j,l} \in T$.
 
-% % ---------------------
-% \subsection{2-opt}
-% 
-% % ---------------------
-% \subsection{Or-opt}
-% 
+\picscl{images/2opt.pdf}{Shows $2-Opt$ being applied to a candidate solution $R$ and producing a new solution $R'$. In this example edges $\edge{i,j}, \edge{k,l}$ are exchanged with edges $\edge{i,k}, \edge{j,l}$}{fig:2opt}{0.55}
 
+The rational behind $2-Opt$ is that due to the triangle inequality edges that cross themselves are unlikely to be optimal. $2-Opt$ aims to detangle the route.
 
-There have been a number of operations suggested. Christofides and Eilon gave one of the earliest iterative improvement methods in their paper \cite{CE:1969}. In this they made a simple change to the classic \TSP\ operation, 2-opt, increasing the amount of edges removed to three - the operation fittingly being called 3-opt. They found that their heuristics produced better results than the a 2-opt procedure could by itself. 
+There are a number of other operations suggested in the literature. Christofides and Eilon give one of the earliest iterative improvement methods in their paper \cite{CE:1969}. In this they made a simple change to $2-opt$ to increase the amount of edges removed to three - the operation fittingly being called $3-opt$. They found that their heuristic produced better results than the $2-opt$ could by itself. 
 
-In general operations, such as 3-opt, that remove edges and then search for a more optimal recombination of components take \BIGO{n^y} where $y$ is the number of edges removed. A rich strain of research has been on producing operations that reduce the amount of recombinations that must be searched. Or presents an operation that has since come to be known as Or-opt \cite{Or:1976}. Or-opt is a restricted 3-opt. It searches for a relocation of all sets of 3 consecutive vertices (i.e. chains), such that an improvement is made. If an improvement can't be made then it tries again with chains of 2 consecutive vertices, and so on. Or-Opt has been shown to produce similar results to that of 3-opt, but with a running time of \BIGO{n^2}. More recently Renaud, Boctor, and Laptorte have presented a restricted version of 4-opt (in a similar vain to Or-Opt) that has a running time of \BIGO{wn^2} \cite{RBL:1996}. 
+In general, operations such as $3-opt$, that remove edges and then search for a more optimal recombination of components take \BIGO{n^y} where $y$ is the number of edges removed. A profitable strain of research has been on producing operations that reduce the amount of recombinations that must be searched. Or presents an operation that has since come to be known as $Or-Opt$ \cite{Or:1976}. $Or-Opt$ is a restricted $3-opt$. It searches for a relocation of all sets of 3 consecutive vertices (i.e. chains), such that an improvement is made. If an improvement can't be made then it tries again with chains of 2 consecutive vertices, and so on. $Or-Opt$ has been shown to produce similar results to that of $3-Opt$, but with a running time of \BIGO{n^2}. More recently Renaud, Boctor, and Laptorte have presented a restricted version of $4-Opt$ (in a similar vain to $Or-Opt$) that has a running time of \BIGO{wn^2} \cite{RBL:1996}. 
 
-Iterative improvement heuristics are often used in combination with the other techniques. In this case they are run on the candidate solution after the initial heuristics has completed. However, for this purpose there is often a fine balance between producing an operation that improves a solution, and one that is sufficiently destructive enough to escape a local minimum.  Recently interest in iterative improvement heuristics has grown because of their use as part of meta-heuristic methods. 
+== CAN ADD SECTION ON OR-OPT HERE IF REQUIRED
+
+Iterative improvement heuristics are often used in combination with the other techniques. In this case they are run on the candidate solution after the initial heuristic has completed. However, if used in this way there is often a fine balance between producing an operation that improves a solution, and one that is sufficiently destructive enough to escape a local minimum. Interest in Iterative Improvement heuristics has grown as the operations developed for them, such as $Or-Opt$, are directly applicable to more modern heuristics such as the family of meta-heuristic presented in the next section. 
 
 % =====================
 % SECTION
@@ -186,7 +216,7 @@ Iterative improvement heuristics are often used in combination with the other te
 \section{Meta-heuristics}
 \label{sec:mh}
 
-Meta-Heuristics are a broad collection of methods that make few or no assumptions about the type problem being solved. They provide a framework that allows for individual problems to be modeled and 'plugged in' to the meta-heuristic. Typically meta-heuristics take an approach where a candidate solution (or solutions) is initially produced and then is iteratively refined towards the optimal solution. Intuitively meta-heuristics can be thought of searching a problem's problem space. Each iteration searches the neighbourhood of the current candidate solution(s) looking for new candidate solutions that move closer to the goal. 
+Meta-Heuristics are a broad collection of methods that make few or no assumptions about the type problem being solved. They provide a framework that allows for individual problems to be modeled and 'plugged in' to the meta-heuristic. Typically meta-heuristics take an approach where a candidate solution (or solutions) is initially produced and then is iteratively refined towards the optimal solution. Intuitively meta-heuristics can be thought of searching a problem's search space. Each iteration searches the neighbourhood of the current candidate solution(s) looking for new candidate solutions that move closer to the goal. 
 
 == INSERT PIC OF SEARCH SPACE ==
 
@@ -206,7 +236,7 @@ Where $f(s)$ and $f(s')$ represent the solution quality of the current solution,
 
 One of the first results was given by Robuste, Daganzo and Souleyrette \cite{RDS:1990}. They define the search neighbourhood all solutions that can be obtained from the current solution by applying one of three operations: relocating part of a route to another position within the same route, and exchanging customers between two routes. They tested their solution on some large real-world instances of up to 500 customers. They self-reported some success with their method but as their test cases are unique no direct comparison is possible. 
 
-Osman has given probably the best know Simulated Annealing results for \VRP \cite{Osman:1993}. His algorithm expands upon many areas of the basic Simulated Annealing approach. The method start by using the Clark and Wright algorithm to produce a starting position. It defines its neighbourhood as candidate solutions that can be searched by applying a $\lambda-interchange$ operation. 
+Osman has given probably the best know Simulated Annealing results for \VRP \cite{Osman:1993}. His algorithm expands upon many areas of the basic Simulated Annealing approach. The method start by using the Clark and Wright algorithm to produce a starting position. It defines its neighbourhood as candidate solutions that can be searched by applying a $\lambda-interchange$ operation.
 
 % === PIC OF lambda-interchange ===
 % \subsection{lambda-interchange}
@@ -347,7 +377,7 @@ At each iteration of the algorithm the ants are positioned randomly within the g
    p_{ij}^k = \frac{ [\tau_{ij}^{\alpha}] [\eta_{ij}^{\beta}] }{ \sum_{l \in N^k} [\tau_{il}^{\alpha}] [\eta_{il}^{\beta}] }
 \]
 
-Where $p_{ij}^k$ is probability that ant $k$ will traverse edge \edge{i}{j}, $N^k$ is the set of all edges that haven't been traversed by ant $k$ yet, $\tau$ is the amount of pheromone that has been deposited at an edge, $\eta$ is the desirability of an edge (based on a priori knowledge specific to the problem), and $\alpha$ and $\beta$ are global parameters that control how much influence each term has.
+Where $p_{ij}^k$ is probability that ant $k$ will traverse edge \edge{i,j}, $N^k$ is the set of all edges that haven't been traversed by ant $k$ yet, $\tau$ is the amount of pheromone that has been deposited at an edge, $\eta$ is the desirability of an edge (based on a priori knowledge specific to the problem), and $\alpha$ and $\beta$ are global parameters that control how much influence each term has.
 
 Once the march is complete and a set of candidate solutions have been constructed (by each ant $k$), update the pheromones deposited on each edge by the follow equation:
 
@@ -360,14 +390,14 @@ Where $0 < \rho \le 1$ is the pheromone persistence, and $\Delta \tau_{ij}^k$ is
 \[
    \Delta \tau_{ij}^k = \left\{
    \begin{array}{l l}
-     1 / C^k & \quad \text{if edge $\edge{i}{j}$ is visited by ant $k$} \\
+     1 / C^k & \quad \text{if edge $\edge{i,j}$ is visited by ant $k$} \\
      0       & \quad \text{otherwise} \\
    \end{array} \right.
 \]
 
 Where $C^k$ represents the total distance traveled through the graph by ant $k$. This ensures that shorter paths result in more pheromone being deposited.
 
-As an example of Ant Colony Optimization's use in combinatorial problems, we show how it can be applied to the \TSP. We build a weighted graph with $i \in V$ representing each customer and $\edge{i}{j} \in E$ and $w_{ij}$ representing the cost of travel between each customer. And at each stage of the iteration we ensure that the following constraints are met:
+As an example of Ant Colony Optimization's use in combinatorial problems, we show how it can be applied to the \TSP. We build a weighted graph with $i \in V$ representing each customer and $\edge{i,j} \in E$ and $w_{ij}$ representing the cost of travel between each customer. And at each stage of the iteration we ensure that the following constraints are met:
 
 \begin{itemize}
    \item Each customer is visited at most once
@@ -388,7 +418,7 @@ Where $s$ represents the proximity of customers $i, j$ to the depot, and $\kappa
 
 Bullnheimer et al.'s implementations of Ant Colony Optimization for \VRP\ produces good quality solutions for the Christofides, Mingozzi and Toth problems \cite{CMT:1981}, but is not competitive with the best modern meta-heuristics.
 
-More recently Reimann, Stummer, and Doerner have presented a more competitive implementation of Ant Colony Optimization for \VRP\ \cite{RSD:2002}. Their implementation operates on a graph where $\edge{i}{j} \in E$ representing the savings of combining two routes, as given by the classic Clark and Wright savings heuristic \cite{clark:1964}. Each ant selects an ordering of how the merges are applied. This implementation is reported to be competitive with the best meta-heuristics \cite{Potvin:2009}.   
+More recently Reimann, Stummer, and Doerner have presented a more competitive implementation of Ant Colony Optimization for \VRP\ \cite{RSD:2002}. Their implementation operates on a graph where $\edge{i,j} \in E$ representing the savings of combining two routes, as given by the classic Clark and Wright savings heuristic \cite{clark:1964}. Each ant selects an ordering of how the merges are applied. This implementation is reported to be competitive with the best meta-heuristics \cite{Potvin:2009}.   
  
 % 
 % - WHAT ABOUT PSO IF I NEED MORE TO WRITE ABOUT
@@ -416,9 +446,9 @@ More formally the algorithm operates as follows:
       sortByFitness($B$) \\
       $E = \set{b_1, b_2,...,b_e}$ \\
       $R = \set{b_{e+1}, b_{e+2},...,b_{m}}$ \\
-      searchNeighbourhood($E \UNION \set{c_1,...,c_{nep}}$) \\
-      searchNeighbourhood($R \UNION \set{d_1,...,d_{nsp}}$) \\
-      setToRandomPosition($B - (E \UNION R)$) \\
+      searchNeighbourhood($E \union \set{c_1,...,c_{nep}}$) \\
+      searchNeighbourhood($R \union \set{d_1,...,d_{nsp}}$) \\
+      setToRandomPosition($B - (E \union R)$) \\
    }
 \end{algorithm}
 

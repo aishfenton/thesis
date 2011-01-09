@@ -30,6 +30,9 @@ pdfauthor={M.Dinneen, A.J.L.Fenton},
 \usepackage{graphicx}
 \usepackage[cm-default]{fontspec}
 
+% Gives more control over how figures are floated
+\usepackage{float}
+
 % \setromanfont{DesignerNotes}
 % \setsansfont{Avenir LT Std}
 % \setmonofont{Lucida Sans Typewriter}
@@ -43,6 +46,15 @@ pdfauthor={M.Dinneen, A.J.L.Fenton},
 \parskip        = 0.2in
 \parindent      = 0.0in
 
+% provides a nicer looking caption for figures
+\usepackage[margin=40pt,font=small,format=plain,labelfont=bf,textfont=it]{caption}
+
+% \usepackage{setspace}
+% \singlespacing
+% \onehalfspacing
+% \doublespacing
+% \setstretch{1.1}
+
 % \renewcommand{\multirowsetup}{\centering}
 
 % =====================
@@ -55,6 +67,7 @@ pdfauthor={M.Dinneen, A.J.L.Fenton},
 \newcommand{\PDPFTL}{\mbox{PDP-FTL}}
 \newcommand{\CVRP}{\mbox{VRP}}
 \newcommand{\VRP}{\mbox{VRP}}
+\newcommand{\MDVRP}{\mbox{MDVRP}}
 \newcommand{\VRPTW}{\mbox{VRPTW}}
 \newcommand{\PDP}{\mbox{PDP}}
 \newcommand{\PDPTW}{\mbox{PDPTW}}
@@ -62,6 +75,7 @@ pdfauthor={M.Dinneen, A.J.L.Fenton},
 \newcommand{\TSP}{\mbox{TSP}}
 \newcommand{\MTSP}{\mbox{MTSP}}
 \newcommand{\BPP}{\mbox{BPP}}
+\newcommand{\schd}{\mathfrak{S}}
 
 \input{macros.tex}
 

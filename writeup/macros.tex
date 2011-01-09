@@ -54,7 +54,8 @@
 
 % Graph notation
 %
-\newcommand{\edge}[2]{#1#2}
+\newcommand{\edge}[1]{(#1)}
+% \newcommand{\edge}[2]{(#1#2)}
 \newcommand{\isub}[2]{#1[#2]}
 
 % Tree notation
@@ -85,12 +86,14 @@
 
 % Set functions
 %
-\newcommand{\UNION}{\cup}
-\newcommand{\INTERSECT}{\cap}
-\newcommand{\DEL}{\diagdown}
-\newcommand{\CONTRACT}[2]{#1/#2}
-\newcommand{\MIN}[1]{\mbox{$min(#1)$}}
-\newcommand{\MAX}[1]{\mbox{$max(#1)$}}
+\newcommand{\union}{\cup}
+
+\newcommand{\bigunion}{\bigcup}
+
+\newcommand{\intersect}{\cap}
+\newcommand{\contract}[2]{#1/#2}
+% \newcommand{\MIN}[1]{\mbox{$min(#1)$}}
+% \newcommand{\MAX}[1]{\mbox{$max(#1)$}}
 \newcommand{\set}[1]{\{#1\}}
 \newcommand{\seq}[1]{[#1]}
 \newcommand{\tuple}[1]{(#1)}
@@ -101,10 +104,10 @@
 
 % Image functions
 %
-\newcommand{\pic}[3]{\begin{figure}[htbp]\begin{center}\includegraphics[scale=1.0]%
+\newcommand{\pic}[3]{\begin{figure}[H]\begin{center}\includegraphics[scale=1.0]%
 	{#1}\caption{#2}\label{#3}\end{center}\end{figure}}
 
-\newcommand{\picscl}[4]{\begin{figure}[htbp]\begin{center}\includegraphics[scale=#4]%
+\newcommand{\picscl}[4]{\begin{figure}[H]\begin{center}\includegraphics[scale=#4]%
 	{#1}\caption{#2}\label{#3}\end{center}\end{figure}}
 
 %------------------------
