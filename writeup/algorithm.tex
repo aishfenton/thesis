@@ -6,36 +6,73 @@
 % =====================
 \chapter{Algorithm}
 
+This chapter presents the algorithm used within this thesis and provides detailed technical description. Several novel concepts ... 
+
+% TO SOLVE THE CVRP
 
 % =====================
 % SECTION
 % =====================
 \section{Goals}
+The algorithm presented in this thesis was built for use in a commercial setting. It was developed as part of a NZTE grant for the company \emph{vWorkApp Inc.}'s scheduling and dispatch software. Accordingly more emphasis is given to runtime performance relative to optimisation performance, than is typically afforded in the \VRP\ literature.
+ 
+The algorithm aims to achieves the following goals (in order of priority):
 
-Design goals:
-\begin{itemize}
-   \item Fast
-   \item Minimal
-   \item Take advantage of modern parallel hardware
-\end{itemize}
-
+\begin{enumerate}
+   \item All constraints meet. Specifically the maximum shift time for a route must be observed.
+   \item Speed of execution. It was more important that the algorithm produces a result within 5\% of optimal quickly, than it achieves 99\% of optimal over a longer period of time. The algorithm has also been designed to allow for it to be easily parallelized, to take advantage of modern hardware.
+   \item Travel distance is minimized.
+\end{enumerate}
 
 % =====================
 % SECTION
 % =====================
 \section{Problem Representation}
 
+Our algorithm represents the problem in a direct and straight forward manner. It proceeds by directly manipulating the candidate solution $\schd$, where $\schd$ is a set of routes $R \in \schd$, and each route contains an ordered sequence of customers $v_i \in R$ starting and ending at the depot vertex $v^d$.
+
+\picscl{images/representation.pdf}{Shown is an example of a simple \VRP\ candidate solution as represented internally by the algorithm.}{fig:representation}{0.66}
+
+More generic representations are sometimes used for meta-heuristics, as is commonly seen with Genetic Algorithms, as they allow the algorithm to be easily adapted to other combinatorial problems. This often comes at a cost of added complexity and often inferrer results\footnote{This occurs because the operators that act on the problem representation can no longer exploit information that is specific to the problem domain and must rely on general purpose operations instead}. This algorithm was designed specifically for solving instances of the \VRP\ so the direct representation was chosen. 
+
+The algorithm makes use of a \emph{fitness} concept, common to many meta-heuristics, to describe the cost of the solution. Our fitness function $f()$ includes terms for the distance (i.e. cost) of the solution and penalties for breaking the capacity and maximum route time constraints. Specifically $f()$ is defined as follows:
+
+\begin{align}
+   & c(R) = \sum_{i \in R} c_{i, i+1} \\
+   & d(R) = max( \sum_{i \in R} d_i - q, 0 )  \\
+   & t(R) = max( \sum_{i \in R} t_i + c(R) - t, 0 )  \\
+   & f(\schd) = \sum_{R \in \schd} (\alpha c(R) + \beta d(R) + \gamma c(R))
+\end{align}
+
+Function $c(R)$ calculates the cost (i.e distance) of a given route, function $d(R)$ calculates how overcapacity that the given route is. We define overcapacity to be how much larger the route's summed demands $d_i, i \in R$ are than the stated maximum allowable capacity $q$. Likewise function $t(R)$ calculates the overtime of the given route. A route's duration is calculated as being the sum of its customer's service times $t_i, i \in R$ and its travel time. By convention the travel time equal to the distance of the route. Function $t(R)$ then returns how much over the maximum allowable route duration $t$ the duration is. Lastly the fitness function $f()$ is the weighted sum of these three terms. Parameters $\alpha$, $\beta$, and $\gamma$ are used  used to control how influence each term has on determining the candidate solutions fitness.
+
+For the purposes of benchmarking our algorithm (see chapter \ref{chap:results}) we use a travel cost that is equal to the 2D Euclidian distance \footnote{In this case we define the cost function as $c_{ij} = \sqrt{(x_j-x_i)^2 + (y_j-y_i)^2}$} between the two points. For real life problem instance we have found that using a manhattan distance\footnote{Conversely we use define the cost function as $c_{ij} = (x_j-x_i)^2 + (y_j-y_i)^2$} often provides superior results. This is presumably due to the manhattan distance better modeling the road system within Auckland, which although not a strict grid still doesn't allow line-of-site travel.
+
 % =====================
 % SECTION
 % =====================
-\section{Modified Bees algorithm}
+\section{Enhanced Bees Algorithm}
+
+% provide description of algorithm
+
+\begin{algorithm}[H]
+   \caption{Enhanced Bees Algorithm}
+   % initializeRoutes()
+   % $M$ = savingsMatrix($V$)\\
+   % $L$ = sortBySavings($SM$)
+   % \For{$l_{ij} \leftarrow L$}{
+   %    $R^i, R^j$ = findRoutes($l_{ij}$)
+   %    \If{feasibleMerge($R^i, R^j$)}{
+   %       combineRoute($R^i, R^j$)
+   %    }
+   % }
+\end{algorithm}
 
 % - Infeasible solutons admisible, just penalisted. Helps escape local minimum, like in TABUROUTE. 
 
 % - Avoid the problem of Tabu Search moving cities around the depot more frequently, because removes are random. \cite{Taillard:1993}.
 
 % - Takes advantage of Taillards observation that the move between tours don't need to be huge. It is suffient to move to the tour in an adjoining segment. This is achieved here by the NEAREST cities list, and much simplier and quicker.
-
 
 % ---------------------
 \subsection{Deeper driller}
