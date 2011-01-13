@@ -10,19 +10,23 @@
 % =====================
 % Test Instances
 % =====================
-\section{Test instances}
+% \section{Test instances}
 
 % The geographical data are randomly generated  in problem sets R1 and R2, clustered in problem sets C1 and C2, and a mix of random and clustered structures in problem sets by RC1 and RC2. Problem sets R1, C1 and RC1 have a short scheduling horizon  and allow only a few customers  per route (approximately 5 to 10). In contrast, the sets R2, C2 and RC2 have a long scheduling horizon permitting many customers (more than 30)  to be serviced by the same vehicle. The customer coordinates are identical for all problems within one type (i.e., R,  C and RC).  The problems differ with respect to the width of the time windows.  Some have very tight time windows, while others have time windows which are hardly constraining. In terms of time window density, that is, the percentage of customers with time windows, I created problems with 25, 50, 75 and 100 \% time windows.
 % The larger problems are 100 customer euclidean problems where travel times equal the corresponding distances. For each such problem, smaller problems have been created by considering only the first 25 or 50 customers.
 
 
 \section{Results}
- 
+
 % - Standard BeeSolver
 %   - t vs. % across all problem sets 
 
+\picscl{images/results.pdf}{THE RESULTS}{fig:???}{0.66}
+
 % - Enhanced BeeSolver ( x which ones ?)
 %   - t vs. % across all problem sets
+
+\picscl{images/results.pdf}{THE RESULTS}{fig:???}{0.66}
 
 % - Direct Comparision ( Bee_solver vs. BS_ENH )
 %   - t vs. % with candlesticks (across best 5 problems)
@@ -34,7 +38,62 @@
 %   - Best Known
 
 % Table of new best results found
+% \begin{landscape}
 
 
-\section{Comments}
+\ctable[caption=Results, label=tab:nowidth, sideways]{lcccccccccc}
+{
+   \tnote[1]{Clark Write Saving's algorithm run inParallel}
+   \tnote[2]{Whos?}
+   \tnote[3]{Truncated branch and bound \cite{??}}
+   \tnote[4]{Run on Clark Write Savings parallel version, until best solution found}
+   \tnote[5]{Osman's implementation}
+   \tnote[6]{Tillards Tabu Search. Standard settings}
+   \tnote[7]{Improved one by Bullihiemer et al}
+   \tnote[8]{Bees Algorithm presented here}
+   \tnote[9]{Bees Algorithm presented here}
+}{
+\FL
+   Instance
+   & CW\tmark[1]
+   & Sweep\tmark[2]
+   & TBB\tmark[3]
+   & $3-Opt$\tmark[4]
+   & SA\tmark[5]
+   & TS\tmark[6] 
+   & ACO\tmark[7] 
+   & BA\tmark[8]
+   & Best Known\tmark[9]
+\ML
+   P01E51K05 & 584.64 (5.0) & 532 (0.12) & 534 (7.1) & 578.56 & 528 (167.4) & 524.61 (6.0) & 524.1 (0.1) & 524.61 (0.1) & 524.61 \\
+\LL
+}
+
+
+% \begin{table}
+% 
+% % \begin{center}
+%    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|}
+%       \hline
+%          Instance & CW \footnote{Clark Write Saving's algorithm run inParallel} 
+%                   & Sweep 
+%                   & TBB \footnote{Truncated branch and bound \cite{??}} 
+%                   & $3-Opt$ \footnote{run on CW and runs until best solution found} 
+%                   & SA \footnote{Osman's implementation}
+%                   & TS \footnote{Tillards Tabu Search. Standard settings} 
+%                   & ACO \footnote{Improved one by Bullihiemer et al} 
+%                   & BA \footnote{Bees Algorithm presented here}
+%                   & Best Known \\
+%       \hline
+%          P01E51K05 & 584.64 (5.0) & 532 (0.12) & 534 (7.1) & 578.56 & 528 (167.4) & 524.61 (6.0) & 524.1 (0.1) & 524.61 (0.1) & 524.61 \\
+%          P02E76K10 & & & & & & & & & \\
+%       \hline 
+%    \end{tabular}
+% % \end{center}
+% \end{table}
+
+% \end{landscape}
+
+\section{Summary}
+
 

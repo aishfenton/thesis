@@ -48,81 +48,120 @@ Function $c(R)$ calculates the cost (i.e distance) of a given route, function $d
 
 For the purposes of benchmarking our algorithm (see chapter \ref{chap:results}) we use a travel cost that is equal to the 2D Euclidian distance \footnote{In this case we define the cost function as $c_{ij} = \sqrt{(x_j-x_i)^2 + (y_j-y_i)^2}$} between the two points. For real life problem instance we have found that using a manhattan distance\footnote{Conversely we use define the cost function as $c_{ij} = (x_j-x_i)^2 + (y_j-y_i)^2$} often provides superior results. This is presumably due to the manhattan distance better modeling the road system within Auckland, which although not a strict grid still doesn't allow line-of-site travel.
 
+
 % =====================
 % SECTION
 % =====================
 \section{Enhanced Bees Algorithm}
 
-% provide description of algorithm
+Our Algorithm is based on the \emph{Bees Algorithm} (see section \ref{subsec:beesalgorithm} for an overview of this algorithm). The algorithm makes some changes to adapt the Bees Algorithm to this domain. An interesting aspect of the Bees Algorithm is that it covers a broad search area, minimizing the risk of being stuck in a local optimum. It achieves this by randomly probing (or in the Bees Algorithm parlance, Scouting) many areas of the search space through its entire run. However, this approach isn't well suited to hard combinatorial problems, where a newly constructed solution, let alone a randomly constructed one, is often far from optimal (for instance, the Clark Wright Savings heuristic still produces solutions that are upto 15\% from the best known and will require many operations to get close to optimal). We've adapted the Bees Algorithm such that many of its unique characteristics, such as its broad coverage, are maintained while working well with hard combinatorial problem, such as the \VRP.
+
+Our algorithm can be summarized at a high level as follows:
 
 \begin{algorithm}[H]
    \caption{Enhanced Bees Algorithm}
-   % initializeRoutes()
-   % $M$ = savingsMatrix($V$)\\
-   % $L$ = sortBySavings($SM$)
-   % \For{$l_{ij} \leftarrow L$}{
-   %    $R^i, R^j$ = findRoutes($l_{ij}$)
-   %    \If{feasibleMerge($R^i, R^j$)}{
-   %       combineRoute($R^i, R^j$)
-   %    }
-   % }
+   $S$ = seedSites() \\
+
+   \While{termination condition not meet}{
+      \For{$s_i \in S$}{
+         explore($s_i$, $d$) \\
+         \If{$i < \lambda$}
+            killWorstSites \\
+      }
+   }
 \end{algorithm}
 
-% - Infeasible solutons admisible, just penalisted. Helps escape local minimum, like in TABUROUTE. 
+The algorithm maintains a collection of sites $S$, and each site $s_i \in S$ maintains a collection of bees $B_i$. Each bee is a proxy to the problem domain that we're trying to solve. In our case this is the \VRP\ problem representation covered above.
 
-% - Avoid the problem of Tabu Search moving cities around the depot more frequently, because removes are random. \cite{Taillard:1993}.
+== PIC OF BEE + SITES ==
+
+Initially each site is seeded, such that each site $s_i \in S$ contains a collection of bees $B_i$, and each bee has a corresponding \VRP\ candidate solution $\schd$. Each candidate solution is initialized by seeding each route with a randomly chosen customer, and is then filled out using the insertion heuristic outlined in \ref{subsec:repairoperation}.
+
+Each site is then, in turn, improved upon. This is achieved by iteratively exploring the neighbourhood of each site. The explore procedure for each neighbourhood is implemented as outlined in sections \ref{subsec:beemovement}, \ref{subsec:searchspacecoverage}, and \ref{sec:neighborhoodexploration}.
+
+The number of sites explored is reduced over the run of the algorithm. This borrows from the idea of a cooling schedule used by Simulated Annealing. Sites are reduced using the formula:
+
+\begin{align}
+   & S = S - s_w & \text{if $t \text{ mod } \lambda = 0$}
+\end{align}
+
+Where $s_w$ represents the worst site, in terms of fitness, $i$ represents the current iteration of the algorithm, and $\lambda$ represents the period of iterations with which the number of sites are reduced. Once the algorithm is complete the $\schd$ with the best overall fitness is returned as the answer.
+
+In the next section we review in more detail each aspect of the algorithm. 
+
+% ---------------------
+\subsection{Bee movements}
+\label{beemovement}
+
+Bees are moved around the search space to look for improvements to the collection of candidate solutions being maintained. Each bee represents a current solution $\schd$, so a valid bee move is any new candidate solution $\schd'$ that can be reached within the neighbourhood of $\schd$ (see \ref{subsec:neighborhood} for the operations under which the neighbourhood is defined).
+
+\picscl{images/movement.pdf}{TODO.}{fig:movement}{0.90}
+
+A feature of our algorithm is that two Bees can't occupy the same position. The algorithm maintains a register of the current positions occupied by each bee. We use the current fitness, $f(\schd)$, as a quick and simple representation of a bees current position\footnote{This obviously won't work in circumstances where there is a reasonable likelihood of two candidate solutions, $\schd_i$ and $\schd_j$ having $f(\schd_i) = f(\schd_j)$. This isn't the case with the problem instances we've used in this thesis. However, this will need to be modified if the algorithm is to be used on more general problem instances}. If a bee tries to occupy the same position as another bee (i.e. they share the same candidate solution) then the bee trying to occupy that position is forced to explore the neighbourhood again and find another position. 
+
+This position scheme has two benefits. It forces diversification between the bees and sites, increasing the likelihood that new positions are found and that 
+
+% SAY SOMETHING ABOUT SITES vs BACKS
+% The population of bees is also segmented into sites, where each site maintains a best known candidate solution. 
+
+% TABU LIST
+% - Keep over bees separate. Bee sites seperate. 
+% - Operates as divivication mechanism
+
+% BACKLIST OF LAST x BEST PATH, used as launching point for next explore
+
+% ---------------------
+\subsection{Search space coverage}
+\label{subsec:searchspacecoverage}
+
+% - Broadsearch start
+% - The problem with sending bees out to find random sites, and lopsided search, and how we fix it (aging of sites)
+% ---------------------
+
+
+% =====================
+% SECTION
+% =====================
+\section{Neighborhood Exploration}
+\label{sec:neighborhoodexploration}
+
+% ---------------------
+\subsection{Wriggle room with capacity constraints}
+
+% ---------------------
+\subsection{Neighborhood}
+\label{subsec:neighborhood}
 
 % - Takes advantage of Taillards observation that the move between tours don't need to be huge. It is suffient to move to the tour in an adjoining segment. This is achieved here by the NEAREST cities list, and much simplier and quicker.
 
-% ---------------------
-\subsection{Deeper driller}
+% - Circles. Expands as search deepens
 
-% ---------------------
-\subsection{Keeping Bees separate}
 
 % ---------------------
-\subsection{Tabu List}
-
-% - GRAPH OF HOW SITES ARE KEPT DISTINCT, AND THERE SPREAD
-
-% ---------------------
-\subsection{Aged sites}
-
-% - The problem with sending bees out to find random sites, and lopsided search, and how we fix it (aging of sites)
-
-% ---------------------
-\subsection{Selection of when to wonder around}
-
-% - GRAPH OF ALL SITES PROGRESS, WITH RESTARTS
-
-
-% =====================
-% SECTION
-% =====================
-\section{Problem Initiation}
-
-%   * Intial starting thingie ? k-means
-% We use kmeans clustering. The kmeans algorithm isn't guaranteed to produce the same result each run. This is conventionally viewed as limitation of the algorithm. However for our purpose this is an advantage as we can use the randomness to better seed the population with different solutions.  
-
-
-% =====================
-% SECTION
-% =====================
-\section{Large Neighbourhood Search}
-
-% ---------------------
-\subsection{Destroy}
+\subsection{Destroy operation}
 
 % - Worst
 % - Random
 
+% - Avoid the problem of Tabu Search moving cities around the depot more frequently, because removes are random. \cite{Taillard:1993}.
+
 % dependent on how the partial solution is repaired. Shaw [51] proposed to gradually increase the degree of destruction, while Ropke and Pisinger [45] choose the degree of destruction randomly in each iteration by choosing the degree from a specific range dependent on the instance size. The destroy method must also be chosen such
 
 % ---------------------
-\subsection{Repair}
+\subsection{Repair operation}
+\label{subsec:repairoperation}
 
 % - Random best (random order)
 
 % - Candidate lists
 
     % However, from a diversification point of view, an optimal repair operation may not be attractive: only improving or identical-cost solutions will be produced
+
+
+% == TO TRY ==
+
+% Expanding a neighbourhood as a site ages
+% Various neighbourhoods ( remove worst? insert total best? 2-opt? lambda-opt? )
+% Apative memory (i.e. combining best solutions + killing ages ones)
+
+
