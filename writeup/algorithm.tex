@@ -6,20 +6,21 @@
 % =====================
 \chapter{Algorithm}
 
-This chapter presents the algorithm used within this thesis and provides detailed technical description. Several novel concepts ... 
-
-% TO SOLVE THE CVRP
+This chapter describes the algorithm used within this thesis and provides a detailed description of its operation. We start by reviewing the goals that the algorithm set out to achieve in \ref{sec:goals}. We then provide in section  \ref{sec:problemrepresentation} a description of how the algorithm internally represents the \VRP\ problem and its candidate solutions. Next in section \ref{sec:enhancedbeesalgorithm} we provide a detailed description of the operation of the algorithm. Finally in section \ref{sec:searchneighbourhood} we describe the neighbourhood structures that are used by the algorithm to define its search space.
 
 % =====================
 % SECTION
 % =====================
 \section{Goals}
+\label{sec:goals}
+
 The algorithm presented in this thesis was built for use in a commercial setting. It was developed as part of a NZTE grant for the company \emph{vWorkApp Inc.}'s scheduling and dispatch software. Accordingly more emphasis is given to runtime performance relative to optimisation performance, than is typically afforded in the \VRP\ literature.
  
 The algorithm aims to achieves the following goals (in order of priority):
 
 \begin{enumerate}
    \item All constraints meet. Specifically the maximum shift time for a route must be observed.
+   \item Robust and repeatable results. Many of the algorithms in the literature suffer from poor high variance of results between runs. Often the only the best solution from ten or more runs is reported.
    \item Speed of execution. It was more important that the algorithm produces a result within 5\% of optimal quickly, than it achieves 99\% of optimal over a longer period of time. The algorithm has also been designed to allow for it to be easily parallelized, to take advantage of modern hardware.
    \item Travel distance is minimized.
 \end{enumerate}
@@ -27,7 +28,8 @@ The algorithm aims to achieves the following goals (in order of priority):
 % =====================
 % SECTION
 % =====================
-\section{Problem Representation}
+\section{Problem representation}
+\label{sec:problemrepresentation}
 
 Our algorithm represents the problem in a direct and straight forward manner. It proceeds by directly manipulating the candidate solution $\schd$, where $\schd$ is a set of routes $R \in \schd$, and each route contains an ordered sequence of customers $v_i \in R$ starting and ending at the depot vertex $v^d$.
 
@@ -48,13 +50,13 @@ Function $c(R)$ calculates the cost (i.e distance) of a given route, function $d
 
 For the purposes of benchmarking our algorithm (see chapter \ref{chap:results}) we use a travel cost that is equal to the 2D Euclidian distance \footnote{In this case we define the cost function as $c_{ij} = \sqrt{(x_j-x_i)^2 + (y_j-y_i)^2}$} between the two points. For real life problem instance we have found that using a manhattan distance\footnote{Conversely we use define the cost function as $c_{ij} = (x_j-x_i)^2 + (y_j-y_i)^2$} often provides superior results. This is presumably due to the manhattan distance better modeling the road system within Auckland, which although not a strict grid still doesn't allow line-of-site travel.
 
-
 % =====================
 % SECTION
 % =====================
 \section{Enhanced Bees Algorithm}
+\label{sec:enhancedbeesalgorithm}
 
-Our Algorithm is based on the \emph{Bees Algorithm} (see section \ref{subsec:beesalgorithm} for an overview of this algorithm). The algorithm makes some changes to adapt the Bees Algorithm to this domain. An interesting aspect of the Bees Algorithm is that it covers a broad search area, minimizing the risk of being stuck in a local optimum. It achieves this by randomly probing (or in the Bees Algorithm parlance, Scouting) many areas of the search space through its entire run. However, this approach isn't well suited to hard combinatorial problems, where a newly constructed solution, let alone a randomly constructed one, is often far from optimal (for instance, the Clark Wright Savings heuristic still produces solutions that are upto 15\% from the best known and will require many operations to get close to optimal). We've adapted the Bees Algorithm such that many of its unique characteristics, such as its broad coverage, are maintained while working well with hard combinatorial problem, such as the \VRP.
+Our Algorithm is based on the \emph{Bees Algorithm} (see section \ref{subsec:beesalgorithm} for an overview of this algorithm). The algorithm makes some changes to adapt the Bees Algorithm to this domain. An interesting aspect of the Bees Algorithm is that it covers a broad search area, minimizing the risk of being stuck in a local optimum. It achieves this by randomly probing (or in the Bees Algorithm parlance, Scouting) many areas of the search space through its entire run. However, this approach isn't well suited to hard combinatorial problems, where a newly constructed solution, let alone a randomly constructed one, is often far from optimal (for instance, the Clark Wright Savings heuristic still produces solutions that are upto 15\% from the best known and will require many operations to get close to optimal). We've adapted the Bees Algorithm such that many of its unique characteristics, such as its relative robustness, are maintained while working well with hard combinatorial problem, such as the \VRP.
 
 Our algorithm can be summarized at a high level as follows:
 
@@ -62,22 +64,19 @@ Our algorithm can be summarized at a high level as follows:
    \caption{Enhanced Bees Algorithm}
    $S$ = seedSites() \\
 
-   \While{termination condition not meet}{
+   \While{termination condition not met}{
       \For{$s_i \in S$}{
          explore($s_i$, $d$) \\
-         \If{$i < \lambda$}
-            killWorstSites \\
+         \If{$i < \lambda$}{
+            removeWorstSite \\
+         }
       }
    }
 \end{algorithm}
 
 The algorithm maintains a collection of sites $S$, and each site $s_i \in S$ maintains a collection of bees $B_i$. Each bee is a proxy to the problem domain that we're trying to solve. In our case this is the \VRP\ problem representation covered above.
 
-== PIC OF BEE + SITES ==
-
-Initially each site is seeded, such that each site $s_i \in S$ contains a collection of bees $B_i$, and each bee has a corresponding \VRP\ candidate solution $\schd$. Each candidate solution is initialized by seeding each route with a randomly chosen customer, and is then filled out using the insertion heuristic outlined in \ref{subsec:repairoperation}.
-
-Each site is then, in turn, improved upon. This is achieved by iteratively exploring the neighbourhood of each site. The explore procedure for each neighbourhood is implemented as outlined in sections \ref{subsec:beemovement}, \ref{subsec:searchspacecoverage}, and \ref{sec:neighborhoodexploration}.
+Initially each site is seeded, such that each site $s_i \in S$ contains a collection of bees $B_i$, and each bee has a corresponding \VRP\ candidate solution $\schd$. Each candidate solution is initialized by seeding each route with a randomly chosen customer, and is then filled out using the insertion heuristic outlined in \ref{subsec:repairheuristic}. Each site is then, in turn, improved upon. This is achieved by iteratively exploring the neighbourhood of each site. The process used to explore each site is where the majority of the algorithm's processing takes place, and where the interesting aspects of the algorithm are developed. The procedure is covered in detail in sections \ref{sec:beemovement}, \ref{subsec:searchspacecoverage}, and \ref{sec:searchneighbourhood}.
 
 The number of sites explored is reduced over the run of the algorithm. This borrows from the idea of a cooling schedule used by Simulated Annealing. Sites are reduced using the formula:
 
@@ -91,71 +90,88 @@ In the next section we review in more detail each aspect of the algorithm.
 
 % ---------------------
 \subsection{Bee movements}
-\label{beemovement}
+\label{sec:beemovement}
 
-Bees are moved around the search space to look for improvements to the collection of candidate solutions being maintained. Each bee represents a current solution $\schd$, so a valid bee move is any new candidate solution $\schd'$ that can be reached within the neighbourhood of $\schd$ (see \ref{subsec:neighborhood} for the operations under which the neighbourhood is defined).
+Bees are moved around the search space to look for improvements to the collection of candidate solutions being maintained. Each bee represents a current solution $\schd$, so a valid bee move is any new candidate solution $\schd'$ that can be reached within the neighbourhood of $\schd$ (see \ref{sec:searchneighbourhood} for the operations under which the neighbourhood is defined).
 
-\picscl{images/movement.pdf}{TODO.}{fig:movement}{0.90}
+\picscl{images/movement.pdf}{TODO.}{fig:movement}{0.85}
 
 A feature of our algorithm is that two Bees can't occupy the same position. The algorithm maintains a register of the current positions occupied by each bee. We use the current fitness, $f(\schd)$, as a quick and simple representation of a bees current position\footnote{This obviously won't work in circumstances where there is a reasonable likelihood of two candidate solutions, $\schd_i$ and $\schd_j$ having $f(\schd_i) = f(\schd_j)$. This isn't the case with the problem instances we've used in this thesis. However, this will need to be modified if the algorithm is to be used on more general problem instances}. If a bee tries to occupy the same position as another bee (i.e. they share the same candidate solution) then the bee trying to occupy that position is forced to explore the neighbourhood again and find another position. 
 
-This position scheme has two benefits. It forces diversification between the bees and sites, increasing the likelihood that new positions are found and that 
+Enforcing the constraint that each bee must occupy a unique position has two benefits. It forces diversification between the bees and sites hence encouraging a greater degree of the search space to be explored. It also has the benefit of increasing the chance of a local optimum being escaped, as a bee ensnared in the local optimum position now forces the remainder of the hive to explore alternative positions. This feature has a similar intent and purpose to the tabu lists used by Tabu Search.
 
-% SAY SOMETHING ABOUT SITES vs BACKS
-% The population of bees is also segmented into sites, where each site maintains a best known candidate solution. 
+Another feature of our algorithm is the role that sites play in concentrating exploration on certain areas of the search space. Each site maintains a list, $M = \seq{\schd_1,..., \schd_\epsilon}$, of the last $\epsilon$ best positions. Each $\schd_i \in M$ is then taken as a launching point for a site's bees to explore. $\theta$ bees are recruited for the exploration of each $\schd_i \in M$. Once all positions in $M$ have been explored then the best $\epsilon$ positions are again taken and used as the launching points for the site's next round of exploration. This exploration method has two advantages. Firstly, it allows for a simple type of branching, as $\epsilon$ of the most promising positions there were traversed through on the way to the current position are also explored. Secondly, it prevents cycling between promising solutions that are in close vicinity to each other.
 
-% TABU LIST
-% - Keep over bees separate. Bee sites seperate. 
-% - Operates as divivication mechanism
+Conversely, sites don't interact with each other. Each maintains its own unique list of $\epsilon$ promising positions. Our constraint that no two bees can occupy the same position ensures that each sites in turn covers a area of the search space. In practice we've found that this is sufficient to encourage sites to diverge and explore separate areas of the search space.    
 
-% BACKLIST OF LAST x BEST PATH, used as launching point for next explore
+% SEEDING EACH SITE WITH BEST POS SO FAR
 
 % ---------------------
 \subsection{Search space coverage}
 \label{subsec:searchspacecoverage}
 
-% - Broadsearch start
-% - The problem with sending bees out to find random sites, and lopsided search, and how we fix it (aging of sites)
-% ---------------------
+As mentioned above one of the unique aspects of the Bees Algorithm is its ability to produce robust results through probing a large area of the search space. However this doesn't work well with hard combinatorial problems, where it can't ascertained quickly if an area in the search space shows promise or not. 
 
+We use an alternative approach inspired by Simulated Annealing's use of a cooling schedule to overcome this limitation. Bees are initially divided equally between each site $s_i \in S$, ensuring that each site is explored equally. Then every $\lambda$ period of iterations we reduce the number of sites maintained, such that $S = S - s_w$, where $s_w$ is the site with lowest fitness. We measure each sites fitness simply from the fitness of it's best position found to date.
+
+This process continues until a single site remains. We show experimentally in chapter \ref{chap:results} that this process improves the robustness of the algorithm and produces better results overall than if it were run using only a single site. 
 
 % =====================
 % SECTION
 % =====================
-\section{Neighborhood Exploration}
-\label{sec:neighborhoodexploration}
+\section{Search Neighbourhood}
+\label{sec:searchneighbourhood}
+
+As discussed above each bee seeks to improve upon its current fitness by exploring the local neighbourhood of the solution it represents. In our algorithm it does this by applying a Large Neighbourhood Search (LNS) operator to its candidate solution $\schd$. The LNS operator differs from the more common \VRP\ operators in that a single operation applies many changes to the candidate solution $\schd$. This widens the neighbourhood of $\schd$ to encompass exponentially many candidate solutions. LNS navigates through the vast space it opens by selecting only those changes that have a high likelihood of improving the solution. 
+
+The LNS operation is comprised of two-phases: a destroy phase, and a repair phase. In a \VRP\ algorithm the destroy phase is typically used to remove customers from a solution's route. In our algorithm we undertake this using two destroy heuristics. A some-what intelligent heuristic that attempts to remove those customers that are more likely to be able to be recombined in a profitable way. And a simple random selection. These heuristics are covered more formally in section \ref{subsec:destroyheuristic} below. The second phase is used to repair the partial solution. Our algorithm uses a simple insertion heuristic that inserts the customers into those locations that that have the lowest insertion cost. This heuristic is covered more formally in section \ref{subsec:repairheuristic} below.
 
 % ---------------------
-\subsection{Wriggle room with capacity constraints}
+\subsection{Destroy heuristic}
+\label{subsec:destroyheuristic}
+
+We employ two destroy heuristics. The first simply selects $l$ customers randomly from a solution $\schd$ and removes these from their routes. The second is slightly more complicated and is due to Shaw \cite{Shaw:1998}. Shaw's removal heuristic stochastically selects customers such that there is a higher likelihood of customers that are related to one another being removed. For our purposes related is defined as meaning that for any two customers $v_i, v_j \in V$ then either $v_i, v_j$ are geographically close to one another, that is $c_{ij}$ is small, or they share an adjacent position within the same route, $R = \seq{..., v_i, v_j, ...}$.
+
+The rational to removing related customers is that these customers are the most likely to profitable exchange positions with one another. Conversely unrelated customers are more likely to be reinserted back to the same positions they were removed from. 
 
 % ---------------------
-\subsection{Neighborhood}
-\label{subsec:neighborhood}
+\subsection{Repair heuristic}
+\label{subsec:repairheuristic}
 
-% - Takes advantage of Taillards observation that the move between tours don't need to be huge. It is suffient to move to the tour in an adjoining segment. This is achieved here by the NEAREST cities list, and much simplier and quicker.
+The repair heuristic that we use randomly selects one of the removed customers $v_j$, and calculates a cost for reinserting $v_j$ between each pair of jobs $v_i, v_k \in R_i$ for all $R_i \in \schd$ (actually not all reinsertion positions are considered, see the next section, \ref{subsec:neighborhoodscope}, for a description of which positions are considered). The reinsertion cost is calculated as follows:
 
-% - Circles. Expands as search deepens
+\begin{align}
+   c^* = (c_{ij} + c_{jk} - c_{ik}) 
+   cost = c^* + (d(R') - d(R)) + (t(R') - t(R))
+\end{align}
 
+Where $c^*$ calculates the cost difference in terms of travel distance. $R$ and $R'$ are defined as the route before and after the customer is inserted, respectively. And functions $d(R)$ and $t(R)$ are all defined as they are in section \ref{sec:problemrepresentation}. The final cost is the sum of the added travel distance and the two extra penalties, if the the route is now over capacity or time. The algorithm selects the position with the lowest insertion cost to reinsert the customer. This is repeated until all customers are reinserted into the solution. 
 
-% ---------------------
-\subsection{Destroy operation}
-
-% - Worst
-% - Random
-
-% - Avoid the problem of Tabu Search moving cities around the depot more frequently, because removes are random. \cite{Taillard:1993}.
-
-% dependent on how the partial solution is repaired. Shaw [51] proposed to gradually increase the degree of destruction, while Ropke and Pisinger [45] choose the degree of destruction randomly in each iteration by choosing the degree from a specific range dependent on the instance size. The destroy method must also be chosen such
+The reason that the order in which customers are reinserted is done randomly is that it adds a beneficial amount of noise to the heuristic. This ensures a healthy diversity of solutions are generated from the heuristic. 
 
 % ---------------------
-\subsection{Repair operation}
-\label{subsec:repairoperation}
+\subsection{Neighbourhood extent}
+\label{subsec:neighborhoodscope}
 
-% - Random best (random order)
+We also use two techniques that adjust the extent of the neighbourhood being searched. 
 
-% - Candidate lists
+The first technique we use is to allow some flexibility in selecting infeasible solutions are intermediate candidate solutions. As can be seen from our formulation of the candidate solutions' fitness values (see section \ref{sec:problemrepresentation}) violations the problem's capacity and duration constraints are penalized rather than forbidden. This allows for bees to navigate through infeasible solutions, where other aspects of that solution are sufficiently attractive enough to outweigh the penalties. However, only feasible solutions are allowed to be counted as the best overall solutions found by the algorithm. In chapter \ref{chap:results} we show experimentally how much impact different values of the penalty constraints, $\alpha$, $\beta$, and $\gamma$, have on the performance of the algorithm.
 
-    % However, from a diversification point of view, an optimal repair operation may not be attractive: only improving or identical-cost solutions will be produced
+Another technique that we use is to adjust the number of insertion positions considered as part of the repair heuristic. The number of insertion positions considered starts with both sides of the three closest customers and increases as the site ages. More formally, let $v_i \in V$ be the customer that is being inserted. An ordered sequence of candidate insertion points, $L_{v_i} = \seq{v_1,...,v_n}$ such that $v_j \in V - v_i$, is kept that lists customers in increasing geographic distance from $v_i$, that is $c_{ij} \forall j \in V - i$. The LNS repair operator tests $\mu$ positions from $L_{v_i}$ to find the cheapest insertion point. The repair operator tests both possible insertion points represented by $v_j \in L_{v_i}$, that is, it tests both the insertion cost of inserting $v_i$ immediately before and after $v_j$ in the route $R$ that contains $v_j$. 
+
+For each site $s_i \in S$ we also maintain an counter $a_i | i \in S$ that denotes the age of the site. A site's age is incremented for each iteration that a site doesn't improve upon it currently best known solution (as defined by the solutions fitness, $f(\schd)$). Whenever a site improves upon its best known solution then the counter is reset such that $a_i = 0$.
+
+\picscl{images/neighbourhood.pdf}{TODO.}{fig:neighbourhood}{0.85}
+
+We then use the following formula to increase how much of $L_{v_i}$ is considered as the site ages.
+
+\[
+   \mu = |L_{v_i}| * min(\frac{a_i}{k}, 1)
+\]
+
+Where $k$ is a constant that controls the rate at which the search area is expanded. 
+
+As this process extends the number of insertion positions that are considered by the repair heuristic, this also serves to extend the neighbourhood of solutions surrounding a candidate solution $\schd$. In this way we dynamically extend the size of the neighbourhoods searched by a site $s_i \in S$ if site $s_i$ has become stuck in a local optima.
 
 
 % == TO TRY ==
@@ -163,5 +179,6 @@ This position scheme has two benefits. It forces diversification between the bee
 % Expanding a neighbourhood as a site ages
 % Various neighbourhoods ( remove worst? insert total best? 2-opt? lambda-opt? )
 % Apative memory (i.e. combining best solutions + killing ages ones)
+
 
 

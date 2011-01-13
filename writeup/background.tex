@@ -253,7 +253,7 @@ Genetic Algorithms where first proposed in \cite{Holland:1975}. They've since be
 \begin{algorithm}
    \caption{Simple Genetic Algorithm}
    Generate the initial population\\
-   \While{termination condition not meet}{
+   \While{termination condition not met}{
       Evaluate the fitness of each individual\\
       Select the fittest pairs\\
       Mate pairs and produce next generation\\
@@ -263,7 +263,7 @@ Genetic Algorithms where first proposed in \cite{Holland:1975}. They've since be
 
 In classic Genetic Algorithms each candidate solution is encoded as a binary string (i.e. chromosome). Each individual (i.e. candidate solution) is initially created randomly and used to seed the population. There are many techniques suggested in the literature for initially 'bootstraping' the population by making use of other heuristics to produce a stronger initial population, however special care must be taken with Genetic Algorithms to ensure that diversity is maintained within the population - otherwise there is a risk of premature convergence. 
 
-Next the fittest individuals are selected from the population, and reproduction (crossover) and mutation operations are applyed to them to produce the next generation. A classic crossover operation takes individuals encoded as binary strings and splits them at one or two points. The parts are then recombined to form a new candidate solution. The idea being that the crossover produces a new candidate solution from two successful partial solutions. This process is repeated until a termination condition is meet (often a predetermined running time), or until the population has converged on a fitness.
+Next the fittest individuals are selected from the population, and reproduction (crossover) and mutation operations are applyed to them to produce the next generation. A classic crossover operation takes individuals encoded as binary strings and splits them at one or two points. The parts are then recombined to form a new candidate solution. The idea being that the crossover produces a new candidate solution from two successful partial solutions. This process is repeated until a termination condition is met (often a predetermined running time), or until the population has converged on a fitness.
 
 Special consideration needs to be given to how discrete optimisation problems, such as the \VRP, are represented and how their operators are constructed. For instance, consider how the classic crossover operation would work on a \TSP path. When two parts of two separate solutions are combined they are likely to contain duplicates. Therefore it is more common for the \VRP\ (and the \TSP\ as well) to use a direct representation, rather than a binary encoding. In this instance the \VRP\ is represented as collection of sequences, each holdings a sequence of customers. The Genetic Algorithm then must use operators specially designed for this representation of the problem. 
 
@@ -313,7 +313,7 @@ Large Neighbourhood Search uses a Destroy and Repair metaphor for how it searche
 \begin{algorithm}
    \caption{Large Neighbourhood Search}
    $x$ = an initial solution\\
-   \While{termination condition not meet}{
+   \While{termination condition not met}{
       $x^t$ = $x$\\
       $destroy(x^t)$ \\
       $repair(x^t)$ \\
@@ -364,7 +364,7 @@ Ant Colony Optimisation mimics this behaviour on a graph by simulating ants marc
 \begin{algorithm}
    \caption{Ant Colony Optimisation}
    \KwData{A graph representing the problem}
-   \While{termination condition not meet}{
+   \While{termination condition not met}{
       positionAnts()\\
       \While{solution being built}{
          marchAnts()\\
@@ -445,7 +445,7 @@ More formally the algorithm operates as follows:
    \caption{Bees Algorithm}
    $B = \set{b_1, b_2,..., b_n}$
    setToRandomPosition($B$)\\
-   \While{termination condition not meet}{
+   \While{termination condition not met}{
       sortByFitness($B$) \\
       $E = \set{b_1, b_2,...,b_e}$ \\
       $R = \set{b_{e+1}, b_{e+2},...,b_{m}}$ \\
