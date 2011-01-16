@@ -80,44 +80,44 @@ The objective function \eqref{PF:1} aims to minimize costs $c_{ij}$. Constraint 
 % Sub Section
 \subsection{\PDP}
 
-We now similarly define the \PDP\. The \PDP\ generalizes the \VRP. Goods can now be picked up from a customer or delivered to a customer along a single route. In contrast in the \VRP\ all jobs are either picking up goods or delivery goods to a customer. The \PDP\ is defined on a graph $(V,E)$. The vertices of the graph $V$ represent all pickup and delivery locations along with $v_0$ and $v_{2n+1}$ representing the depot where the vehicle starts and ends each route. Pickup jobs are denoted by $P = \set{p_1,p_2,...,p_n}$ and delivery jobs by $D = \set{d_1,d_2,...,d_n}$. The set of edges $E$ corresponds to the possible connections between jobs. For our use here all connections are possible -- that is it is possible for a vehicle to drive between any two jobs -- except where the depot is concerned. No edge terminates at $v_0$ and no edge originates at $v_{2n+1}$ and there is no edge $\edge{0,2n+1}$. Each edge $\edge{i,j} \in E$ has a corresponding cost $c_{ij}$ which typically represents the travel distance between customers.
-
-The set of routes is denoted by $R$ and each route has a maximum capacity $q$. Each location has a demand $d_{i} \in V$. Pickup jobs have a positive demand whereas deliveries are assumed to have a negative demand. A route containing a pickup $p_i \in P$ must also contain its corresponding delivery $d_i \in D$.
-
-The model contains the two decision variables: $X_{ij}^r$ which is defined $\forall \edge{i,j} \in E, \forall r \in R$. $X_{ij}^r$ is equal to $1$ if route $r$ contains a trip from location $v_i$ to location $v_j$ and $0$ otherwise.
-
-Let $y_i$ denote a an intermediate variable that stores the total load of a vehicle traveling route $r$ and visiting location $v_i$.  
-
-\begin{align}
-&\intertext{Minimize:}
-	&\sum_{r \in R} \sum_{\edge{ij} \in E} c_{ij}X_{ij}^r \tag{1}\label{PF:1}\\ \notag
-&\intertext{Subject to:}
-% general VRP constraints
-	&\sum_{r \in R} \sum_{j \in V} X_{ij}^r = 1 		  		&&\quad \forall i \in V \tag{2}\label{PF:2}\\
-	&\sum_{j \in V} X_{0j}^r = 1 							   	&&\quad \forall r \in R \tag{4}\label{PF:3}\\
-	&\sum_{j \in V} X_{j0}^r = 1 							   	&&\quad \forall r \in R \tag{5}\label{PF:4}\\
-	&\sum_{i \in V} X_{ik}^r - \sum_{j \in V} X_{kj}^r = 0 &&\quad \forall k \in C \mbox{ and } \forall r \in R \tag{6}\label{PF:5}\\
-% pickup and delivery contraints
-	&p_i \in r \implies d_i \in r \forall r \in R \tag{7}\label{PF:6}\\
-	&p_i \text{ appears before } d_i \in r \forall r \in R \tag{8}\label{PF:7}\\
-	&X_{ij}^r = 1 \implies y_i + d_i = y_j \forall r \in R \text{ and } \forall i,j \in V \tag{9}\label{PF:8}\\
-	y_0 = 0 \tag{10}\label{PF:9}\\
-	&\sum_{r \in R} \sum_{j \in V} X_{ij}^r y_i \leq q		&&\quad \forall i \in V \tag{11}\label{PF:10}
-\end{align}
-
-The objective function \eqref{PF:1} aims to minimize costs $c_{ij}$. Constraint \eqref{PF:2} states that each customer can only be serviced by a single route. Constraint \eqref{PF:3} and \eqref{PF:4} ensure that each route starts at exactly 1 depot vertex and finishes at exactly one depot vertex. Constraint \eqref{PF:5} is a flow constraint that ensures that the number of vehicles entering a customer is equal to the number of vehicles leaving.
-
-Constraint \eqref{PF:6} states that jobs pickup and delivery jobs are serviced by the same route. Constraint \eqref{PF:7} enforces that goods are picked up before being delivered. And constraints \eqref{PF:8} through \eqref{PF:10} ensure that each vehicle's capacity isn't exceeded. 
-
-% =====================
-% Sub Section
-\subsection{\PDPFTL}
-
-The mathematical model can be represented by \PDP\ above. As the demand on each job fills the truck we can simplify the model so that each pickup and delivery constraint is paired. We also add two additional constraints: vehicles fleet size is fixed and each route has a maximum distance travelled (this is used to limited the work undertaken to a shift). These aren't required for the general case but are important in most real-world applications of the problem. 
-
-We start by using the same framework given in the \PDP\ formulation. We replace the \PDP\ concept of pickup and delivery locations, with the simpler notation of jobs $J = \set{1,2,...,n}$. Each job $j \ in J$ is represented by the arc $\edge{j_p,j_d}$ which represents the pickup and delivery locations of the job. Each job can only be serviced by a single route $r in R$.
-
-The number of routes is set to the fixed number of vehicles we have available $|R| = k$.
+% We now similarly define the \PDP\. The \PDP\ generalizes the \VRP. Goods can now be picked up from a customer or delivered to a customer along a single route. In contrast in the \VRP\ all jobs are either picking up goods or delivery goods to a customer. The \PDP\ is defined on a graph $(V,E)$. The vertices of the graph $V$ represent all pickup and delivery locations along with $v_0$ and $v_{2n+1}$ representing the depot where the vehicle starts and ends each route. Pickup jobs are denoted by $P = \set{p_1,p_2,...,p_n}$ and delivery jobs by $D = \set{d_1,d_2,...,d_n}$. The set of edges $E$ corresponds to the possible connections between jobs. For our use here all connections are possible -- that is it is possible for a vehicle to drive between any two jobs -- except where the depot is concerned. No edge terminates at $v_0$ and no edge originates at $v_{2n+1}$ and there is no edge $\edge{0,2n+1}$. Each edge $\edge{i,j} \in E$ has a corresponding cost $c_{ij}$ which typically represents the travel distance between customers.
+% 
+% The set of routes is denoted by $R$ and each route has a maximum capacity $q$. Each location has a demand $d_{i} \in V$. Pickup jobs have a positive demand whereas deliveries are assumed to have a negative demand. A route containing a pickup $p_i \in P$ must also contain its corresponding delivery $d_i \in D$.
+% 
+% The model contains the two decision variables: $X_{ij}^r$ which is defined $\forall \edge{i,j} \in E, \forall r \in R$. $X_{ij}^r$ is equal to $1$ if route $r$ contains a trip from location $v_i$ to location $v_j$ and $0$ otherwise.
+% 
+% Let $y_i$ denote a an intermediate variable that stores the total load of a vehicle traveling route $r$ and visiting location $v_i$.  
+% 
+% \begin{align}
+% &\intertext{Minimize:}
+%  &\sum_{r \in R} \sum_{\edge{ij} \in E} c_{ij}X_{ij}^r \tag{1}\label{PF:1}\\ \notag
+% &\intertext{Subject to:}
+% % general VRP constraints
+%  &\sum_{r \in R} \sum_{j \in V} X_{ij}^r = 1           &&\quad \forall i \in V \tag{2}\label{PF:2}\\
+%  &\sum_{j \in V} X_{0j}^r = 1                          &&\quad \forall r \in R \tag{4}\label{PF:3}\\
+%  &\sum_{j \in V} X_{j0}^r = 1                          &&\quad \forall r \in R \tag{5}\label{PF:4}\\
+%  &\sum_{i \in V} X_{ik}^r - \sum_{j \in V} X_{kj}^r = 0 &&\quad \forall k \in C \mbox{ and } \forall r \in R \tag{6}\label{PF:5}\\
+% % pickup and delivery contraints
+%  &p_i \in r \implies d_i \in r \forall r \in R \tag{7}\label{PF:6}\\
+%  &p_i \text{ appears before } d_i \in r \forall r \in R \tag{8}\label{PF:7}\\
+%  &X_{ij}^r = 1 \implies y_i + d_i = y_j \forall r \in R \text{ and } \forall i,j \in V \tag{9}\label{PF:8}\\
+%  y_0 = 0 \tag{10}\label{PF:9}\\
+%  &\sum_{r \in R} \sum_{j \in V} X_{ij}^r y_i \leq q    &&\quad \forall i \in V \tag{11}\label{PF:10}
+% \end{align}
+% 
+% The objective function \eqref{PF:1} aims to minimize costs $c_{ij}$. Constraint \eqref{PF:2} states that each customer can only be serviced by a single route. Constraint \eqref{PF:3} and \eqref{PF:4} ensure that each route starts at exactly 1 depot vertex and finishes at exactly one depot vertex. Constraint \eqref{PF:5} is a flow constraint that ensures that the number of vehicles entering a customer is equal to the number of vehicles leaving.
+% 
+% Constraint \eqref{PF:6} states that jobs pickup and delivery jobs are serviced by the same route. Constraint \eqref{PF:7} enforces that goods are picked up before being delivered. And constraints \eqref{PF:8} through \eqref{PF:10} ensure that each vehicle's capacity isn't exceeded. 
+% 
+% % =====================
+% % Sub Section
+% \subsection{\PDPFTL}
+% 
+% The mathematical model can be represented by \PDP\ above. As the demand on each job fills the truck we can simplify the model so that each pickup and delivery constraint is paired. We also add two additional constraints: vehicles fleet size is fixed and each route has a maximum distance travelled (this is used to limited the work undertaken to a shift). These aren't required for the general case but are important in most real-world applications of the problem. 
+% 
+% We start by using the same framework given in the \PDP\ formulation. We replace the \PDP\ concept of pickup and delivery locations, with the simpler notation of jobs $J = \set{1,2,...,n}$. Each job $j \ in J$ is represented by the arc $\edge{j_p,j_d}$ which represents the pickup and delivery locations of the job. Each job can only be serviced by a single route $r in R$.
+% 
+% The number of routes is set to the fixed number of vehicles we have available $|R| = k$.
 
 % We now similarly define the \PDP\. The \PDP\ generalizes the \VRP. Goods can now be picked up from a customer or delivered to a customer along a single route. In contrast in the \VRP\ all jobs are either picking up goods or delivery goods to a customer. The \PDP\ is defined on a graph $(V,E)$. The vertices of the graph $V$ represent all pickup and delivery locations along with $v_0$ and $v_{2n+1}$ representing the depot where the vehicle starts and ends each route. Pickup jobs are denoted by $P = \set{p_1,p_2,...,p_n}$ and delivery jobs by $D = \set{d_1,d_2,...,d_n}$. The set of edges $E$ corresponds to the possible connections between jobs. For our use here all connections are possible -- that is it is possible for a vehicle to drive between any two jobs -- except where the depot is concerned. No edge terminates at $v_0$ and no edge originates at $v_{2n+1}$ and there is no edge $\edge{0,2n+1}$. Each edge $\edge{i,j} \in E$ has a corresponding cost $c_{ij}$ which typically represents the travel distance between customers.
 % 
@@ -128,37 +128,37 @@ The number of routes is set to the fixed number of vehicles we have available $|
 % Let $y_i$ denote a an intermediate variable that stores the total load of a vehicle traveling route $r$ and visiting location $v_i$.  
 
 
-\begin{align}
-&\intertext{Minimize:}
-	&\sum_{r \in R} \sum_{\edge{ij} \in E} c_{ij}X_{ij}^r \tag{1}\label{PF:1}\\ \notag
-&\intertext{Subject to:}
-% general VRP constraints
-	&\sum_{r \in R} \sum_{j \in V} X_{ij}^r = 1 		  		&&\quad \forall i \in V \tag{2}\label{PF:2}\\
-	&\sum_{j \in V} X_{0j}^r = 1 							   	&&\quad \forall r \in R \tag{4}\label{PF:3}\\
-	&\sum_{j \in V} X_{j0}^r = 1 							   	&&\quad \forall r \in R \tag{5}\label{PF:4}\\
-	&\sum_{i \in V} X_{ik}^r - \sum_{j \in V} X_{kj}^r = 0 &&\quad \forall k \in C \mbox{ and } \forall r \in R \tag{6}\label{PF:5}\\
-% pickup and delivery contraints
-	&p_i \in r \implies d_i \in r \forall r \in R \tag{7}\label{PF:6}\\
-	&p_i \text{ appears before } d_i \in r \forall r \in R \tag{8}\label{PF:7}\\
-	&X_{ij}^r = 1 \implies y_i + d_i = y_j \forall r \in R \text{ and } \forall i,j \in V \tag{9}\label{PF:8}\\
-	y_0 = 0 \tag{10}\label{PF:9}\\
-	&\sum_{r \in R} \sum_{j \in V} X_{ij}^r y_i \leq q		&&\quad \forall i \in V \tag{11}\label{PF:10}
-\end{align}
-
-The objective function \eqref{PF:1} aims to minimize costs $c_{ij}$. Constraint \eqref{PF:2} states that each job can only be serviced by a single route. Constraint \eqref{PF:3} enforces the capacity constraint: each route can not exceed the maximum vehicle capacity. Constraint \eqref{PF:4} and \eqref{PF:5} ensure that each route starts at exactly 1 depot vertex and finishes at exactly one depot vertex. Constraint \eqref{PF:6} is a flow constraint that ensures that the number of vehicles entering a customer is equal to the number of vehicles leaving.
-
-Constraint \eqref{PF:7} states that jobs pickup and delivery jobs are serviced by the same route. Constraint \eqref{PF:8} enforces that goods are picked up before being delivered. And constraints \eqref{PF:9} through \eqref{PF:11} ensure that each vehicle's capacity isn't exceeded.
-
-
-% ---------------------
-\subsubsection{Objectives}
-
-\begin{itemize}
-	\item Minimize between job travel distance
-\end{itemize}
-
-% ---------------------
-\subsubsection{Constraints}
+% \begin{align}
+% &\intertext{Minimize:}
+%  &\sum_{r \in R} \sum_{\edge{ij} \in E} c_{ij}X_{ij}^r \tag{1}\label{PF:1}\\ \notag
+% &\intertext{Subject to:}
+% % general VRP constraints
+%  &\sum_{r \in R} \sum_{j \in V} X_{ij}^r = 1           &&\quad \forall i \in V \tag{2}\label{PF:2}\\
+%  &\sum_{j \in V} X_{0j}^r = 1                          &&\quad \forall r \in R \tag{4}\label{PF:3}\\
+%  &\sum_{j \in V} X_{j0}^r = 1                          &&\quad \forall r \in R \tag{5}\label{PF:4}\\
+%  &\sum_{i \in V} X_{ik}^r - \sum_{j \in V} X_{kj}^r = 0 &&\quad \forall k \in C \mbox{ and } \forall r \in R \tag{6}\label{PF:5}\\
+% % pickup and delivery contraints
+%  &p_i \in r \implies d_i \in r \forall r \in R \tag{7}\label{PF:6}\\
+%  &p_i \text{ appears before } d_i \in r \forall r \in R \tag{8}\label{PF:7}\\
+%  &X_{ij}^r = 1 \implies y_i + d_i = y_j \forall r \in R \text{ and } \forall i,j \in V \tag{9}\label{PF:8}\\
+%  y_0 = 0 \tag{10}\label{PF:9}\\
+%  &\sum_{r \in R} \sum_{j \in V} X_{ij}^r y_i \leq q    &&\quad \forall i \in V \tag{11}\label{PF:10}
+% \end{align}
+% 
+% The objective function \eqref{PF:1} aims to minimize costs $c_{ij}$. Constraint \eqref{PF:2} states that each job can only be serviced by a single route. Constraint \eqref{PF:3} enforces the capacity constraint: each route can not exceed the maximum vehicle capacity. Constraint \eqref{PF:4} and \eqref{PF:5} ensure that each route starts at exactly 1 depot vertex and finishes at exactly one depot vertex. Constraint \eqref{PF:6} is a flow constraint that ensures that the number of vehicles entering a customer is equal to the number of vehicles leaving.
+% 
+% Constraint \eqref{PF:7} states that jobs pickup and delivery jobs are serviced by the same route. Constraint \eqref{PF:8} enforces that goods are picked up before being delivered. And constraints \eqref{PF:9} through \eqref{PF:11} ensure that each vehicle's capacity isn't exceeded.
+% 
+% 
+% % ---------------------
+% \subsubsection{Objectives}
+% 
+% \begin{itemize}
+%  \item Minimize between job travel distance
+% \end{itemize}
+% 
+% % ---------------------
+% \subsubsection{Constraints}
 
 % =====================
 % Sub Section
@@ -168,8 +168,6 @@ Constraint \eqref{PF:7} states that jobs pickup and delivery jobs are serviced b
 % Sub Section
 \subsection{\PDPTW}
 
-
-IN REAL WORLD CASE OFTEN VEHICLE NUMBER IS SET. IN THIS CASE WE WANT TO MAKE MAXIMUM USE OF THE VEHICLES THAT ARE AVAILABLE SINCE WAGES ARE PAID REGARDLESS.
 
 
 

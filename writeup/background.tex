@@ -5,7 +5,7 @@
 % ---------------------
 % =====================
 \chapter{Background}
-This section provides history and background material on the Vehicle Routing Problem. In particular we review the solution methods that been brought to bear on the Vehicle Routing Problem and some of the classic results reported in the literature. 
+This chapter provides a short history and background material on the Vehicle Routing Problem. In particular we review the solution methods that been brought to bear on the Vehicle Routing Problem and some of the classic results reported in the literature. 
 
 This chapter is laid out as follows. We start in section \ref{sec:vo} by informally defining what the Vehicle Routing Problem is and by providing a timeline of the major milestones in its research. We also reviewing here a closely related problem, the Traveling Salesman Problem, which is a cornerstone of the Vehicle Routing Problem. We then review in section \ref{sec:em} the \emph{Exact Methods} that have been developed to solve the Vehicle Routing Problem. These are distinguished from the other methods we review in that they provide exact solutions, where the globally best answer is produced. We follow this in section \ref{sec:ch} by reviewing the \emph{Classic Heuristics} that have been developed for the Vehicle Routing Problem. These methods aren't guaranteed to find the globally best answer, but rather aim to produce close to optimal solutions using algorithms with fast running times that are able to scale to large problem instances. In section \ref{sec:mh} we review \emph{Meta-heuristic} methods that have been adapted for the Vehicle Routing Problem. These methods provide some of the most competitive results available for solving the Vehicle Routing Problem and are considered the state-of-the-art currently. Lastly in section \ref{sec:si} we review a modern family of meta-heuristics called \emph{Swarm Intelligence} that has been inspired by the problem solving abilities exhibited by some groups of animals and natural processes. These last methods have become a popular area of research recently and are starting to produce competitive results to many problems. This thesis uses a Swarm Intelligence method for solving the Vehicle Routing Problem.
 
@@ -184,7 +184,7 @@ We next look at two-phase heuristics. We start by looking at the cluster-first, 
 
 \picscl{images/sweep.pdf}{This diagram shows an example of the Sweep process being run. The ray is swept clockwise around the geographic area. In this example one route has already been formed, and a second is about to start at customer $i$}{fig:sweep}{0.55}
 
-Fisher and Jaikumas's 1981 paper builds upon the two-phase approach by providing a more sophisticated clustering method. They solve a General Assignment Problem to form the clusters instead. A limitation of their method is that the amount of vehicle routes must be fixed up front. Their method often produces results that are 1\% to 2\% better than similar results produced by the classic sweep algorithm \cite{TV2001}. 
+Fisher and Jaikumars's 1981 paper \cite{FJ:1981} builds upon the two-phase approach by providing a more sophisticated clustering method. They solve a General Assignment Problem to form the clusters instead. A limitation of their method is that the amount of vehicle routes must be fixed up front. Their method often produces results that are 1\% to 2\% better than similar results produced by the classic sweep algorithm \cite{TV2001}. 
 
 Christofides, Mingozzi, and Toth expanded upon this approach in \cite{???} and proposed a method that uses a truncated branch and bound technique (similar to Christofiedes Exact method). At each step it builds a collection of feasible routes containing a customer $i$ for evaluation. It then evaluates each route and selects the route that the \TSP with the shortest distance can be produced from.
 
@@ -250,7 +250,7 @@ Although Simulated Annealing has produced some good results, and in many cases o
 
 Genetic Algorithms where first proposed in \cite{Holland:1975}. They've since been applied to many problem domains and are particularly well suited to applications that must work across a few distinct problems. In fact they were the first evolutionary inspired algorithms to be applied to combinatorial problems \cite{Potvin:2009}. The basic operation of a GA is as follows:
 
-\begin{algorithm}
+\begin{algorithm}[H]
    \caption{Simple Genetic Algorithm}
    Generate the initial population\\
    \While{termination condition not met}{
@@ -310,7 +310,7 @@ Large Neighbourhood Search (commonly abbreviated to LNS) was recently proposed a
 
 Large Neighbourhood Search uses a Destroy and Repair metaphor for how it searches within its neighbourhood. The basic operation is as follows.
 
-\begin{algorithm}
+\begin{algorithm}[H]
    \caption{Large Neighbourhood Search}
    $x$ = an initial solution\\
    \While{termination condition not met}{
@@ -361,7 +361,7 @@ Ant Colony Optimization is inspired by how ants forage for food and communicate 
 
 Ant Colony Optimisation mimics this behaviour on a graph by simulating ants marching along a graph that represents the problem being solved. The basic operation of the algorithm is as follows: 
 
-\begin{algorithm}
+\begin{algorithm}[H]
    \caption{Ant Colony Optimisation}
    \KwData{A graph representing the problem}
    \While{termination condition not met}{
