@@ -49,7 +49,7 @@ Table \ref{tab:standard_results} summarizes these results.
    & \multicolumn{2}{c}{Fast\tmark[1]} & \multicolumn{2}{c}{Best\tmark[2]}
 \ML
    P01E51K05 & 524.61   & 100.00\%  & 524.61    & 100.00\%  & 524.61 \\
-   P02E76K10 & 835.77   & 98.94\%   & 835.77    & 98.94\%   & 835.26  \\
+   P02E76K10 & 835.77   & 99.94\%   & 835.77    & 99.94\%   & 835.26  \\
    P03E101K08 & 826.14  & 100.00\%  & 826.14    & 100.00\%  & 826.14  \\
    P04E151K12 & 1057.40 & 97.26\%   & 1045.88   & 98.33\%   & 1028.42  \\
    P05E200K17 & 1360.85 & 94.90\%   & 1345.94   & 95.95\%   & 1291.45  \\
@@ -63,7 +63,7 @@ Table \ref{tab:standard_results} summarizes these results.
    P13D121K11 & 1555.30 & 99.09\%   & 1549.71   & 99.45\%   & 1541.14  \\
    P14D101K11 & 866.37  & 100.00\%  & 866.37    & 100.00\%  & 866.37
 \ML
-   Average    &         & 98.36\%  &            & 98.97\%   &
+   Average    &         & 98.44\%  &            & 99.04\%   &
 \LL
 }
 
@@ -116,7 +116,7 @@ The LNS improvement heuristic produced much stronger results. This shows that th
    & \multicolumn{2}{c}{Enhanced Bees\tmark[3]}
 \ML
    P01E51K05 & 557.17   & 94.16\%   & 543.16    & 96.58\%    & 524.61   & 100.00\%  \\
-   P02E76K10 & 925.97   & 90.20\%   & 854.35    & 97.77\%    & 835.77   & 98.94\%   \\
+   P02E76K10 & 925.97   & 90.20\%   & 854.35    & 97.77\%    & 835.77   & 99.94\%   \\
    P03E101K08 & 873.75  & 94.55\%   & 866.13    & 95.38\%    & 826.14   & 100.00\%  \\
    P04E151K12 & 1203.47 & 85.45\%   & 1061.75   & 96.86\%    & 1057.40  & 97.26\%   \\
    P05E200K17 & 1520.89 & 84.91\%   & 1360.85   & 94.90\%    & 1360.85  & 94.90\%   \\
@@ -130,7 +130,7 @@ The LNS improvement heuristic produced much stronger results. This shows that th
    P13D121K11 & 1662.70 & 92.69\%   & 1555.29   & 99.09\%    & 1555.30  & 99.09\%   \\
    P14D101K11 & 903.25  & 95.92\%   & 879.69    & 98.49\%    & 866.37   & 100.00\%
 \ML
-   Average    &         & 79.18\%  &            & 89.50\%   &           & 98.36\%
+   Average    &         & 79.18\%  &            & 89.50\%   &           & 98.44\%
 \LL
 }
 
@@ -139,7 +139,7 @@ The LNS improvement heuristic produced much stronger results. This shows that th
 
 Lastly we provide a comparison of the Enhanced Bees Algorithm with other well known results from the literature.
 
-\ctable[caption=Results Comparison, label=tab:results_Comparison, botcap, framesep=10pt, sideways]
+\ctable[caption=Results Comparison, label=tab:resultscomparison, botcap, framesep=10pt, sideways]
 {lrrrrrrrrr}
 {
    \tnote[1]{Clark Write's Savings (Parallel) algorithm. Implemented by Laporte and Semet \cite{Laporte:1999}.}
@@ -180,4 +180,15 @@ Lastly we provide a comparison of the Enhanced Bees Algorithm with other well kn
    P14D101K11  & 875.75    & 949    & 876    & 868.50    & 890 (305)             & \textbf{866.37} (3942)   & 867.07 (348)          & \textbf{866.37} (40) & 866.37  \\
 \LL
 }
+
+
+% P05E200K17 1145 5280 1342.5248437901 0.9620 
+%            785 3835 1327.4808572276 0.9729
+
+
+== PIC OF COMPARISON GRAPH ==
+
+As can be seen from table \ref{tab:resultscomparison} some of the best results known are due to Taillard's Tabu Search heuristic. He reaches 12 of the best known solutions from the set of 14 problems. The Enhanced Bees Algorithm by comparison finds 8 of the 14 best known solution. However, the Enhanced Bees Algorithm is still very competitive. The runtime duration required to find a best known solution is smaller than many of the other meta-heuristics, although a direct comparison is hard to make as the many of the reported results were run on significantly older machines. And the solution quality is within 1\% of the best known solutions, which places it within the ranks of the best meta-heuristics for \VRP.
+
+
 

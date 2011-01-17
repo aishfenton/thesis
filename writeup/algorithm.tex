@@ -46,7 +46,7 @@ The algorithm makes use of a \emph{fitness} concept, common to many meta-heurist
    & f(\schd) = \sum_{R \in \schd} (\alpha c(R) + \beta d(R) + \gamma c(R))
 \end{align}
 
-Function $c(R)$ calculates the cost (i.e distance) of a given route, function $d(R)$ calculates how overcapacity that the given route is. We define overcapacity to be how much larger the route's summed demands $d_i, i \in R$ are than the stated maximum allowable capacity $q$. Likewise function $t(R)$ calculates the overtime of the given route. A route's duration is calculated as being the sum of its customer's service times $t_i, i \in R$ and its travel time. By convention the travel time equal to the distance of the route. Function $t(R)$ then returns how much over the maximum allowable route duration $t$ the duration is. Lastly the fitness function $f()$ is the weighted sum of these three terms. Parameters $\alpha$, $\beta$, and $\gamma$ are used  used to control how influence each term has on determining the candidate solutions fitness.
+Function $c(R)$ calculates the cost (i.e distance) of a given route, function $d(R)$ calculates how overcapacity that the given route is. We define overcapacity to be how much larger the route's summed demands $d_i, i \in R$ are than the stated maximum allowable capacity $q$. Likewise function $t(R)$ calculates the overtime of the given route. A route's duration is calculated as being the sum of its customer's service times $t_i, i \in R$ and its travel time. By convention the travel time is equal to the distance of the route. Function $t(R)$ then returns how much over the maximum allowable route duration $t$ the duration is. Lastly the fitness function $f()$ is the weighted sum of these three terms. Parameters $\alpha$, $\beta$, and $\gamma$ are used  used to control how influence each term has on determining the candidate solutions fitness.
 
 For the purposes of benchmarking our algorithm (see chapter \ref{chap:results}) we use a travel cost that is equal to the 2D Euclidian distance \footnote{In this case we define the cost function as $c_{ij} = \sqrt{(x_j-x_i)^2 + (y_j-y_i)^2}$} between the two points. For real life problem instance we have found that using a manhattan distance\footnote{Conversely we use define the cost function as $c_{ij} = (x_j-x_i)^2 + (y_j-y_i)^2$} often provides superior results. This is presumably due to the manhattan distance better modeling the road system within Auckland, which although not a strict grid still doesn't allow line-of-site travel.
 
@@ -81,7 +81,7 @@ Initially each site is seeded, such that each site $s_i \in S$ contains a collec
 The number of sites explored is reduced over the run of the algorithm. This borrows from the idea of a cooling schedule used by Simulated Annealing. Sites are reduced using the formula:
 
 \begin{align}
-   & S = S - s_w & \text{if $t \text{ mod } \lambda = 0$}
+   & S = S - s_w & \text{if $i \text{ mod } \lambda = 0$}
 \end{align}
 
 Where $s_w$ represents the worst site, in terms of fitness, $i$ represents the current iteration of the algorithm, and $\lambda$ represents the period of iterations with which the number of sites are reduced. Once the algorithm is complete the $\schd$ with the best overall fitness is returned as the answer.
