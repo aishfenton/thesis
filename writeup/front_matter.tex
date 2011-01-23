@@ -1,14 +1,35 @@
 %!TEX root = main.tex
 
 % =====================
-% ACKNOWLEDGEMENTS
+% PREFACE
 % ---------------------
 % =====================
+\chapter*{Preface}
 
-\begin{abstract}
-We examine the Pickup and Delivery problem for Full truck load vehicles - an important problem in moving bulk freight. We provide background on the related problems \VRP\ and \PDP\ as well as providing a brief survey of the more common heuristics for these problems. We provide an algorithm based on adapting classic heuristics and provide a set of test instances to benchmark the problem against. We discuss implementation challenges and solutions and present a real-world case study. 
-\end{abstract}
+This MSc.\ thesis has been prepared by Aisha Fenton at the University of Auckland - Department of Computer Science. It has been supervised by Dr.\ Michael Dinneen. The work undertaken in this thesis has grown out of a research project sponsored by New Zealand Trade and Enterprise (NZTE) for the company vWorkApp Inc.\ to research vehicle route optimisation for use within their software product.
 
+\section*{Acknowledgements}
+
+I'd like to thank my partner in crime, Anna Jobsis, for her encouragement, cajoling, threatening, bribing, doing the dishes, proof reading, guilt tripping, spellchecking... doing whatever it takes to help me get it done.
+
+Thanks to Steve Taylor and Steve Harding for holding down the fort at work while I disappeared to do this thesis. And likewise thanks to my team, Jono, Rash, Elena, Bob, Marcus, Yuri, and Robin for being on the ball (as always) despite my absence.
+
+Thanks to Brendon Petrich and vWorkApp Inc.\ for providing me with time off work and being supportive of me undertaking this. 
+
+And lastly, I especially owe Dr.\ Michael Dinneen, my supervisor, a big thank you for persevering with me even though he must have doubted that I'd ever finish.
+
+% =====================
+% Abstract
+% =====================
 \cleardoublepage
 
-\tableofcontents*
+\begin{center}
+   \begin{minipage}{300pt}
+   \begin{center}
+      \textbf{Abstract}
+   \end{center}
+   In this thesis we present a new algorithm to solve the Vehicle Routing Problem. We adapt a fairly recent algorithm, the Bees Algorithm, which was developed for continuos problems, for use on the Vehicle Routing Problem. The results obtained are competitive with the best meta-heuristics available for the Vehicle Routing Problem. Additionally, the algorithm has good runtime performance, producing results within 2\% of the optimal solution within 60 seconds.
+   \end{minipage}
+\end{center}
+
+\cleardoublepage

@@ -1,5 +1,22 @@
 \begin{thebibliography}{10}
 
+\bibitem{beeimage}
+Bee image.
+\newblock \texttt{http://etc.usf.edu/clipart/27800/27890/bee\_27890.htm}.
+
+\bibitem{beesalg}
+The bees algorithm website.
+\newblock \texttt{http://www.bees-algorithm.com}.
+
+\bibitem{biodidac:website}
+Biodidac - a bank of digital resources for teaching biology.
+\newblock \texttt{http://biodidac.bio.uottawa.ca/}.
+
+\bibitem{FR:1976}
+D.M.~Ryan B.~A.~Foster.
+\newblock An integer programming approach to the vehicle scheduling problem.
+\newblock {\em Operations Research}, 27:367–384, 1976.
+
 \bibitem{BHS:1999A}
 C.~Strauss B.~Bullnheimer, R. F.~Hartl.
 \newblock Applying the ant system to the vehicle routing problem.
@@ -28,12 +45,6 @@ Jean Berger and Mohamed Barkaoui.
 \newblock In {\em Genetic and Evolutionary Computation — GECCO 2003}, volume
   2723 of {\em Lecture Notes in Computer Science}, pages 198--198. 2003.
 
-\bibitem{CMT:1981}
-Mingozzi~A. Christofides, N. and P.~Toth.
-\newblock Exact algorithms for the vehicle routing problem, based on spanning
-  tree and shortest path relaxations.
-\newblock {\em Mathematical Programming}, 20:255--282, 1981a.
-
 \bibitem{CE:1969}
 N.~Christofides and S.~Eilon.
 \newblock An algorithm for the vehicle dispatching problem.
@@ -49,16 +60,38 @@ G.~B. Dantzig and J.~H. Ramser.
 \newblock The truck dispatching problem.
 \newblock {\em Management Science}, 6(1):80--91, Oct, 1959.
 
+\bibitem{DMDJSM:1992}
+Martin Desrochers, Jacques Desrosiers, and Marius Solomon.
+\newblock A new optimization algorithm for the vehicle routing problem with
+  time windows.
+\newblock {\em Oper. Res.}, 40:342--354, March 1992.
+
 \bibitem{RDS:1990}
 C.F.~Daganzo F.~Robuste and R.~Souleyrette II.
 \newblock Implementing vehicle routing models.
 \newblock {\em Transportation Research}, 24B:263--286, 1990.
+
+\bibitem{FJ:1981}
+M.L. Fisher and R.~Jaikumar.
+\newblock A generalized assignment heuristic for solving the vrp.
+\newblock {\em Networks}, 11:109--124, 1981.
 
 \bibitem{clark:1964}
 J.W.~Wright G.~Clark.
 \newblock Scheduling of vehicles from a central depot to a number of delivery
   points.
 \newblock {\em Operations Research}, 12:568--581, 1964.
+
+\bibitem{LMN:1986}
+Y.~Nobert G.~Laporte, H.~Mercure.
+\newblock An exact algorithm for the asymmetrical capacitated vehicle routing
+  problem.
+\newblock {\em Networks}, 16:33--46, 1986.
+
+\bibitem{Gaskell:1967}
+T.~Gaskell.
+\newblock Bases for vehicle fleet scheduling.
+\newblock {\em Operational Research Quarterly}, 18:281--295, 1967.
 
 \bibitem{Laporte:1999}
 Frederic~Semet Gilbert~Laporte.
@@ -90,10 +123,23 @@ G~Laporte J~Renaud, F F~Boctor.
   problem.
 \newblock {\em INFORMS Journal on Computing}, 8:134--143, 1996.
 
+\bibitem{BW:1993}
+R.L.~Wainwright J.L.~Blanton.
+\newblock Multiple vehicle routing with time and capacity constraints using
+  genetic algorithms.
+\newblock {\em Proceedings of the 5th International Conference on Genetic
+  Algorithms}, page 451–459, 1993.
+
 \bibitem{AG:1991}
 B.~Gavish K.~Altinkemer.
 \newblock Parallel savings based heuristic for the delivery problem.
 \newblock {\em Operations Research}, 39:456--469, 1991.
+
+\bibitem{Kar72}
+R.~Karp.
+\newblock Reducibility among combinatorial problems.
+\newblock In R.~Miller and J.~Thatcher, editors, {\em Complexity of Computer
+  Computations}, pages 85--103. Plenum Press, 1972.
 
 \bibitem{Kirkman:1856}
 T.P. Kirkman.
@@ -128,21 +174,28 @@ A~H G R~Kan M~Haimovich.
 \newblock Bounds and heuristics for capacitated routing problems.
 \newblock {\em Mathematics of Operations Research}, 10:527--542, 1985.
 
+\bibitem{RZ:1968}
+S.~Zionts M.~R.~Rao.
+\newblock Allocation of transportation units to alternative trips—a column
+  generation scheme with out-of-kilter subproblems.
+\newblock {\em Operations Research}, 16:52--63, 1968.
+
 \bibitem{RSD:2002}
 K.~Doerner M.~Reimann, M.~Stummer.
 \newblock A savings-based ant system for the vehicle routing problem.
 \newblock {\em Proceedings of the Genetic and Evolutionary Computation
   Conference}, page 1317–1325, 2002.
 
+\bibitem{CMT:1981}
+A.~Mingozzi N.~Christofides and P.~Toth.
+\newblock Exact algorithms for the vehicle routing problem, based on spanning
+  tree and shortest path relaxations.
+\newblock {\em Mathematical Programming}, 20:255--282, 1981a.
+
 \bibitem{Nagata:2007}
 Y.~Nagata.
 \newblock Edge assembly crossover for the capacitated vehicle routing problem.
 \newblock {\em EvoCOP, LNCS}, 4446:142--153, 2007.
-
-\bibitem{RTFNZ}
-Road Transport~Forum NZ.
-\newblock Road transport forum nz - transport facts.
-\newblock Website.
 
 \bibitem{Or:1976}
 I~Or.
@@ -161,6 +214,11 @@ D.~Vigo P.~Toth.
 \newblock The granular tabu search (and it's applications to the vehicle
   routing problem).
 \newblock Technical report, 1998.
+
+\bibitem{Paessens:1988}
+H.~Paessens.
+\newblock The savings algorithm for the vehicle routing problem.
+\newblock {\em European Journal of Operational Research}, 34:336--344, 1988.
 
 \bibitem{PGKORZ:2005}
 Koc Otri S Rahim~S Pham, Ghanbarzadeh and Zaidi M.
@@ -186,8 +244,8 @@ Stefan Ropke.
 
 \bibitem{Schrijver}
 Alexander Schrijver.
-\newblock On the history of combinatorial optimization (till 1960).
-\newblock {\em ?}, ?:?, ?
+\newblock On the history of combinatorial optimization.
+\newblock 1960.
 
 \bibitem{Shaw:1998}
 P.~Shaw.
@@ -223,5 +281,11 @@ Paolo Toth and Daniele Vigo, editors.
 J.~A.~G. Willard.
 \newblock Vehicle routing using r-optimal tabu search. m.sc. dissertation,
   1989.
+
+\bibitem{Yellow:1970}
+P.~Yellow.
+\newblock A computational modification to the savings method of vehicle
+  scheduling.
+\newblock {\em Operational Research Quarterly}, 21:281--283, 1970.
 
 \end{thebibliography}
