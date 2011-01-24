@@ -4,13 +4,13 @@ The top-level auxiliary file: main.aux
 The style file: plain.bst
 Database file #1: bibliography.bib
 Warning--entry type for "Willard:1989" isn't style-file defined
---line 261 of file bibliography.bib
+--line 262 of file bibliography.bib
 Warning--to sort, need author or key in beeimage
+Name 1 in "N. Christofides, A. Mingozzi, and P. Toth" has a comma at the end for entry CMT:1981
+while executing---line 1049 of file plain.bst
 Name 1 in "Dantzig, Fulkerson, and Johnson" has a comma at the end for entry Dantzig:1954
 while executing---line 1049 of file plain.bst
 Name 1 in "Laporte, G., and Nobert, Y" has a comma at the end for entry LANO:87
-while executing---line 1049 of file plain.bst
-Name 1 in "N. Christofides, A. Mingozzi, and P. Toth" has a comma at the end for entry CMT:1981
 while executing---line 1049 of file plain.bst
 Too many commas in name 1 of "Pham, Ghanbarzadeh, Koc, Otri S, Rahim S and Zaidi M" for entry PGKORZ:2005
 while executing---line 1049 of file plain.bst
@@ -38,45 +38,45 @@ Warning--empty publisher in Potvin:2009
 Warning--empty journal in Schrijver
 Warning--empty booktitle in Shaw:1998
 Warning--empty publisher in Shaw:1998
-You've used 52 entries,
+You've used 53 entries,
             2118 wiz_defined-function locations,
-            837 strings with 11472 characters,
-and the built_in function-call counts, 15052 in all, are:
-= -- 1537
-> -- 444
+            842 strings with 11553 characters,
+and the built_in function-call counts, 15256 in all, are:
+= -- 1556
+> -- 451
 < -- 12
-+ -- 202
-- -- 130
-* -- 863
-:= -- 2445
-add.period$ -- 156
-call.type$ -- 52
-change.case$ -- 219
++ -- 205
+- -- 132
+* -- 868
+:= -- 2479
+add.period$ -- 159
+call.type$ -- 53
+change.case$ -- 223
 chr.to.int$ -- 0
-cite$ -- 65
-duplicate$ -- 669
-empty$ -- 1313
-format.name$ -- 130
-if$ -- 3262
+cite$ -- 66
+duplicate$ -- 676
+empty$ -- 1335
+format.name$ -- 132
+if$ -- 3307
 int.to.chr$ -- 0
-int.to.str$ -- 52
+int.to.str$ -- 53
 missing$ -- 43
-newline$ -- 259
-num.names$ -- 102
-pop$ -- 221
+newline$ -- 264
+num.names$ -- 104
+pop$ -- 229
 preamble$ -- 1
-purify$ -- 168
+purify$ -- 171
 quote$ -- 0
-skip$ -- 502
+skip$ -- 510
 stack$ -- 0
-substring$ -- 1064
-swap$ -- 161
+substring$ -- 1069
+swap$ -- 162
 text.length$ -- 12
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 202
+type$ -- 206
 warning$ -- 13
-while$ -- 146
-width$ -- 54
-write$ -- 553
+while$ -- 148
+width$ -- 55
+write$ -- 562
 (There were 10 error messages)

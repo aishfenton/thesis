@@ -7,7 +7,7 @@
 \chapter{Results}
 \label{chap:results}
 
-In this chapter we provide a detailed breakdown of the results obtained by the Enhanced Bees Algorithm. The algorithm is tested against the well known set of test instances due to Christofides, Mingozzi and Toth \cite{CMT:1981}. We start in section \ref{sec:standardresults} by presenting the results from running the algorithm in its two standard configurations: the first configuration is optimised to produce the best overall results, regardless of its runtime performance; the second configuration is optimised to produce the best results possible within a 60 second runtime threshold. We follow this in section \ref{sec:experiments} by providing contrasting results on the same problem instances instead using a standard Bees Algorithm and a LNS local search. Here we aim to demonstrate that the enhancements suggested in this thesis do in fact improve the solution quality. Finally, we end in section \ref{sec:comparison} by comparing and ranking how the Enhanced Bees Algorithm performs compared to the results in the literature. 
+In this chapter we provide a detailed breakdown of the results obtained by the Enhanced Bees Algorithm. The algorithm is tested against the well known set of test instances due to Christofides, Mingozzi and Toth~\cite{CMT:1981}. We start in Section \ref{sec:standardresults} by presenting the results from running the algorithm in its two standard configurations: the first configuration is optimised to produce the best overall results, regardless of its runtime performance; the second configuration is optimised to produce the best results possible within a 60 second runtime threshold. We follow this in Section \ref{sec:experiments} by providing contrasting results on the same problem instances instead using a standard Bees Algorithm and a LNS local search. Here we aim to demonstrate that the enhancements suggested in this thesis do in fact improve the solution quality. Finally, we end in Section \ref{sec:comparison} by comparing and ranking how the Enhanced Bees Algorithm performs compared to the results in the literature. 
 
 \section{Enhanced Bees Algorithm}
 \label{sec:standardresults}
@@ -20,26 +20,30 @@ Conversely, the second configuration used is optimised to produce the best resul
 
 \picscl{images/long_best.pdf}{\emph{Best}. Shown are the results obtained on the standard 14 Christofides, Mingozzi and Toth instances when the algorithm is optimised for producing the best overall results. These algorithm was left to run for 30 minutes. The lefthand axis shows the relative percentage compared to the best known result for the same problem instance. The bottom axis shows the elapsed runtime in seconds. Infeasible solutions are shown as being 0\% of the best known result. The average result obtained across all problem instances is shown in red.}{fig:standard_best}{1.1}
 
-\picscl{images/long_best_blowup.pdf}{\emph{Best - Blowup}. Shown are the same results as are depicted in figure \ref{fig:standard_best}, but with the area between 0.8 and 1.0 of the left axis blown up.}{fig:standard_best_blowup}{1.1}
+\picscl{images/long_best_blowup.pdf}{\emph{Best---Blowup}. Shown are the same results as are depicted in Figure \ref{fig:standard_best}, but with the area between 0.8 and 1.0 of the left axis blown up.}{fig:standard_best_blowup}{1.1}
 
-The results depicted in figures \ref{fig:standard_best} and \ref{fig:standard_best_blowup} were obtained on a MacBook Pro 2.8 GHz Intel Core 2 Duo, using the following parameters: The algorithm was set to start with $|S| = 100$ (i.e. 100 sites), and reduce this number each 50 iterations ($\lambda = 50$) by 1\% until only $|S| = 3$. The number of promising solutions remembered by each site was set to $|M| = 5$. The algorithm was left to run for 30 minutes on each problem before being terminated. Infeasible solutions (i.e. solutions over their capacity or duration constraints) were allowed to be traversed through, but were scored as being 0\% of the best known solution.
+The results depicted in figures \ref{fig:standard_best} and \ref{fig:standard_best_blowup} were obtained on a MacBook Pro 2.8 GHz Intel Core 2 Duo, using the following parameters: The algorithm was set to start with $|S| = 100$ (i.e.~100 sites), and reduce this number each 50 iterations ($\lambda = 50$) by 1\% until only $|S| = 3$. The number of promising solutions remembered by each site was set to $|M| = 5$. The algorithm was left to run for 30 minutes on each problem before being terminated. Infeasible solutions (i.e.~solutions over their capacity or duration constraints) were allowed to be traversed through, but were scored as being 0\% of the best known solution.
 
 % FAST
 
 \picscl{images/quick_best.pdf}{\emph{Fast}. Shown are the results obtained on the standard 14 Christofides, Mingozzi and Toth instances when the algorithm is optimised for producing the best results within a 60 second runtime limit. The lefthand axis shows the relative percentage compared to the best known result for the same problem instance. The bottom axis shows the elapsed runtime in seconds. Infeasible solutions are shown as being 0\% of the best known result.}{fig:standard_fast}{1.1}
 
-\picscl{images/quick_best_blowup.pdf}{\emph{Fast - Blowup}. Shown are the same results as are depicted in figure \ref{fig:standard_fast}, but with the area between 0.8 and 1.0 of the left axis blown up.}{fig:standard_fast_blowup}{1.1}
+\picscl{images/quick_best_blowup.pdf}{\emph{Fast---Blowup}. Shown are the same results as are depicted in Figure \ref{fig:standard_fast}, but with the area between 0.8 and 1.0 of the left axis blown up.}{fig:standard_fast_blowup}{1.1}
 
-The results depicted in figures \ref{fig:standard_fast} and \ref{fig:standard_fast_blowup} were obtained on a MacBook Pro 2.8 GHz Intel Core 2 Duo, using the following parameters: The algorithm was set to start with $|S| = 25$ (i.e. 25 sites), and reduce this number each iteration ($\lambda = 1$) by 1\% until only $|S| = 1$. The number of promising solutions remembered by each site was set to $|M| = 5$. The algorithm was left to run for 60 seconds on each problem before being terminated. The LNS improvement heuristic was set to destroy between 0\% and 80\% (with a mean of ~40\%) of the solution at each step. The repair operator initially only considers the first 3 closest customers as reinsertion points, but it increases this to be 50\% of the closest customers as the site ages. Infeasible solutions (i.e. solutions over duration or service time constraints) were allowed to be traversed through, but were scored as being 0\% of the best known solution.
+The results depicted in figures \ref{fig:standard_fast} and \ref{fig:standard_fast_blowup} were obtained on a MacBook Pro 2.8 GHz Intel Core 2 Duo, using the following parameters: The algorithm was set to start with $|S| = 25$ (i.e.~25 sites), and reduce this number each iteration ($\lambda = 1$) by 1\% until only $|S| = 1$. The number of promising solutions remembered by each site was set to $|M| = 5$. The algorithm was left to run for 60 seconds on each problem before being terminated. The LNS improvement heuristic was set to destroy between 0\% and 80\% (with a mean of ~40\%) of the solution at each step. The repair operator initially only considers the first 3 closest customers as reinsertion points, but it increases this to be 50\% of the closest customers as the site ages. Infeasible solutions (i.e.~solutions over duration or service time constraints) were allowed to be traversed through, but were scored as being 0\% of the best known solution.
 
-Table \ref{tab:standard_results} summarises these results.
+Table \ref{tab:standard_results} provides a summary of the results.
 
-\ctable[caption=Standard Results, label=tab:standard_results, pos=h, botcap, framesep=10pt]
+\ctable[
+   caption={Given are the results from running the Enhanced Bees Algorithm using two different configurations on the standard 14 Christofides, Mingozzi and Toth problem instances. The \emph{fast} configuration is optimised to produce results within a 60 second runtime limit. Conversely, the \emph{best} configuration is optimised for producing the best results within the much longer period of 30 minutes.}, 
+   label=tab:standard_results, 
+   pos=htb, 
+   framesep=10pt]
 {lr>{\itshape}rr>{\itshape}rr}
 {
    \tnote[1]{Run for 60 seconds}
    \tnote[2]{Run for 30 minutes}
-   \tnote[3]{As reported by Gendreau, Laporte, and Potvin in \cite{GLP:1999}}
+   \tnote[3]{As reported by Gendreau, Laporte, and Potvin in~\cite{GLP:1999}}
 }{
 \FL
    Instance
@@ -70,44 +74,48 @@ Table \ref{tab:standard_results} summarises these results.
 \section{Experiments}
 \label{sec:experiments}
 
-In this section we review the results obtained by implementing a standard Bees Algorithm and a LNS local search. The aim of these experiments is to prove that the algorithmic enhancements suggested in this thesis do in fact produce better results than would have been obtained if we'd used a standard Bees Algorithm. We also demonstrate that the combination of the Bees Algorithm with the LNS local search produces better results than if either algorithm were used separately.
+In this section we review the results obtained by implementing a standard Bees Algorithm and a LNS local search. The aim of these experiments is to prove that the algorithmic enhancements suggested in this thesis do in fact produce better results than would have been obtained than if we'd used a standard Bees Algorithm. We also demonstrate that the combination of the Bees Algorithm with the LNS local search produces better results than if either algorithm were used separately.
 
-\subsection{Bees Algorithm vs. Enhanced Bees Algorithm}
+\subsection{Bees Algorithm verse Enhanced Bees Algorithm}
 \label{subsec:bavebs}
 
-We start by showing the results obtained by using the standard Bees Algorithm as described by Pham et al.\ in \cite{PGKORZ:2005}. The same problem instances as section \ref{sec:standardresults} are used, so that the results can be directly compared.
+We start by showing the results obtained by using the standard Bees Algorithm as described by Pham et al.~in~\cite{PGKORZ:2005}. The same problem instances as Section \ref{sec:standardresults} are used, so that the results can be directly compared.
 
 \picscl{images/truebees_nolns.pdf}{Shown are the results obtained on the standard 14 Christofides, Mingozzi and Toth instances when the algorithm is optimised for producing the best results within a 60 second runtime limit. The lefthand axis shows the relative percentage compared to the best known result for the same problem instance. The bottom axis shows the elapsed runtime in seconds. Infeasible solutions are shown as being 0\% of the best known result. The average result obtained across all problem instances is shown in red}{fig:truebees_nolns}{1.1}
 
-\picscl{images/truebees_nolns_blowup.pdf}{Shown are the same results as are depicted in figure \ref{fig:truebees_nolns}, but with the section between 0.8 and 1.0 of the left axis blown up. Note the average is not shown on the blow up because it is below 80\% percent.}{fig:truebees_nolns_blowup}{1.1}
+\picscl{images/truebees_nolns_blowup.pdf}{Shown are the same results as are depicted in Figure \ref{fig:truebees_nolns}, but with the section between 0.8 and 1.0 of the left axis blown up. Note the average is not shown on the blow up because it is below 80\% percent.}{fig:truebees_nolns_blowup}{1.1}
 
-The results depicted in figures \ref{fig:truebees_nolns} and \ref{fig:truebees_nolns_blowup} were obtained on a MacBook Pro 2.8 GHz Intel Core 2 Duo, using the following parameters: The algorithm used 25 sites. The best 6 sites were selected as being elite sites. Each elite site had 3 bees recruited for the search. Another 6 sites were selected as being non-elite, and had 2 bees recruited for the search. The bees from the remaining 13 sites were left to search randomly. The algorithm was left to run for 60 seconds on each problem before being terminated. Infeasible solutions (i.e. solutions over their capacity or duration constraints) were allowed to be traversed through, but were scored as being 0\% of the best known solution. A $\lambda$-interchange (with $\lambda = 2$) improvement heuristic was used for the improvement phase of each bee (see chapter \ref{chap:background} for an overview on how this heuristic works).
+The results depicted in figures \ref{fig:truebees_nolns} and \ref{fig:truebees_nolns_blowup} were obtained on a MacBook Pro 2.8 GHz Intel Core 2 Duo, using the following parameters: The algorithm used 25 sites. The best 6 sites were selected as being elite sites. Each elite site had 3 bees recruited for the search. Another 6 sites were selected as being non-elite, and had 2 bees recruited for the search. The bees from the remaining 13 sites were left to search randomly. The algorithm was left to run for 60 seconds on each problem before being terminated. Infeasible solutions (i.e.~solutions over their capacity or duration constraints) were allowed to be traversed through, but were scored as being 0\% of the best known solution. A $\lambda$-interchange (with $\lambda = 2$) improvement heuristic was used for the improvement phase of each bee (see Chapter \ref{chap:background} for an overview on how this heuristic works).
 
 \subsection{Large Neighbourhood Search}
 \label{subsec:largeneighbourhoodsearch}
 
 Next we show the results obtained by using a standalone LNS search embedded within a hill climb meta-heuristic. The LNS search used in this section is the same one as is employed by the Enhanced Bees Algorithm. It should be noted that there are more sophisticated LNS algorithms available than the comparatively simple one used here. And that these would most probably produce better results than the LNS results presented here. However, we believe one of the attractive features of the Enhanced Bees Algorithm is that it uses a fairly simple local search procedure. Moreover, our aim in this experiment was to demonstrate that the limitations of our simple local method are offset by it being embedded within a Bees Algorithm.
 
-The same problem instances as section \ref{sec:standardresults} are used, so that the results can be directly compared.
+The same problem instances as Section \ref{sec:standardresults} are used, so that the results can be directly compared.
 
 \picscl{images/lns_1s1p.pdf}{Shown are the results obtained on the standard 14 Christofides, Mingozzi and Toth instances when the algorithm is optimised for producing the best results within a 60 second runtime limit. The lefthand axis shows the relative percentage compared to the best known result for the same problem instance. The bottom axis shows the elapsed runtime in seconds. Infeasible solutions are shown as being 0\% of the best known result. The average result obtained across all problem instances is shown in red}{fig:lns}{1.1}
 
-\picscl{images/lns_1s1p_blowup.pdf}{Shown are the same results as are depicted in \ref{fig:lns}, but with the area between 0.8 and 1.0 of the left axis blown up.}{fig:lns_blowup}{1.1}
+\picscl{images/lns_1s1p_blowup.pdf}{Shown are the same results as are depicted in Figure \ref{fig:lns}, but with the area between 0.8 and 1.0 of the left axis blown up.}{fig:lns_blowup}{1.1}
 
-The results depicted in figures \ref{fig:lns} and \ref{fig:lns_blowup} were obtained on a MacBook Pro 2.8 GHz Intel Core 2 Duo, using the following parameters: The algorithm is initialised to a starting position generated by a simple insertion heuristic. The LNS heuristic is set to destroy between 0\% and 80\% (with a mean of 40\%) of the solution at each step. The repair enumerates all customers when deciding the best reinsertion point. Infeasible solutions (i.e. solutions over their capacity or duration constraints) were allowed to be traversed through, but were scored as being 0\% of the best known solution.
+The results depicted in figures \ref{fig:lns} and \ref{fig:lns_blowup} were obtained on a MacBook Pro 2.8 GHz Intel Core 2 Duo, using the following parameters: The algorithm is initialised to a starting position generated by a simple insertion heuristic. The LNS heuristic is set to destroy between 0\% and 80\% (with a mean of 40\%) of the solution at each step. The repair enumerates all customers when deciding the best reinsertion point. Infeasible solutions (i.e.~solutions over their capacity or duration constraints) were allowed to be traversed through, but were scored as being 0\% of the best known solution.
 
 \subsection{Summary}
 
-Table \ref{tab:results_summary} summarises the results from the Bees Algorithm and LNS experiments, alongside the results obtained by our Enhanced Bees Algorithm. The Bees Algorithm is the worst of the three. This isn't surprising given that the Bees Algorithm was devised to solve continuos problems, rather than discrete problems. Where the Bees Algorithm has been used for discrete problems it has been adapted to incorporate more sophisticated local search techniques, much as the Enhanced Bees Algorithm has been here. Also of note is that two of the problem instances didn't produce feasible solution at all within the 60 second threshold. We believe that given a longer running time the algorithm would most probably have found a feasible solution. However, one of the objectives of the Enhanced Bees Algorithm is to produce robust results reliably; in this count the unaltered Bees Algorithm isn't competitive. 
+Table \ref{tab:results_summary} provides a summary of the results from the Bees Algorithm and LNS experiments, alongside the results obtained by our Enhanced Bees Algorithm. The Bees Algorithm is the worst of the three. This isn't surprising given that the Bees Algorithm was devised to solve continuos problems, rather than discrete problems. Where the Bees Algorithm has been used for discrete problems it has been adapted to incorporate more sophisticated local search techniques, much as the Enhanced Bees Algorithm has been here. Also of note is that two of the problem instances didn't produce feasible solution at all within the 60 second threshold. We believe that given a longer running time the algorithm would most probably have found a feasible solution. However, one of the objectives of the Enhanced Bees Algorithm is to produce robust results reliably; in this count the unaltered Bees Algorithm isn't competitive. 
 
-The LNS improvement heuristic produced much stronger results. This shows that the LNS improvement heuristic is a large part of the results obtained by the Enhanced Bees Algorithm. The LNS heuristic is a fairly new heuristic (in the \VRP\ research at least); nevertheless it has produced some of the most competitive results. This is borne out by the results obtained here and in section \ref{sec:standardresults}. However, the LNS local search did fail to find a feasible solution for one of the problem instances. Again this is probably due to the limited runtime permitted. If this problem instance is removed from the results, then the LNS search's average result becomes 96.39\%, getting us much closer to the results from the Enhanced Bees Algorithm.
+The LNS improvement heuristic produced much stronger results. This shows that the LNS improvement heuristic is a large part of the results obtained by the Enhanced Bees Algorithm. The LNS heuristic is a fairly new heuristic (in the \VRP\ research at least); nevertheless it has produced some of the most competitive results. This is borne out by the results obtained here and in Section \ref{sec:standardresults}. However, the LNS local search did fail to find a feasible solution for one of the problem instances. Again this is probably due to the limited runtime permitted. If this problem instance is removed from the results, then the LNS search's average result becomes 96.39\%, getting us much closer to the results from the Enhanced Bees Algorithm.
 
-\ctable[caption=Experiment Results Summary, label=tab:results_summary, pos=h, botcap, framesep=10pt]
+\ctable[
+   caption={Given are results that contrast the standard Bees Algorithm, a LNS local search, and the Enhanced Bees Algorithm with one another. Each algorithm was run for 60 seconds and used the standard 14 Christofides, Mingozzi and Toth problem instances.},
+   label=tab:results_summary,
+   pos=h,
+   framesep=10pt]
 {lr>{\itshape}rr>{\itshape}rr>{\itshape}r}
 {
-   \tnote[1]{Run for 60 seconds and configured as described in \ref{subsec:bavebs}}
-   \tnote[2]{Run for 60 seconds and configured as described in \ref{subsec:largeneighbourhoodsearch}}
-   \tnote[3]{Run for 60 seconds and configured as described in \ref{sec:standardresults}}
+   \tnote[1]{Run for 60 seconds and configured as described in Section \ref{subsec:bavebs}}
+   \tnote[2]{Run for 60 seconds and configured as described in Section \ref{subsec:largeneighbourhoodsearch}}
+   \tnote[3]{Run for 60 seconds and configured as described in Section \ref{sec:standardresults}}
 }{
 \FL
    Instance
@@ -137,20 +145,25 @@ The LNS improvement heuristic produced much stronger results. This shows that th
 \section{Comparison}
 \label{sec:comparison}
 
-Lastly, we provide a comparison of the Enhanced Bees Algorithm with other well known results from the literature. As can be seen from table \ref{tab:resultscomparison} some of the best results known are due to Taillard's Tabu Search heuristic. He reaches 12 of the best known solutions from the set of 14 problems. The Enhanced Bees Algorithm, by comparison, finds 8 of the 14 best known solution. However, the Enhanced Bees Algorithm is still very competitive. The runtime duration required to find a best known solution is smaller than many of the other meta-heuristics (although a direct comparison is hard to make as the many of the reported results were run on significantly older machines). Additionally, the solutions produced by the Enhanced Bees Algorithm are within 0.5\% of the best known solutions on average, meaning that the algorithm is very competitive with the best meta-heuristics available for the \VRP.
+Lastly, we provide a comparison of the Enhanced Bees Algorithm with other well known results from the literature. As can be seen from Table \ref{tab:resultscomparison} some of the best results known are due to Taillard's Tabu Search heuristic. He reaches 12 of the best known solutions from the set of 14 problems. The Enhanced Bees Algorithm, by comparison, finds 8 of the 14 best known solution. However, the Enhanced Bees Algorithm is still very competitive. The runtime duration required to find a best known solution is smaller than many of the other meta-heuristics (although a direct comparison is hard to make as the many of the reported results were run on significantly older machines). Additionally, the solutions produced by the Enhanced Bees Algorithm are within 0.5\% of the best known solutions on average, meaning that the algorithm is very competitive with the best meta-heuristics available for the \VRP.
 
-\ctable[caption=Results Comparison, label=tab:resultscomparison, botcap, framesep=10pt, sideways, doinside=\small]
+\ctable[
+   caption={Given is a comparison of the Enhanced Bees Algorithm alongside other well known results from the literature. The results are for the standard 14 Christofides, Mingozzi and Toth problem instances commonly used in the \VRP\ literature. Running times are given in parenthesis where known.},
+   label=tab:resultscomparison, 
+   framesep=10pt, 
+   sideways, 
+   doinside=\small]
 {lrrrrrrrrr}
 {
-   \tnote[1]{Clark Write's Savings (Parallel) algorithm. Implemented by Laporte and Semet \cite{Laporte:1999}.}
-   \tnote[2]{Sweep Algorithm due to Gillett and Miller \cite{GM:1974}. Implemented by Christofides, Mingozzi and Toth \cite{CMT:1981}. Reported in \cite{Laporte:1999}.}
-   \tnote[3]{Generalised Assignment due to Fisher and Jaikumar \cite{FJ:1981}. Reported in \cite{Laporte:1999}}
-   \tnote[4]{$3-Opt$ local searched used after the Clark Write's Savings (Parallel) algorithm. First improvement taken. Implemented by Laporte and Semet \cite{Laporte:1999}.}
-   \tnote[5]{Simulated Annealing due to Osman \cite{Osman:1993}. Runtime duration is given in parentheses and is reported in seconds on a VAX 86000}
-   \tnote[6]{Tabu Search due to Taillard \cite{Taillard:1993}. Runtime duration is given in parentheses and is reported in seconds on a Sillicon Graphics Workstation, 36Mhz}
-   \tnote[7]{Ant Colony Optimisation due to Bullnheimer, Hartl, Strauss \cite{BHS:1999B}. Bullnheimer et al.\ provided two papers on Ant Colony Optimisation for \VRP, the better of the two is used. Runtime duration is given in parentheses and is reported in seconds on a Pentium 100}
-   \tnote[8]{Enhanced Bees Algorithm. Results are shown from the \emph{best} configuration in section \ref{sec:standardresults}. Runtime duration is given in parentheses and is reported in seconds on a MacBook Pro 2.8 GHz Intel Core 2 Duo.}
-   \tnote[9]{Best known results as reported by Gendreau, Laporte, and Potvin in \cite{GLP:1999}}
+   \tnote[1]{Clark Write's Savings (Parallel) algorithm. Implemented by Laporte and Semet~\cite{Laporte:1999}.}
+   \tnote[2]{Sweep Algorithm due to Gillett and Miller~\cite{GM:1974}. Implemented by Christofides, Mingozzi and Toth~\cite{CMT:1981}. Reported in~\cite{Laporte:1999}.}
+   \tnote[3]{Generalised Assignment due to Fisher and Jaikumar~\cite{FJ:1981}. Reported in~\cite{Laporte:1999}}
+   \tnote[4]{$3-Opt$ local searched used after the Clark Write's Savings (Parallel) algorithm. First improvement taken. Implemented by Laporte and Semet~\cite{Laporte:1999}.}
+   \tnote[5]{Simulated Annealing due to Osman~\cite{Osman:1993}. Runtime duration is given in parentheses and is reported in seconds on a VAX 86000}
+   \tnote[6]{Tabu Search due to Taillard~\cite{Taillard:1993}. Runtime duration is given in parentheses and is reported in seconds on a Sillicon Graphics Workstation, 36Mhz}
+   \tnote[7]{Ant Colony Optimisation due to Bullnheimer, Hartl, Strauss~\cite{BHS:1999B}. Bullnheimer et al.~provided two papers on Ant Colony Optimisation for \VRP, the better of the two is used. Runtime duration is given in parentheses and is reported in seconds on a Pentium 100}
+   \tnote[8]{Enhanced Bees Algorithm. Results are shown from the \emph{best} configuration in Section \ref{sec:standardresults}. Runtime duration is given in parentheses and is reported in seconds on a MacBook Pro 2.8 GHz Intel Core 2 Duo.}
+   \tnote[9]{Best known results as reported by Gendreau, Laporte, and Potvin in~\cite{GLP:1999}}
 }{
 \FL
    Instance
@@ -181,6 +194,6 @@ Lastly, we provide a comparison of the Enhanced Bees Algorithm with other well k
 \LL
 }
 
-\picscl{images/comparision.pdf}{Shown are the average results across all problem instances obtained by the Enhanced Bees Algorithm mapped against the results listed in table \ref{tab:resultscomparison}}{fig:comparision}{1.0}
+\picscl{images/comparision.pdf}{Shown are the average results across all problem instances obtained by the Enhanced Bees Algorithm mapped against the results listed in Table \ref{tab:resultscomparison}}{fig:comparision}{1.0}
 
 

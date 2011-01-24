@@ -5,18 +5,29 @@
 % ---------------------
 % =====================
 \chapter{Conclusion}
-\label{chap:results}
+\label{chap:conclusion}
 
-\section{Future Directions}
+In this thesis we have described a new meta-heuristic for the \VRP\ called the Enhanced Bees Algorithm. The results obtained are competitive with the best meta-heuristics available for the Vehicle Routing Problem. Additionally, the algorithm has good runtime performance, producing results within 2\% of the optimal solution within 60 seconds.
 
-% - More robust measurement of the problems. Multirun vs. Best run. Time performance.
+We took the Bees Algorithm as our starting point. The Bees Algorithm was originally developed for solving continuos optimisation problems, so part of the work undertaken for this thesis was to adapt it (although, it could be argued that the Enhanced Bees Algorithm is more `inspired by' than `adapted from') for use on the \VRP. The approach developed for the Enhanced Bees Algorithm could equally be applied to other combinatorial optimisation problems, such as the Traveling Salesman Problem, the Job Shop Scheduling Problem, or the Cutting Stock Problem.
 
-% - More realistic problem sets, more like real world. Locked vehicles, biasing
+We showed empirically that the quality of the solutions obtained by the Enhanced Bees Algorithm are competitive with the best modern meta-heuristics available for the \VRP. Additionally, we showed that the algorithm has good runtime performance, producing results within 2\% of the optimal solution within 60 seconds. The runtime performance of the algorithm makes it suitable for use within real world dispatch scenarios, where often the dispatch process is fluid and hence it is impractical for the optimisation to take minutes (or hours). In these environments it is acceptable to trade a fraction of a percent off the solution quality for a quicker runtime.
 
-% - More concentration on time performance, practicle considerations
+We also gave results that demonstrated that the algorithmic enhancements suggested in this thesis did in fact produce better results than would have been obtained by using a standard Bees Algorithm. We also demonstrated that the combination of the Bees Algorithm with an LNS local search heuristic produced better results than if the algorithms had been used separately.
 
-% - Adaptive memory
+Additionally, we provided a comprehensive survey of the \VRP\ literature. We provided a short history on the results that have been foundational in \VRP\ research, as well as providing in depth material and descriptions for some of the classic algorithms developed for the \VRP. 
 
+There are a number of areas where the research undertaken in this thesis could be continued. These include:
 
+\begin{itemize}
 
+   \item \emph{Introduce a mating process to generate new sites}. An interesting extension to the Enhanced Bees Algorithm would be to incorporate a crossover operation for generating new sites. In our version of the Enhanced Bees Algorithm unpromising sites are simply culled off. An alternative approach, borrowing a concept from Genetic Algorithms and Tabu Search (in this case, Taillard's Adaptive Memory), would be to replace the site with a recombination of two other successful sites. The advantage to this approach is that it would open a new area of the search space to exploration; an area that should be promising as it combines components from two already successful sites. The crossover process could be as simple as using using an existing \VRP\ crossover operator, such as $OX$, on two fittest solutions of each site. Although much more sophisticated crossover operations are imaginable.
+
+   \item \emph{Extend to other combinatorial problems}. It should be possible to follow a similar approach that we've taken in adapting the Bees Algorithm to the \VRP\ and apply this to other combinatorial problems. The Bees Algorithm is especially strong as providing robust solutions where the search space contains many local optima. We imagine that there are many other combinatorial problems where this would be an advantage. An obvious starting point would be to apply it to the Job Shop Scheduling Problem, which shares many characteristics with the \VRP.
+
+   \item \emph{Include more real world constraints}. Although the literature is filled with variations of the \VRP\ that add additional constraints (i.e.~\VRPTW, \PDP, etc), the focus has been on tackling the computationally hard constraints, such as time windows, multiple deploys, etc. An area that isn't often addressed in the literature is how to deal with soft constraints, such as, on the day disruptions, differing skill sets across a fleet, or factoring in a dispatcher's assignment preferences. Unfortunately, these constraints are a barrier to vehicle route optimisation being adopted in many logistics companies. 
+   
+   An interesting line of research would be to extend the optimisation methods developed for the \VRP\ to include feedback from a dispatcher---we envision an interactive process where the dispatcher can feedback into optimisation process the soft constraints that are not modelled within the algorithm. It would also be very interesting to see if the supervised learning methods from artificial intelligence, such as the Naive Bayes classifier, could be incorporated into the optimisation process.
+      
+\end{itemize}
 
