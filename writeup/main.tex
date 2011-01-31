@@ -38,15 +38,15 @@ pdfauthor={M.Dinneen, A.J.L.Fenton},
 \usepackage{pdflscape}
 \usepackage{ctable}
 
-% \textwidth      = 6.0 in
-% \textheight     = 8.5 in
-% \oddsidemargin  = 0.0 in
-% \evensidemargin = 0.0 in
-% \topmargin      = 0.0 in
-% \headheight     = 0.0 in
+\textwidth      = 14.3cm
+\textheight     = 22cm
+\oddsidemargin  = 1.53cm
+\evensidemargin = 0cm
+% \topmargin      = 0.0in
+% \headheight     = 0.0in
 \parskip        = 0.2in
 \parindent      = 0.0in
-\footskip       = 0.8in
+% \footskip       = 0.8in
 \setlength{\skip\footins}{1cm}
 
 % provides a nicer looking caption for figures
@@ -89,6 +89,7 @@ pdfauthor={M.Dinneen, A.J.L.Fenton},
 
 \begin{document}
 
+\pagestyle{empty}
 \pagenumbering{roman}
 \input{title_page.tex}
 \input{front_matter.tex}
@@ -97,6 +98,7 @@ pdfauthor={M.Dinneen, A.J.L.Fenton},
 \cleardoublepage
 \tableofcontents
 
+\pagestyle{headings}
 \input{introduction.tex}
 \input{background.tex}
 \input{problem_definition.tex}

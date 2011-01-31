@@ -7,7 +7,7 @@
 \chapter{Problem Definition}
 \label{chap:pd}
 
-In this chapter we provide a formal definition of the \VRP\ and briefly describe the variant problems that have arisen in the literature. The Capacitated Vehicle Routing Problem (\CVRP) is the more correct name for the \VRP\ that distinguished it from its variants. We start in Section \ref{sec:capacitatedvehicleroutingproblem} by providing a formal definition of the \CVRP. We formulate it as an integer linear programming problem, as has become standard in the \VRP\ literature. And follow this in Section \ref{sec:variants} by an overview of the \VRP\ variants that are commonly used.
+In this chapter we provide a formal definition of the \VRP\ and briefly describe the variant problems that have arisen in the literature. The Capacitated Vehicle Routing Problem (\CVRP) is the more correct name for the \VRP\ that distinguishes it from its variants. We start in Section \ref{sec:capacitatedvehicleroutingproblem} by providing a formal definition of the \CVRP. We formulate it as an integer linear programming problem, as has become standard in the \VRP\ literature. And follow this in Section \ref{sec:variants} by an overview of the \VRP\ variants that are commonly used.
 
 % =====================
 % SECTION
@@ -17,40 +17,40 @@ In this chapter we provide a formal definition of the \VRP\ and briefly describe
 
 We formulate the \CVRP\ here as an integer linear programming problem. Although it is possible to solve the \CVRP\ using an integer programming solver, this is uncommon in practice as the best solvers are still only able to solve for small problem sizes. We provide this formulation as it has become the lingua franca of combinatorial problems.
 
-We start the formation by specifying the variables used within it. We represent the \CVRP\ on a weighted graph, $G = (V, E)$. The vertices of the graph $V$ represent all locations that can be visited, this includes each customer location and the location of the depot. For convenience we let $v^d$ denote the vertex that represents the depot, and we denote the set of customers as $C = 1,2,...,n$. Thus the set of vertices is given by $V = v^d \union C$. Now let the set of edges, $E$, corresponds to the valid connections between customers and connections to the depot. For the \CVRP\ all connections are possible, in other words, we set $G$ to be a clique. Each edge $\edge{i,j} \in E$ has a corresponding cost $c_{ij}$. We let the cost be the euclidian distance between the two locations $c_{ij} = \sqrt{(x_j - x_j)^2 + (y_j -  y_i)^2}$. Where $x_i, y_i, i \in V$ represents the coordinates of the customer's location. 
+We start the formation by specifying the variables used within it. We represent the \CVRP\ on a weighted graph, $G = (V, E)$. The vertices of the graph $V$ represent all locations that can be visited, this includes each customer location and the location of the depot. For convenience we let $v^d$ denote the vertex that represents the depot, and we denote the set of customers as $C = 1,2,...,n$. Thus the set of vertices is given by $V = v^d \union C$. Now let the set of edges, $E$, correspond to the valid connections between customers and connections to the depot. For the \CVRP\ all connections are possible, in other words, we set $G$ to be a clique. Each edge $\edge{i,j} \in E$ has a corresponding cost $c_{ij}$. We let the cost be the euclidian distance between the two locations $c_{ij} = \sqrt{(x_j - x_j)^2 + (y_j -  y_i)^2}$. Where $x_i, y_i, i \in V$ represents the coordinates of the customer's location. 
 
-We use $R$ to denote the set of routes that comprise the solution. And we define $q$ and $t$ to be the maximum capacity and the maximum duration, respectively, allowable for a route. The demand (i.e.~required capacity) for each customer is denoted by $d_i, i \in C$. Likewise, we denote the service time required by each customer as $t_i, i \in C$. We then use the decision variable $X_{ij}^r$ to denote if a particular edge $\edge{i,j} \in E$ and route $r \in R$ contains a trip between customers $i,j \in C$. We let $X_{ij}^r = 1$ where this is true, and $X_{ij}^r = 0$ where not.
+We use $K$ to denote the set of vehicles that are used to visit customers, such that $|K| = m$ and $m$ is the maximum number of vehicles allowed. We define $q$ and $t$ to be the maximum capacity and the maximum work duration, respectively, allowable for a vehicle. The demand (i.e.~required capacity) for each customer is denoted by $d_i, i \in C$. Likewise, we denote the service time required by each customer as $t_i, i \in C$. We then use the decision variable $X_{ij}^k$ to denote if a particular edge $\edge{i,j} \in E$ is traversed by vehicle $k \in K$, in other words, $k$ travels between customers $i,j \in C$. We let $X_{ij}^k = 1$ where this is true, and $X_{ij}^r = 0$ where it is not.
 
 We are now able to specify the problem as follows:
 % 
 \begin{align}\notag
 \intertext{Minimise:}
-   &\sum_{r \in R} \sum_{\edge{ij} \in E} c_{ij}X_{ij}^r \tag{1}\label{PF:1}
+   &\sum_{k \in K} \sum_{\edge{ij} \in E} c_{ij}X_{ij}^k \tag{1}\label{PF:1}
 \intertext{Subject to:} 
 % 
-   &\sum_{r \in R} \sum_{j \in V} X_{ij}^r = 1                 
+   &\sum_{k \in K} \sum_{j \in V} X_{ij}^k = 1
       &&\quad \forall i \in C \tag{2}\label{PF:2}\\
 % 
-   &\sum_{i \in C} d_i \sum_{j \in C} X_{ij}^r \leq q          
-      &&\quad \forall r \in R \tag{3}\label{PF:3}\\
+   &\sum_{i \in C} d_i \sum_{j \in C} X_{ij}^k \leq q
+      &&\quad \forall k \in K \tag{3}\label{PF:3}\\
 % 
-   &\sum_{i \in C} t_i \sum_{j \in C} X_{ij}^r + \sum_{\edge{ij} \in E} c_{ij}X_{ij}^r \leq t
-      &&\quad \forall r \in R \tag{4}\label{PF:4}\\
+   &\sum_{i \in C} t_i \sum_{j \in C} X_{ij}^k + \sum_{\edge{ij} \in E} c_{ij}X_{ij}^k \leq t
+      &&\quad \forall k \in K \tag{4}\label{PF:4}\\
 % 
-   &\sum_{j \in V} X_{v^0}^r = 1
-      &&\quad \forall r \in R \tag{5}\label{PF:5}\\
+   &\sum_{j \in V} X_{v^dj}^k = 1
+      &&\quad \forall k \in K \tag{5}\label{PF:5}\\
 %   
-   &\sum_{j \in V} X_{0^d}^r = 1
-      &&\quad \forall r \in R \tag{6}\label{PF:6}\\
+   &\sum_{j \in V} X_{jv^d}^k = 1
+      &&\quad \forall k \in K \tag{6}\label{PF:6}\\
 %   
-   &\sum_{i \in V} X_{ik}^r - \sum_{j \in V} X_{kj}^r = 0
-      &&\quad \forall k \in C \mbox{ and } \forall r \in R \tag{7}\label{PF:7}
+   &\sum_{i \in V} X_{ic}^k - \sum_{j \in V} X_{cj}^k = 0
+      &&\quad \forall c \in C \mbox{ and } \forall k \in K \tag{7}\label{PF:7}
 %
 \end{align}
 
-The objective function \eqref{PF:1} minimises the costs $c_{ij}$. Constraint \eqref{PF:2} ensures that each customer can only be serviced by a single route. Constraint \eqref{PF:3} enforces the capacity constraint; each route cannot exceed the maximum vehicle capacity $q$. Likewise \eqref{PF:4} enforces the route's duration constraint. A route's duration is the sum of it's service times $t_i, i \in R$ and its travel time. By convention the travel time is taken to be equal to its total distance, which in turn is equal to the costs, $c_{ij}$, of the edges it traverses. Constraint \eqref{PF:5} and \eqref{PF:6} ensure that each route starts at the depot and finishes at the depot, and do this exactly once each. Lastly, constraint \eqref{PF:7} is a flow constraint that ensures that the number of vehicles entering a customer is equal to the number of vehicles leaving. 
+The objective function \eqref{PF:1} minimises the costs $c_{ij}$. Constraint \eqref{PF:2} ensures that each customer can only be serviced by a single vehicle. Constraint \eqref{PF:3} enforces the capacity constraint; each vehicle cannot exceed its maximum vehicle capacity $q$. Likewise \eqref{PF:4} enforces the vehicle's work duration constraint. A vehicle's work duration is the sum of its service times ($t_i, i \in C$ where customer $i$ is visited by the vehicle) and its travel time. By convention the travel time is taken to be equal to the distance  by the vehicle, which in turn is equal to the costs, $c_{ij}$, of the edges it traverses. Constraint \eqref{PF:5} and \eqref{PF:6} ensure that each vehicle starts at the depot and finishes at the depot, and that they do this exactly once. Lastly, constraint \eqref{PF:7} is a flow constraint that ensures that the number of vehicles entering a customer is equal to the number of vehicles leaving. 
 
-Constraint \eqref{PF:4}, which enforces a maximum route duration, $t$, is often left out of the traditional \CVRP\ formation but is included here as it is present in the problem instances we use as benchmarks in Chapter \ref{chap:results}.
+Constraint \eqref{PF:4}, which enforces a maximum vehicle work duration, $t$, is often left out of the traditional \CVRP\ formation but is included here as it is present in the problem instances we use as benchmarks in Chapter \ref{chap:results}.
 
 % =====================
 % SECTION
@@ -64,16 +64,15 @@ In this section we provide an overview of the common variations of the \VRP\ tha
 % Sub Section
 \subsection{\MDVRP}
 
-A simple extension to the \CVRP\ is to allow each vehicle to start from a different depot. Part of the problem now becomes assigning customers to depots, which in itself is a hard combinatorial problem. The \CVRP\ formation can easily be relaxed to allow this. There are two variations of the problem. One constrains each route to finish at the same depot that it starts from. The other allows vehicles to start and finish at any depot, as long as the same number of vehicles return to a depot as left from it.
+A simple extension to the \CVRP\ is to allow each vehicle to start from a different depot. Part of the problem now becomes assigning customers to depots, which in itself is a hard combinatorial problem. The \CVRP\ formation can easily be relaxed to allow this. There are two variations of the problem. One constrains each vehicle to finish at the same depot that it starts from. The other allows vehicles to start and finish at any depot, as long as the same number of vehicles return to the depot as left it.
 
 % =====================
 % Sub Section
 \subsection{Vehicle Routing with Time Windows (\VRPTW)}
 
-The Vehicle Routing Problem with Time Windows (\VRPTW) adds the additional constraint to the classic \VRP\ that each customer must be visited within a time window specified by the customer. More formally, for \VRPTW\ each customer $i \in C$ also has a corresponding time window $\seq{a_i, b_i}$ in which the goods must be delivered. The vehicle is permitted to arrive before the start time, $a_i$. However, in this case the vehicle must wait until time $a_i$ adding to the time it takes to complete the route. However it is not permitted for the job to start after time $b_i$.
+The Vehicle Routing Problem with Time Windows (\VRPTW) adds the additional constraint to the classic \VRP\ that each customer must be visited within a time window specified by the customer. More formally, for \VRPTW\ each customer $i \in C$ also has a corresponding time window $\seq{a_i, b_i}$ in which the goods must be delivered. The vehicle is permitted to arrive before the start time, $a_i$. However, in this case the vehicle must wait until time $a_i$ adding to the time it takes to complete the route. However, it is not permitted for the job to start after time $b_i$.
 
-An additional constraint is added to the formation of \CVRP\ to ensure that the time window constraint is meet: $a_i \leq S_i^r \leq b_i$ where the decision variable $S_i^r$ provides the time that each route $r \in R$ arrives at customer $i \in V$.  
-
+An additional constraint is added to the formation of \CVRP\ to ensure that the time window constraint are met: $a_i \leq S_i^k \leq b_i$ where the decision variable $S_i^k$ provides the time that each vehicle $k \in K$ arrives at customer $i \in V$.
 
 % =====================
 % Sub Section
@@ -82,14 +81,14 @@ An additional constraint is added to the formation of \CVRP\ to ensure that the 
 The Pickup and Delivery problem generalises the \VRP. In this problem goods are both picked up and delivered by the vehicle along its route. The vehicle's work now comes in two flavours: pickup jobs, $P = \set{p_1,p_2,...,p_k}$, and delivery jobs, $D = \set{d_1,d_2,...,d_l}$, such that $C = P \union D$. Additional constraints are added to the \CVRP\ formation to ensure that:
 
 \begin{enumerate}
-   \item Pickup and deliver jobs are completed on the same route, that is $p_i \in r \implies d_i \in r$ for all $r \in R$.
+   \item Pickup and deliver jobs are completed by the same vehicle, that is $p_i \in r \implies d_i \in r$ where $r$ represents sequence of jobs undertaken by a vehicle.
 
-   \item The pickup job, $p_i$, appears before its corresponding delivery job, $d_i$, in a route $r \in R$.
+   \item The pickup job, $p_i$, appears before its corresponding delivery job, $d_i$, in the sequence of jobs undertaken by a vehicle.
 
-   \item The vehicles capacity isn't exceeded as goods are loaded and unloaded from it. This requires the use of an intermediate variable, $y_i, i \in V$ that represents the load of the route at customer $i$. It adds constraints: $y_0 = 0$, $X_{ij}^r = 1 \implies y_i + d_i = y_j$, and $\sum_{r \in R} \sum_{j \in V} X_{ij}^r y_i \leq q$ to enforce this.
+   \item The vehicles capacity isn't exceeded as goods are loaded and unloaded from it. This requires the use of an intermediate variable, $y^k_i, i \in V, k \in K$ that represents the load of vehicle $k$ at customer $i$. It adds constraints: $y^k_0 = 0$, $X_{ij}^k = 1 \implies y^k_j = y^k_i + d_i$, and $\sum_{i \in V} y^k_i \leq q$ for all $k \in K$, to enforce this.
    
 \end{enumerate}
 
-There is also a variation on \PDP\ that adds time windows, called \PDPTW. In this case the extra constraints from the \VRPTW\ problem are merged with those above. \PDP\ is a much harder problem computationally than \CVRP, as its extra constraints add new dimensions to the problem. Because of its complexity \PDP\ has only been actively researched in the last decade. 
+There is also a variation on \PDP\ that adds time windows, called \PDPTW. In this case the extra constraints from the \VRPTW\ problem are merged with those given above. \PDP\ is a much harder problem computationally than \CVRP, as its extra constraints add new dimensions to the problem. Because of its complexity \PDP\ has only been actively researched in the last decade. 
 
 
