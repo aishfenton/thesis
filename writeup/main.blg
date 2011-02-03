@@ -3,18 +3,8 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: main.aux
 The style file: plain.bst
 Database file #1: bibliography.bib
-Warning--entry type for "Willard:1989" isn't style-file defined
---line 262 of file bibliography.bib
 Warning--to sort, need author or key in beeimage
-Name 1 in "N. Christofides, A. Mingozzi, and P. Toth" has a comma at the end for entry CMT:1981
-while executing---line 1049 of file plain.bst
 Name 1 in "Dantzig, Fulkerson, and Johnson" has a comma at the end for entry Dantzig:1954
-while executing---line 1049 of file plain.bst
-Name 1 in "Laporte, G., and Nobert, Y" has a comma at the end for entry LANO:87
-while executing---line 1049 of file plain.bst
-Too many commas in name 1 of "Pham, Ghanbarzadeh, Koc, Otri S, Rahim S and Zaidi M" for entry PGKORZ:2005
-while executing---line 1049 of file plain.bst
-Too many commas in name 1 of "Pham, Ghanbarzadeh, Koc, Otri S, Rahim S and Zaidi M" for entry PGKORZ:2005
 while executing---line 1049 of file plain.bst
 Warning--to sort, need author or key in biodidac:website
 Warning--to sort, need author or key in beesalg
@@ -22,61 +12,52 @@ Warning--empty publisher in BM:2003
 Name 1 in "Dantzig, Fulkerson, and Johnson" has a comma at the end for entry Dantzig:1954
 while executing---line 1090 of file plain.bst
 Warning--there's a number but no volume in Dantzig:1954
-Name 1 in "Laporte, G., and Nobert, Y" has a comma at the end for entry LANO:87
-while executing---line 1090 of file plain.bst
 Warning--can't use both author and editor fields in LANO:87
 Warning--empty publisher in LANO:87
-Name 1 in "N. Christofides, A. Mingozzi, and P. Toth" has a comma at the end for entry CMT:1981
-while executing---line 1090 of file plain.bst
-Warning--empty institution in GHL:1998
-Too many commas in name 1 of "Pham, Ghanbarzadeh, Koc, Otri S, Rahim S and Zaidi M" for entry PGKORZ:2005
-while executing---line 1090 of file plain.bst
-Too many commas in name 1 of "Pham, Ghanbarzadeh, Koc, Otri S, Rahim S and Zaidi M" for entry PGKORZ:2005
-while executing---line 1090 of file plain.bst
 Warning--empty institution in PGKORZ:2005
 Warning--empty publisher in Potvin:2009
-Warning--empty journal in Schrijver
 Warning--empty booktitle in Shaw:1998
 Warning--empty publisher in Shaw:1998
+Warning--empty institution in GHL:1998
 You've used 53 entries,
             2118 wiz_defined-function locations,
-            842 strings with 11553 characters,
-and the built_in function-call counts, 15256 in all, are:
-= -- 1556
-> -- 451
+            843 strings with 11658 characters,
+and the built_in function-call counts, 16353 in all, are:
+= -- 1632
+> -- 634
 < -- 12
-+ -- 205
-- -- 132
-* -- 868
-:= -- 2479
-add.period$ -- 159
++ -- 271
+- -- 198
+* -- 1009
+:= -- 2683
+add.period$ -- 161
 call.type$ -- 53
-change.case$ -- 223
+change.case$ -- 256
 chr.to.int$ -- 0
-cite$ -- 66
-duplicate$ -- 676
-empty$ -- 1335
-format.name$ -- 132
-if$ -- 3307
+cite$ -- 65
+duplicate$ -- 681
+empty$ -- 1338
+format.name$ -- 198
+if$ -- 3520
 int.to.chr$ -- 0
 int.to.str$ -- 53
 missing$ -- 43
-newline$ -- 264
+newline$ -- 265
 num.names$ -- 104
-pop$ -- 229
+pop$ -- 257
 preamble$ -- 1
-purify$ -- 171
+purify$ -- 204
 quote$ -- 0
-skip$ -- 510
+skip$ -- 513
 stack$ -- 0
-substring$ -- 1069
-swap$ -- 162
+substring$ -- 1045
+swap$ -- 163
 text.length$ -- 12
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 206
-warning$ -- 13
-while$ -- 148
+warning$ -- 12
+while$ -- 142
 width$ -- 55
-write$ -- 562
-(There were 10 error messages)
+write$ -- 567
+(There were 2 error messages)
