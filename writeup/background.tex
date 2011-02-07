@@ -64,15 +64,17 @@ The Traveling Salesman Problem (\TSP) can informally be defined as follows. Give
 
 Although the problem sounds like it might be easily solvable, it is in fact \nphard. The best known exact algorithms for solving the \TSP\ still require a running time of $\BIGO{2^n}$. Karp's famous paper, \emph{Reducibility~Among~Combinatorial~Problems}~\cite{Kar72}, in 1972 showed that the Hamiltonian Circuit problem is \npcomplete. This implied the NP-hardness of \TSP, and thus supplied the mathematical explanation for the apparent difficulty of finding optimal traveling salesman tours. 
 
-\picscl{images/tsp.pdf}{Shown is an example of a 16 city \TSP\ tour. This tour is one of 20,922,789,888,000 possible tours for these 16 cities.}{fig:tsp}{0.60}
-
 \TSP\ has a history reaching back many years. It is itself related to another classic graph theory problem, the Hamiltonian circuit. Hamiltonian circuits have been studied since 1856 by both Hamilton~\cite{Hamilton:1856} and Kirkman~\cite{Kirkman:1856}. Whereas the \TSP\ has been informally discussed for many years~\cite{Schrijver}, it didn't become actively studied until after 1928, where Menger, Whitney, Flood and Robinson produced much of the early results in the field. Robinson's RAND report~\cite{Robinson:1949} is probably the first article to call the problem by the name it has since become known as, the Traveling Salesman Problem. 
+
+\clearpage
 
 From Robinson's RAND report:
 \begin{quote}
 \itshape
    The purpose of this note is to give a method for solving a problem related to the traveling salesman problem. One formulation is to find the shortest route for a salesman starting from Washington, visiting all the state capitals and then returning to Washington. More generally, to find the shortest closed curve containing $n$ given points in the plane.
 \end{quote}
+
+\picscl{images/tsp.pdf}{Shown is an example of a 16 city \TSP\ tour. This tour is one of 20,922,789,888,000 possible tours for these 16 cities.}{fig:tsp}{0.60}
 
 An early result was provided by Dantzig, Fulkerson, and  Johnson~\cite{Dantzig:1954}. Their paper gave an exact method for solving a 49 city problem, a large number of cities for the time. Their algorithm used the cutting plane method to provide an exact solution. This approach has been the inspiration for many subsequent approaches, and is still the bedrock of algorithms that attempt to provide an exact solution.  
 
@@ -139,7 +141,7 @@ The algorithm starts by initialising a candidate solution. For this it creates a
 \begin{enumerate}
    \item $R^i \neq R^j$.
    \item $i,j$ are the first or last vertices (excluding the depot $v^d$) of their respective routes.
-   \item The combined demand of the two routes doesn't exceed the maximum allowed $q$.
+   \item The combined demand of the two routes doesn't exceed the maximum allowed, $q$.
 \end{enumerate}
 
 The heuristic comes in two flavours, sequential and parallel. The sequential version adds the additional constraint that only one route can be constructed at a time. In this case one of the two routes considered, $R^i, R^j$, must be the route under construction. If neither of the routes are the route under construction then the list item is ignored and processing continues down the list. If the merge is permissible then we merge routes $R^i, R^j$ such that $R' = \seq{v_0,\ldots,i,j,\ldots,v_k}$. In the parallel version, once the entire list of savings has been enumerated then the resulting solution is returned as the answer. In the sequential version the \emph{for~loop} is repeated until no feasible merges remain.
