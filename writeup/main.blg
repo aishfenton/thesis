@@ -4,13 +4,9 @@ The top-level auxiliary file: main.aux
 The style file: plain.bst
 Database file #1: bibliography.bib
 Warning--to sort, need author or key in beeimage
-Name 1 in "Dantzig, Fulkerson, and Johnson" has a comma at the end for entry Dantzig:1954
-while executing---line 1049 of file plain.bst
 Warning--to sort, need author or key in biodidac:website
 Warning--to sort, need author or key in beesalg
 Warning--empty publisher in BM:2003
-Name 1 in "Dantzig, Fulkerson, and Johnson" has a comma at the end for entry Dantzig:1954
-while executing---line 1090 of file plain.bst
 Warning--there's a number but no volume in Dantzig:1954
 Warning--can't use both author and editor fields in LANO:87
 Warning--empty publisher in LANO:87
@@ -19,45 +15,45 @@ Warning--empty publisher in Potvin:2009
 Warning--empty booktitle in Shaw:1998
 Warning--empty publisher in Shaw:1998
 Warning--empty institution in GHL:1998
-You've used 53 entries,
+You've used 55 entries,
             2118 wiz_defined-function locations,
-            843 strings with 11658 characters,
-and the built_in function-call counts, 16353 in all, are:
-= -- 1632
-> -- 634
-< -- 12
-+ -- 271
-- -- 198
-* -- 1009
-:= -- 2683
-add.period$ -- 161
-call.type$ -- 53
-change.case$ -- 256
+            856 strings with 12018 characters,
+and the built_in function-call counts, 16994 in all, are:
+= -- 1682
+> -- 670
+< -- 13
++ -- 285
+- -- 210
+* -- 1076
+:= -- 2811
+add.period$ -- 168
+call.type$ -- 55
+change.case$ -- 267
 chr.to.int$ -- 0
-cite$ -- 65
+cite$ -- 67
 duplicate$ -- 681
-empty$ -- 1338
-format.name$ -- 198
-if$ -- 3520
+empty$ -- 1402
+format.name$ -- 210
+if$ -- 3641
 int.to.chr$ -- 0
-int.to.str$ -- 53
-missing$ -- 43
-newline$ -- 265
-num.names$ -- 104
-pop$ -- 257
+int.to.str$ -- 55
+missing$ -- 46
+newline$ -- 276
+num.names$ -- 108
+pop$ -- 272
 preamble$ -- 1
-purify$ -- 204
+purify$ -- 214
 quote$ -- 0
-skip$ -- 513
+skip$ -- 490
 stack$ -- 0
-substring$ -- 1045
-swap$ -- 163
-text.length$ -- 12
+substring$ -- 1117
+swap$ -- 142
+text.length$ -- 13
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 206
+type$ -- 212
 warning$ -- 12
-while$ -- 142
-width$ -- 55
-write$ -- 567
-(There were 2 error messages)
+while$ -- 151
+width$ -- 57
+write$ -- 590
+(There were 12 warnings)

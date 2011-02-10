@@ -9,7 +9,7 @@ The bees algorithm website.
 \newblock \texttt{http://www.bees-algorithm.com}.
 
 \bibitem{biodidac:website}
-Biodidac---a bank of digital resources for teaching biology.
+Biodidac, a bank of digital resources for teaching biology.
 \newblock \texttt{http://biodidac.bio.uottawa.ca/}.
 
 \bibitem{AG:1991}
@@ -26,7 +26,7 @@ M.L. Balinski and R.E. Quandt.
 Jean Berger and Mohamed Barkaoui.
 \newblock A hybrid genetic algorithm for the capacitated vehicle routing
   problem.
-\newblock In {\em Genetic and Evolutionary Computation — GECCO 2003}, volume
+\newblock In {\em Genetic and Evolutionary Computation---GECCO 2003}, volume
   2723 of {\em Lecture Notes in Computer Science}, pages 198--198. 2003.
 
 \bibitem{BW:1993}
@@ -34,13 +34,13 @@ J.L. Blanton and R.L. Wainwright.
 \newblock Multiple vehicle routing with time and capacity constraints using
   genetic algorithms.
 \newblock {\em Proceedings of the 5th International Conference on Genetic
-  Algorithms}, page 451–459, 1993.
+  Algorithms}, pages 451--459, 1993.
 
 \bibitem{BHS:1999A}
 B.~Bullnheimer, R.~F. Hartl, and C.~Strauss.
 \newblock Applying the ant system to the vehicle routing problem.
 \newblock {\em Meta-heuristics: Advances and trends in local search paradigms
-  for optimization}, page 285–296, 1999.
+  for optimization}, pages 285--296, 1999.
 
 \bibitem{BHS:1999B}
 B.~Bullnheimer, R.~F. Hartl, and C.~Strauss.
@@ -65,7 +65,7 @@ G.~Clark and J.W. Wright.
 \newblock {\em Operations Research}, 12:568--581, 1964.
 
 \bibitem{Dantzig:1954}
-Fulkerson Dantzig and Johnson.
+Dantzig, Fulkerson, and Johnson.
 \newblock Solution of a large-scale traveling salesman problem.
 \newblock {\em Operations Research}, (2):393–410, 1954.
 
@@ -78,7 +78,13 @@ G.~B. Dantzig and J.~H. Ramser.
 Martin Desrochers, Jacques Desrosiers, and Marius Solomon.
 \newblock A new optimization algorithm for the vehicle routing problem with
   time windows.
-\newblock {\em Oper. Res.}, 40:342--354, March 1992.
+\newblock {\em Operations Research}, 40:342--354, March 1992.
+
+\bibitem{EWC:1971}
+S.~Eilon, C.D. Watson-Gandy, and N.~Christofides.
+\newblock {\em Distribution management: Mathematical modelling and practical
+  analysis}.
+\newblock Griffin (London), 1971.
 
 \bibitem{FJ:1981}
 M.L. Fisher and R.~Jaikumar.
@@ -170,6 +176,7 @@ Y.~Nagata.
 Road Transport~Forum NZ.
 \newblock Road transport forum nz---transport facts.
 \newblock Website.
+\newblock \texttt{http://www.rtfnz.co.nz/cm-transport-facts.php}.
 
 \bibitem{OSH:1987}
 I.M Oliver, D.J. Smith, and J.R.C Holland.
@@ -217,7 +224,7 @@ M.~R. Rao and S.~Zionts.
 M.~Reimann, M.~Stummer, and K.~Doerner.
 \newblock A savings-based ant system for the vehicle routing problem.
 \newblock {\em Proceedings of the Genetic and Evolutionary Computation
-  Conference}, page 1317–1325, 2002.
+  Conference}, pages 1317--1325, 2002.
 
 \bibitem{RBL:1996}
 J~Renaud, F~F Boctor, and G~Laporte.
@@ -272,8 +279,8 @@ S.R. Thangiah, K.E. Nygard, and P.L. Juell.
 
 \bibitem{GHL:1998}
 P.~Toth and D.~Vigo.
-\newblock The granular tabu search (and it's applications to the vehicle
-  routing problem).
+\newblock The granular tabu search (and its application to the vehicle routing
+  problem).
 \newblock Technical report, 1998.
 
 \bibitem{TV2001}
@@ -287,6 +294,12 @@ J.~A.~G. Willard.
 \newblock Vehicle routing using r-optimal tabu search.
 \newblock Master's thesis, The Management School, Imperial College, London,
   1989.
+
+\bibitem{WH:1972}
+A.~Wren and A.~Holliday.
+\newblock Computer scheduling of vehicles from one or more depots to a number
+  of delivery points.
+\newblock {\em Operations Research Quarterly}, pages 333--344, 1972.
 
 \bibitem{Yellow:1970}
 P.~Yellow.
